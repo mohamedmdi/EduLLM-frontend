@@ -13,12 +13,11 @@ import {
   Play,
   Star,
   Zap,
+  ListChecks,
 } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 
-export default function LandingPage() {
-  const features = [
+export default function LandingPage() {  const features = [
     {
       icon: Brain,
       title: "Smart Learning",
@@ -36,6 +35,12 @@ export default function LandingPage() {
       title: "Interactive Chat",
       description:
         "Natural conversations that adapt to your questions and learning needs.",
+    },
+    {
+      icon: ListChecks,
+      title: "QCM Generator",
+      description:
+        "Create custom multiple choice exams and quizzes from any topic or document.",
     },
     {
       icon: Users,
@@ -130,18 +135,27 @@ export default function LandingPage() {
               Transform your learning experience with AI-powered assistance.
               Upload documents, ask questions, and get personalized explanations
               that adapt to your learning style.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+            </p>            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <Link href="/chat">
                 <Button
                   size="lg"
                   className="cursor-pointer bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-8 py-4 text-lg"
                 >
-                  Start Free Trial
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <MessageSquare className="mr-2 h-5 w-5" />
+                  Start Learning Chat
                 </Button>
               </Link>
+              <Link href="/qcm">
+                <Button
+                  size="lg"
+                  className="cursor-pointer bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white px-8 py-4 text-lg"
+                >
+                  <ListChecks className="mr-2 h-5 w-5" />
+                  Create QCM Exam
+                </Button>
+              </Link>
+            </div>
+              <div className="flex justify-center mb-16">
               <Button
                 size="lg"
                 variant="outline"

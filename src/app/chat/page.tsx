@@ -1,18 +1,15 @@
 "use client";
 
 import type React from "react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
+import { FileInputArea } from "@/components/ui/file-input-area";
 import {
-  Paperclip,
-  Send,
   User,
   GraduationCap,
-  X,
   BookOpen,
   Lightbulb,
   Brain,
@@ -27,59 +24,9 @@ export default function ChatPage() {
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat();
   const [files, setFiles] = useState<FileList | undefined>(undefined);
-  const [dragActive, setDragActive] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      const droppedFiles = Array.from(e.dataTransfer.files);
-      const existingFiles = files ? Array.from(files) : [];
-
-      const combined = existingFiles.concat(droppedFiles).slice(0, 3);
-      const dt = new DataTransfer();
-      combined.forEach((file) => dt.items.add(file));
-
-      setFiles(dt.files);
-    }
-  };
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const newFiles = Array.from(e.target.files);
-      const existingFiles = files ? Array.from(files) : [];
-
-      const combined = existingFiles.concat(newFiles).slice(0, 3);
-      const dt = new DataTransfer();
-      combined.forEach((file) => dt.items.add(file));
-
-      setFiles(dt.files);
-    }
-  };
-
-  const removeFile = (index: number) => {
-    if (files) {
-      const dt = new DataTransfer();
-      for (let i = 0; i < files.length; i++) {
-        if (i !== index) {
-          dt.items.add(files[i]);
-        }
-      }
-      setFiles(dt.files);
-    }
+  const handleFilesChange = (newFiles: FileList | undefined) => {
+    setFiles(newFiles);
   };
 
   const onSubmit = (e: React.FormEvent) => {
@@ -88,9 +35,6 @@ export default function ChatPage() {
       experimental_attachments: files,
     });
     setFiles(undefined);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
   };
 
   const quickPrompts = [
@@ -151,21 +95,18 @@ export default function ChatPage() {
                 </div>
                 <h2 className="text-3xl font-bold text-white mb-3">
                   Ready to Learn Together?
-                </h2>
-                <p className="text-lg text-slate-400 mb-8 max-w-md mx-auto">
+                </h2>                <p className="text-lg text-slate-400 mb-8 max-w-md mx-auto">
                   Upload your study materials, ask questions, or explore new
-                  topics. I'm here to help you succeed!
+                  topics. I&apos;m here to help you succeed!
                 </p>
 
                 {/* Quick Action Buttons */}
-                <div className="flex flex-wrap justify-center gap-4 mb-8">
-                  {quickPrompts.map((prompt, index) => (
+                <div className="flex flex-wrap justify-center gap-4 mb-8">                  {quickPrompts.map((prompt, index) => (
                     <button
-                      key={index}
-                      onClick={() =>
-                        handleInputChange({
+                      key={`${prompt.text}-${index}`}
+                      onClick={() =>                        handleInputChange({
                           target: { value: prompt.text },
-                        } as any)
+                        } as React.ChangeEvent<HTMLInputElement>)
                       }
                       className={`bg-gradient-to-r ${prompt.color} text-white px-6 py-3 rounded-xl font-medium transition-transform flex items-center gap-2`}
                     >
@@ -206,29 +147,26 @@ export default function ChatPage() {
                     {message.experimental_attachments && (
                       <div className="mt-4 space-y-3">
                         <div className="flex flex-wrap gap-3">
-                          {/* Render attachments as icons*/}
-                          {message.experimental_attachments.map(
+                          {/* Render attachments as icons*/}                          {message.experimental_attachments.map(
                             (attachment, index) => (
                               <Card
-                                key={index}
+                                key={`${attachment.name}-${attachment.url}-${index}`}
                                 className="bg-slate-800/50 border-slate-700 hover:bg-slate-800/70 transition-colors p-3 rounded-xl w-fit"
                               >
                                 <CardContent className="flex items-center gap-2">
                                   {attachment.contentType?.startsWith(
                                     "image/"
-                                  ) ? (
-                                    <Image
-                                      src={attachment.url || ""}
-                                      alt={attachment.name || "Attachment"}
+                                  ) ? (                                    <Image
+                                      src={attachment.url ?? ""}
+                                      alt={attachment.name ?? "Attachment"}
                                       width={50}
                                       height={50}
                                       className="rounded-md"
                                     />
                                   ) : (
                                     <FileText className="h-5 w-5 text-slate-400" />
-                                  )}
-                                  <span className="text-sm text-slate-200">
-                                    {attachment.name || "Attachment"}
+                                  )}                                  <span className="text-sm text-slate-200">
+                                    {attachment.name ?? "Attachment"}
                                   </span>
                                 </CardContent>
                               </Card>
@@ -271,95 +209,19 @@ export default function ChatPage() {
             )}
           </div>
         </ScrollArea>
-      </div>
-
-      {/* Input Area */}
-      <div className="border-t border-slate-700/50 bg-slate-900/80 backdrop-blur-sm p-6">
-        <div className="max-w-4xl mx-auto">
-          {/* File Preview */}
-          {files && files.length > 0 && (
-            <div className="mb-4 flex flex-wrap gap-3">
-              {Array.from(files).map((file, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-3 bg-slate-800 rounded-xl px-4 py-3 border border-slate-700"
-                >
-                  <FileText className="h-5 w-5 text-slate-400" />
-                  <span className="truncate max-w-40 font-medium text-slate-200">
-                    {file.name}
-                  </span>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => removeFile(index)}
-                    className="cursor-pointer h-6 w-6 p-0 hover:bg-slate-700 rounded-full"
-                  >
-                    <X className="h-4 w-4 text-slate-400" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Input Form */}
-          <form onSubmit={onSubmit} className="flex gap-4 items-center">
-            <div
-              className={`flex-1 relative ${
-                dragActive ? "ring-2 ring-emerald-500/50 bg-slate-800/50" : ""
-              } rounded-2xl`}
-              onDragEnter={handleDrag}
-              onDragLeave={handleDrag}
-              onDragOver={handleDrag}
-              onDrop={handleDrop}
-            >
-              <Input
-                value={input}
-                onChange={handleInputChange}
-                placeholder="Ask me anything about your studies..."
-                className="pr-14 py-4 text-lg bg-slate-800 border-slate-700 text-white placeholder:text-slate-400 rounded-2xl focus:border-emerald-500 focus:ring-0 h-12"
-                disabled={isLoading}
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                disabled={files && files.length >= 3 || isLoading}
-                className="cursor-pointer absolute right-3 top-1/2 transform -translate-y-1/2 h-10 w-10 p-0 hover:bg-slate-700 hover:p-0 hover:m-0"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <Paperclip className="h-5 w-5 text-slate-400" />
-              </Button>
-            </div>
-
-            <Button
-              type="submit"
-              disabled={isLoading || (!input.trim() && !files?.length)}
-              className="cursor-pointer px-6 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 rounded-md text-lg font-medium"
-            >
-              <Send className="h-5 w-5" />
-            </Button>
-          </form>
-
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileSelect}
-            multiple
-            accept="image/*,application/pdf,.pdf,.doc,.docx,.txt"
-            className="hidden"
+      </div>      {/* Input Area */}
+      <div className="border-t border-slate-700/50 bg-slate-900/80 backdrop-blur-sm">
+        <div className="max-w-4xl mx-auto p-4">
+          <FileInputArea
+            input={input}
+            onInputChange={handleInputChange}
+            onSubmit={onSubmit}
+            files={files}
+            onFilesChange={handleFilesChange}
+            isLoading={isLoading}
+            placeholder="Ask me anything about your studies..."
+            acceptedFileTypes="image/*,application/pdf,.pdf,.doc,.docx,.txt"
           />
-
-          <div className="flex items-center justify-center gap-2 mt-4">
-            <div className="flex gap-1">
-              <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-              <div className="w-2 h-2 bg-teal-400 rounded-full"></div>
-              <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-            </div>
-            <p className="text-sm text-slate-400">
-              Upload images & PDFs • Drag & drop supported
-            </p>
-          </div>
         </div>
       </div>
     </div>

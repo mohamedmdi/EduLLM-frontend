@@ -11,12 +11,6 @@ type Message = {
   }[];
 };
 
-type Attachment = {
-  name?: string;
-  contentType?: string;
-  url?: string;
-};
-
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -25,10 +19,9 @@ export function useChat() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
-
   const handleSubmit = async (
     e: React.FormEvent,
-    options?: { experimental_attachments?: FileList | undefined }
+    options?: { experimental_attachments?: FileList }
   ) => {
     e.preventDefault();
     if (!input.trim() && !options?.experimental_attachments?.length) return;
@@ -93,10 +86,8 @@ export function useChat() {
             content: aiResponse.trim(),
           },
         ]);
-      }
-    } catch (err) {
+      }    } catch (err) {
       console.error("Chat error:", err);
-    } finally {
     }
   };
 
