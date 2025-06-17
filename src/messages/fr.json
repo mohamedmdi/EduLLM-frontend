@@ -1,0 +1,59 @@
+{
+  "nav": {
+    "signIn": "Se connecter",
+    "getStarted": "Commencer",
+    "back": "Retour"
+  },
+  "home": {
+    "poweredByAI": "Alimenté par l'IA",
+    "title": "Votre compagnon",
+    "titleHighlight": "d'apprentissage IA",
+    "subtitle": "Transformez votre apprentissage avec l'assistance de l'IA. Téléchargez des documents et obtenez des explications personnalisées.",
+    "chat": {
+      "title": "Chat d'apprentissage IA",
+      "description": "Obtenez des réponses instantanées alimentées par l'IA à vos questions avec une conversation naturelle",
+      "action": "Commencer"
+    },
+    "qcm": {
+      "title": "Générateur QCM",
+      "description": "Créez des examens à choix multiples personnalisés sur n'importe quel sujet ou document",
+      "action": "Commencer"
+    },
+    "cta": {
+      "title": "Prêt à commencer ?",
+      "subtitle": "Rejoignez des milliers d'étudiants qui apprennent plus intelligemment avec l'assistance de l'IA.",
+      "startLearning": "Commencer l'apprentissage",
+      "watchDemo": "Voir la démo"
+    },
+    "footer": {
+      "copyright": "© 2025 EduLLM. Tous droits réservés."
+    }
+  },
+  "chat": {
+    "title": "Chat EduLLM",
+    "subtitle": "Votre compagnon d'apprentissage IA",
+    "welcome": "Prêt à apprendre ensemble ?",
+    "description": "Téléchargez vos supports d'étude, posez des questions ou explorez de nouveaux sujets. Je suis là pour vous aider à réussir !",
+    "placeholder": "Demandez-moi tout sur vos études...",
+    "prompts": {
+      "explain": "Expliquer un concept",
+      "homework": "Aide aux devoirs",
+      "strategies": "Stratégies d'étude"
+    }
+  },
+  "qcm": {
+    "title": "QCM EduLLM",
+    "subtitle": "Générateur d'examens alimenté par l'IA",
+    "welcome": "Créer des examens QCM personnalisés",
+    "description": "Téléchargez vos supports d'étude ou fournissez des sujets pour générer des questions à choix multiples personnalisées et des examens avec l'assistance de l'IA.",
+    "placeholder": "Décrivez l'examen que vous voulez créer ou glissez-déposez des fichiers ici...",
+    "prompts": {
+      "generate10": "Générer 10 questions à choix multiples",
+      "fromDocument": "Créer un examen à partir du document téléchargé",
+      "quick5min": "Quiz rapide de 5 minutes",
+      "advanced": "Niveau de difficulté avancé",
+      "trueFalse": "Questions vrai/faux",
+      "mixed": "Types de questions mixtes"
+    }
+  }
+}

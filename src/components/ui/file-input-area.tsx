@@ -100,14 +100,13 @@ export function FileInputArea({
   };
 
   return (
-    <div className={`space-y-4 ${className}`}>
-      {/* File List */}
+    <div className={`space-y-4 ${className}`}>      {/* File List */}
       {files && files.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {Array.from(files).map((file, index) => (
             <div
               key={`${file.name}-${file.size}-${index}`}
-              className="flex items-center gap-2 bg-slate-800/70 backdrop-blur-sm border border-slate-700/50 text-slate-200 px-3 py-2 rounded-lg text-sm"
+              className="flex items-center gap-2 bg-slate-800/70 backdrop-blur-sm border border-slate-700/50 text-slate-200 px-3 py-2 rounded-lg text-sm rtl:flex-row-reverse"
             >
               <FileText className="h-4 w-4 text-slate-400" />
               <span className="truncate max-w-32 font-medium">{file.name}</span>
@@ -136,12 +135,11 @@ export function FileInputArea({
           onDrop={handleDrop}
         >
           <div className="flex gap-3 items-end">
-            <div className="flex-1 relative">
-              <Input
+            <div className="flex-1 relative">              <Input
                 value={input}
                 onChange={onInputChange}
                 placeholder={placeholder}
-                className={`bg-slate-800/70 backdrop-blur-sm border-slate-600/50 text-white placeholder-slate-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 transition-all duration-200 pr-20 min-h-[48px] ${
+                className={`bg-slate-800/70 backdrop-blur-sm border-slate-600/50 text-white placeholder-slate-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 transition-all duration-200 ltr:pr-20 rtl:pl-20 min-h-[48px] rtl:text-right ${
                   dragActive ? "border-indigo-500 bg-indigo-500/10" : ""
                 }`}
                 disabled={disabled || isLoading}
@@ -153,7 +151,7 @@ export function FileInputArea({
                 onClick={handleFileSelect}
                 variant="ghost"
                 size="sm"
-                className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 text-slate-400 hover:text-white hover:bg-slate-700/50 transition-colors"
+                className="absolute ltr:right-2 rtl:left-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 text-slate-400 hover:text-white hover:bg-slate-700/50 transition-colors"
                 disabled={disabled || isLoading}
               >
                 <Paperclip className="h-4 w-4" />

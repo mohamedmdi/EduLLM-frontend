@@ -1,0 +1,59 @@
+{
+  "nav": {
+    "signIn": "Sign In",
+    "getStarted": "Get Started",
+    "back": "Back"
+  },
+  "home": {
+    "poweredByAI": "Powered by AI",
+    "title": "Your AI Learning",
+    "titleHighlight": "Companion",
+    "subtitle": "Transform your learning with AI-powered assistance. Upload documents and get personalized explanations.",
+    "chat": {
+      "title": "AI Learning Chat",
+      "description": "Get instant AI-powered answers to your questions with natural conversation",
+      "action": "Get Started"
+    },
+    "qcm": {
+      "title": "QCM Generator",
+      "description": "Create custom multiple choice exams from any topic or document",
+      "action": "Get Started"
+    },
+    "cta": {
+      "title": "Ready to get started?",
+      "subtitle": "Join thousands of students learning smarter with AI assistance.",
+      "startLearning": "Start Learning",
+      "watchDemo": "Watch Demo"
+    },
+    "footer": {
+      "copyright": "© 2025 EduLLM. All rights reserved."
+    }
+  },
+  "chat": {
+    "title": "EduLLM Chat",
+    "subtitle": "Your AI Learning Companion",
+    "welcome": "Ready to Learn Together?",
+    "description": "Upload your study materials, ask questions, or explore new topics. I'm here to help you succeed!",
+    "placeholder": "Ask me anything about your studies...",
+    "prompts": {
+      "explain": "Explain a concept",
+      "homework": "Help with homework",
+      "strategies": "Study strategies"
+    }
+  },
+  "qcm": {
+    "title": "EduLLM QCM",
+    "subtitle": "AI-Powered Exam Generator",
+    "welcome": "Create Custom QCM Exams",
+    "description": "Upload your study materials or provide topics to generate personalized multiple choice questions and exams with AI assistance.",
+    "placeholder": "Describe the exam you want to create or drag & drop files here...",
+    "prompts": {
+      "generate10": "Generate 10 multiple choice questions",
+      "fromDocument": "Create exam from uploaded document",
+      "quick5min": "Quick 5-minute quiz",
+      "advanced": "Advanced difficulty level",
+      "trueFalse": "True/False questions",
+      "mixed": "Mixed question types"
+    }
+  }
+}
