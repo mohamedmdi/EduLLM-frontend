@@ -2,7 +2,9 @@
   "nav": {
     "signIn": "Se connecter",
     "getStarted": "Commencer",
-    "back": "Retour"
+    "back": "Retour",
+    "settings": "Paramètres",
+    "logout": "Déconnexion"
   },
   "home": {
     "poweredByAI": "Alimenté par l'IA",

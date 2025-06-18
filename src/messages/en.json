@@ -2,7 +2,9 @@
   "nav": {
     "signIn": "Sign In",
     "getStarted": "Get Started",
-    "back": "Back"
+    "back": "Back",
+    "settings": "Settings",
+    "logout": "Logout"
   },
   "home": {
     "poweredByAI": "Powered by AI",

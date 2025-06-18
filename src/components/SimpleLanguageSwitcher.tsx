@@ -47,12 +47,12 @@ export default function SimpleLanguageSwitcher() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="cursor-pointer group flex items-center gap-2 px-4 py-2 bg-slate-900/30 border border-slate-800/50 rounded-xl hover:bg-slate-900/50 hover:border-slate-700/50 transition-all duration-300 text-slate-300 hover:text-white"
+        className="flex items-center gap-2 px-4 py-2 transition-all duration-300 border cursor-pointer group bg-slate-900/30 border-slate-800/50 rounded-xl hover:bg-slate-900/50 hover:border-slate-700/50 text-slate-300 hover:text-white"
       >
         <div className="bg-gradient-to-r from-emerald-400/20 to-teal-400/20 p-1.5 rounded-lg group-hover:from-emerald-400/30 group-hover:to-teal-400/30 transition-all duration-300">
-          <Globe className="h-4 w-4 text-emerald-400" />
+          <Globe className="w-4 h-4 text-emerald-400" />
         </div>
-        <span className="font-medium text-sm">{currentLanguage?.flag}</span>
+        <span className="text-sm font-medium">{currentLanguage?.flag}</span>
         <ChevronDown
           className={`h-4 w-4 transition-transform duration-300 ${
             isOpen ? "rotate-180" : ""
@@ -60,14 +60,14 @@ export default function SimpleLanguageSwitcher() {
         />
       </button>{" "}
       {isOpen && (
-        <div className="absolute top-full ltr:right-0 rtl:left-0 mt-2 w-56 bg-slate-900/30 backdrop-blur-sm border border-slate-800/50 rounded-2xl shadow-xl overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200">
+        <div className="absolute w-56 mt-2 overflow-hidden duration-200 border shadow-xl top-full ltr:right-0 rtl:left-0 bg-slate-900 backdrop-blur-sm border-slate-800 rounded-2xl animate-in fade-in-0 zoom-in-95">
           {languages.map((lang, index) => (
             <button
               key={lang.code}
               onClick={() => switchLanguage(lang.code)}
-              className={`cursor-pointer group w-full px-4 py-3 ltr:text-left rtl:text-right hover:bg-slate-800/50 transition-all duration-300 flex items-center gap-3 ${
+              className={`cursor-pointer group w-full px-4 py-3 ltr:text-left rtl:text-right hover:bg-slate-800 transition-all duration-300 flex items-center gap-3 ${
                 locale === lang.code
-                  ? "bg-gradient-to-r from-slate-800/50 to-slate-700/50 text-white"
+                  ? "bg-gradient-to-r from-slate-800 to-slate-700 text-white"
                   : "text-slate-300 hover:text-white"
               } ${lang.code === "ar" ? "flex-row-reverse" : ""} ${
                 index === 0 ? "rounded-t-2xl" : ""
@@ -75,9 +75,9 @@ export default function SimpleLanguageSwitcher() {
               dir={lang.code === "ar" ? "rtl" : "ltr"}
             >
               <span className="text-lg">{lang.flag}</span>
-              <span className="font-medium flex-1">{lang.name}</span>
+              <span className="flex-1 font-medium">{lang.name}</span>
               {locale === lang.code && (
-                <div className="w-2 h-2 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full"></div>
+                <div className="w-2 h-2 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400"></div>
               )}
             </button>
           ))}

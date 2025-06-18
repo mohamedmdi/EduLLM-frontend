@@ -2,7 +2,6 @@
 
 import type React from "react";
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,11 +12,9 @@ import {
   BookOpen,
   Lightbulb,
   Brain,
-  ArrowLeft,
   FileText,
 } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useChat } from "@/hooks/useChat";
 import { useTranslations, useLocale } from "next-intl";
 import { isAuthenticated, getUserInfo } from "@/lib/auth-utils";
@@ -47,7 +44,7 @@ export default function ChatPage() {
   // Don't render anything until auth is checked
   if (!authChecked) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+      <div className="flex items-center justify-center min-h-screen bg-slate-950">
         <div className="text-white">Loading...</div>
       </div>
     );
@@ -91,16 +88,16 @@ export default function ChatPage() {
         {/* Messages Area */}
         <div className="flex-1 overflow-hidden">
           <ScrollArea className="h-full px-4">
-            <div className="max-w-4xl mx-auto py-8 space-y-6">
+            <div className="max-w-4xl py-8 mx-auto space-y-6 pb-[180px]">
               {messages.length === 0 && (
-                <div className="text-center py-12">
-                  <div className="bg-gradient-to-r from-emerald-400 to-teal-400 p-4 rounded-2xl w-20 h-20 mx-auto flex items-center justify-center mb-6">
-                    <GraduationCap className="h-10 w-10 text-white" />
+                <div className="py-12 text-center">
+                  <div className="flex items-center justify-center w-20 h-20 p-4 mx-auto mb-6 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-2xl">
+                    <GraduationCap className="w-10 h-10 text-white" />
                   </div>
-                  <h2 className="text-3xl font-bold text-white mb-3">
+                  <h2 className="mb-3 text-3xl font-bold text-white">
                     {t("chat.welcome")}
                   </h2>
-                  <p className="text-lg text-slate-400 mb-8 max-w-md mx-auto">
+                  <p className="max-w-md mx-auto mb-8 text-lg text-slate-400">
                     {t("chat.description")}
                   </p>{" "}
                   {/* Quick Action Buttons */}
@@ -115,7 +112,7 @@ export default function ChatPage() {
                         }
                         className={`bg-gradient-to-r ${prompt.color} text-white px-6 py-3 rounded-xl font-medium transition-all hover:scale-105 flex items-center gap-2 rtl:flex-row-reverse`}
                       >
-                        <prompt.icon className="h-5 w-5" />
+                        <prompt.icon className="w-5 h-5" />
                         {prompt.text}
                       </button>
                     ))}
@@ -133,7 +130,7 @@ export default function ChatPage() {
                 >
                   {message.role === "assistant" && (
                     <div className="bg-gradient-to-r from-emerald-400 to-teal-400 p-2.5 rounded-xl w-10 h-10 flex items-center justify-center flex-shrink-0 mt-1">
-                      <GraduationCap className="h-5 w-5 text-white" />
+                      <GraduationCap className="w-5 h-5 text-white" />
                     </div>
                   )}
 
@@ -162,7 +159,7 @@ export default function ChatPage() {
                             (attachment, index) => (
                               <Card
                                 key={`${attachment.name}-${attachment.url}-${index}`}
-                                className="bg-slate-800/50 border-slate-700 hover:bg-slate-800/70 transition-colors p-3 rounded-xl w-fit"
+                                className="p-3 transition-colors bg-slate-800/50 border-slate-700 hover:bg-slate-800/70 rounded-xl w-fit"
                               >
                                 <CardContent className="flex items-center gap-2">
                                   {attachment.contentType?.startsWith(
@@ -176,7 +173,7 @@ export default function ChatPage() {
                                       className="rounded-md"
                                     />
                                   ) : (
-                                    <FileText className="h-5 w-5 text-slate-400" />
+                                    <FileText className="w-5 h-5 text-slate-400" />
                                   )}
                                   <span className="text-sm text-slate-200">
                                     {attachment.name ?? "Attachment"}
@@ -191,28 +188,28 @@ export default function ChatPage() {
                   </div>
 
                   {message.role === "user" && (
-                    <Avatar className="h-10 w-10 mt-1 border-2 border-emerald-400/20 flex-shrink-0">
+                    <Avatar className="flex-shrink-0 w-10 h-10 mt-1 border-2 border-emerald-400/20">
                       <AvatarFallback className="bg-gradient-to-r from-slate-700 to-slate-800">
-                        <User className="h-5 w-5 text-white" />
+                        <User className="w-5 h-5 text-white" />
                       </AvatarFallback>
                     </Avatar>
                   )}
                 </div>
               ))}
               {isLoading && (
-                <div className="flex gap-4 justify-start">
+                <div className="flex justify-start gap-4">
                   <div className="bg-gradient-to-r from-emerald-400 to-teal-400 p-2.5 rounded-xl w-10 h-10 flex items-center justify-center flex-shrink-0">
-                    <GraduationCap className="h-5 w-5 text-white" />
+                    <GraduationCap className="w-5 h-5 text-white" />
                   </div>
-                  <div className="bg-slate-900/30 border border-slate-800/50 rounded-2xl p-4">
+                  <div className="p-4 border bg-slate-900/30 border-slate-800/50 rounded-2xl">
                     <div className="flex space-x-2">
-                      <div className="w-2 h-2 bg-emerald-400 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce"></div>
                       <div
                         className="w-2 h-2 bg-teal-400 rounded-full animate-bounce"
                         style={{ animationDelay: "0.1s" }}
                       ></div>
                       <div
-                        className="w-2 h-2 bg-emerald-400 rounded-full animate-bounce"
+                        className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce"
                         style={{ animationDelay: "0.2s" }}
                       ></div>
                     </div>
@@ -224,8 +221,8 @@ export default function ChatPage() {
         </div>
 
         {/* Input Area */}
-        <div className="fixed bottom-0 left-0 right-0 border-t border-slate-800/50 bg-slate-950/80 backdrop-blur-sm z-10">
-          <div className="max-w-4xl mx-auto p-6">
+        <div className="fixed bottom-0 left-0 right-0 z-10 border-t border-slate-800/50 bg-slate-950/80 backdrop-blur-sm">
+          <div className="max-w-4xl p-6 mx-auto">
             <FileInputArea
               input={input}
               onInputChange={handleInputChange}
