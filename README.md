@@ -57,8 +57,9 @@ A modern, multilingual educational platform powered by artificial intelligence, 
 - **Localized Content**: All UI elements and messages translated
 
 ### 🎨 Modern Design
+- **Theme System**: Light and dark themes with system preference detection
+- **Dynamic Theming**: Real-time theme switching with persistent settings
 - **Glassmorphism UI**: Modern glass-effect design with backdrop blur
-- **Dark Theme**: Elegant dark mode with emerald-teal gradient accents
 - **Responsive**: Mobile-first design that works on all devices
 - **Animations**: Smooth transitions and micro-interactions
 
@@ -302,14 +303,49 @@ edullm-frontend/
 
 ## 🎨 Design System
 
+### Theme System
+
+EduLLM supports both light and dark themes with system preference detection:
+
+```typescript
+// Theme options
+type Theme = 'light' | 'dark' | 'system';
+
+// Theme switching
+const { theme, actualTheme, setTheme, toggleTheme } = useTheme();
+```
+
+**Theme Features:**
+- **Auto Detection**: Follows system preference by default
+- **Persistent Storage**: Theme choice saved in localStorage
+- **Real-time Switching**: Instant theme changes without reload
+- **CSS Variables**: All colors use custom properties for seamless theming
+
 ### Color Palette
 
+#### Light Theme
+```css
+--background: oklch(0.995 0 0)      /* Pure white background */
+--foreground: oklch(0.165 0 0)      /* Dark text */
+--card: oklch(0.995 0 0)            /* Card background */
+--border: oklch(0.912 0 0)          /* Border color */
+--muted: oklch(0.96 0 0)            /* Muted backgrounds */
+```
+
+#### Dark Theme
+```css
+--background: oklch(0.135 0 0)      /* Dark background */
+--foreground: oklch(0.975 0 0)      /* Light text */
+--card: oklch(0.195 0 0)            /* Card background */
+--border: oklch(0.259 0 0)          /* Border color */
+--muted: oklch(0.259 0 0)           /* Muted backgrounds */
+```
+
+#### Accent Colors (Both Themes)
 ```css
 /* Primary Colors */
 --emerald-400: #34d399
 --teal-400: #2dd4bf
---slate-950: #020617
---slate-900: #0f172a
 
 /* Glass Effects */
 --glass-bg: rgba(15, 23, 42, 0.3)
@@ -326,10 +362,31 @@ edullm-frontend/
 ### Components
 
 All components follow a consistent design pattern:
-- Glass morphism backgrounds
-- Emerald-teal gradient accents
-- Rounded corners (xl: 12px, 2xl: 16px)
-- Smooth transitions (300ms)
+- **Theme-aware styling**: Automatic color adaptation based on current theme
+- **CSS Custom Properties**: All colors use CSS variables for seamless theming
+- **Glass morphism backgrounds**: Semi-transparent overlays with backdrop blur
+- **Emerald-teal gradient accents**: Consistent brand colors across themes
+- **Rounded corners**: (xl: 12px, 2xl: 16px)
+- **Smooth transitions**: (300ms) for theme switching and interactions
+
+### Theme Usage
+
+```typescript
+// Using theme in components
+import { useTheme } from '@/components/ThemeProvider';
+
+function MyComponent() {
+  const { theme, actualTheme, setTheme, toggleTheme } = useTheme();
+  
+  return (
+    <div className="bg-background text-foreground border-border">
+      <button onClick={toggleTheme}>
+        Toggle Theme ({actualTheme})
+      </button>
+    </div>
+  );
+}
+```
 
 ---
 
@@ -395,6 +452,8 @@ const backendRes = await fetch("http://localhost:8000/ask", {
 
 | Document | Description |
 |----------|-------------|
+| **[DOCUMENTATION_INDEX.md](./DOCUMENTATION_INDEX.md)** | **📚 Complete documentation overview and index** |
+| [THEME_SYSTEM.md](./THEME_SYSTEM.md) | **Complete theme system documentation** |
 | [OAUTH_SETUP.md](./OAUTH_SETUP.md) | Complete OAuth configuration guide |
 | [AUTHENTICATION_STATUS.md](./AUTHENTICATION_STATUS.md) | Current auth implementation status |
 | [DOCS_FR.md](./DOCS_FR.md) | Documentation complète en français |

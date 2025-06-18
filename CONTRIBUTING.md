@@ -302,6 +302,88 @@ Follow our glassmorphism design:
 </Button>
 ```
 
+## 🎨 Theme System Development
+
+### Working with Themes
+
+EduLLM uses a comprehensive theme system supporting light, dark, and system themes. When contributing:
+
+#### Using Theme-Aware Classes
+```typescript
+// ✅ Use theme-aware CSS variables
+<div className="bg-background text-foreground border-border">
+  Content adapts to current theme
+</div>
+
+// ❌ Avoid hardcoded colors
+<div className="bg-white text-black border-gray-300">
+  Fixed colors don't adapt to themes
+</div>
+```
+
+#### Available CSS Variables
+```css
+/* Background & Surface */
+--background         /* Main background */
+--foreground         /* Main text color */
+--card              /* Card backgrounds */
+--card-foreground   /* Card text */
+--muted             /* Muted backgrounds */
+--muted-foreground  /* Muted text */
+
+/* Interactive Elements */
+--primary           /* Primary buttons/links */
+--primary-foreground
+--secondary         /* Secondary elements */
+--secondary-foreground
+
+/* Status Colors */
+--destructive       /* Error/danger states */
+--destructive-foreground
+--accent            /* Accent elements */
+--accent-foreground
+
+/* Borders & Separators */
+--border            /* Standard borders */
+--input             /* Input borders */
+--ring              /* Focus rings */
+```
+
+#### Theme Provider Usage
+```typescript
+import { useTheme } from '@/components/ThemeProvider';
+
+function MyComponent() {
+  const { theme, actualTheme, setTheme, toggleTheme } = useTheme();
+  
+  return (
+    <div className="bg-background text-foreground">
+      <button 
+        onClick={toggleTheme}
+        className="bg-primary text-primary-foreground"
+      >
+        Switch to {actualTheme === 'light' ? 'dark' : 'light'} theme
+      </button>
+    </div>
+  );
+}
+```
+
+#### Testing Themes
+When developing components:
+1. Test in both light and dark themes
+2. Verify system theme detection works
+3. Check theme persistence across page reloads
+4. Ensure smooth theme transitions
+
+```bash
+# Test theme switching
+# 1. Open localhost:3000
+# 2. Click theme toggle in header
+# 3. Refresh page (theme should persist)
+# 4. Change system theme (should auto-update if system theme selected)
+```
+
 ## 📝 Documentation
 
 ### Code Documentation

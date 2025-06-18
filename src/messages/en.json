@@ -94,6 +94,13 @@
     "backToHome": "Back to Home",
     "errorCode": "Error code"
   },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark", 
+    "system": "System",
+    "switchTheme": "Switch theme",
+    "toggleTheme": "Toggle theme"
+  },
   "UserSession": {
     "user": "User",
     "signOut": "Sign Out",

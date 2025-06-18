@@ -94,6 +94,13 @@
     "backToHome": "العودة إلى الصفحة الرئيسية",
     "errorCode": "رمز الخطأ"
   },
+  "theme": {
+    "light": "فاتح",
+    "dark": "داكن",
+    "system": "النظام",
+    "switchTheme": "تغيير المظهر",
+    "toggleTheme": "تبديل المظهر"
+  },
   "UserSession": {
     "user": "المستخدم",
     "signOut": "تسجيل الخروج",

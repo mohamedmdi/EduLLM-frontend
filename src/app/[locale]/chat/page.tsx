@@ -39,13 +39,11 @@ export default function ChatPage() {
     const info = getUserInfo();
     setUserInfo(info);
     setAuthChecked(true);
-  }, [locale]);
-
-  // Don't render anything until auth is checked
+  }, [locale]);  // Don't render anything until auth is checked
   if (!authChecked) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-950">
-        <div className="text-white">Loading...</div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-foreground">Loading...</div>
       </div>
     );
   }

@@ -32,22 +32,20 @@ export default function LandingPage() {
       href: `/${locale}/qcm`,
       color: "from-blue-400 to-cyan-400",
     },
-  ];
-  return (
-    <div className="min-h-screen bg-slate-950">
+  ];  return (
+    <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="py-20 lg:py-32">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <div className="space-y-8">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-slate-900/50 border border-emerald-400/20 rounded-full px-4 py-2">
+          <div className="space-y-8">            {/* Badge */}
+            <div className="inline-flex items-center gap-2 bg-card/50 border border-emerald-400/20 rounded-full px-4 py-2">
               <Zap className="w-4 h-4 text-emerald-400" />
               <span className="text-sm text-emerald-400 font-medium">{t('home.poweredByAI')}</span>
             </div>
 
             {/* Main Title */}
             <div className="space-y-4">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
                 {t('home.title')}
               </h1>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
@@ -56,25 +54,25 @@ export default function LandingPage() {
             </div>
 
             {/* Subtitle */}
-            <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               {t('home.subtitle')}
             </p>
           </div>
         </div>
       </section>      {/* Features Grid */}
-      <section className="py-16 border-t border-slate-800/50">
+      <section className="py-16 border-t border-border">
         <div className="max-w-5xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-8">
             {quickActions.map((action, index) => (
               <Link key={`${action.title}-${index}`} href={action.href}>
-                <div className="group p-8 bg-slate-900/30 border border-slate-800/50 rounded-2xl hover:bg-slate-900/50 hover:border-slate-700/50 transition-all duration-300 cursor-pointer">
+                <div className="group p-8 bg-card/30 border border-border hover:bg-card/50 hover:border-border/80 transition-all duration-300 cursor-pointer rounded-2xl">
                   <div className="flex items-start gap-4 rtl:flex-row-reverse">
                     <div className={`bg-gradient-to-r ${action.color} p-3 rounded-xl group-hover:scale-110 transition-transform duration-300`}>
                       <action.icon className="h-6 w-6 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-xl font-semibold text-white mb-2 rtl:text-right">{action.title}</h3>
-                      <p className="text-slate-400 text-sm leading-relaxed rtl:text-right">{action.description}</p>
+                      <h3 className="text-xl font-semibold text-foreground mb-2 rtl:text-right">{action.title}</h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed rtl:text-right">{action.description}</p>
                       <div className="mt-4">
                         <div className="inline-flex items-center text-sm font-medium text-emerald-400 group-hover:text-emerald-300 transition-colors rtl:flex-row-reverse">
                           {t('home.chat.action')}

@@ -93,6 +93,24 @@ Plateforme éducative moderne et multilingue, prenant en charge l'anglais, le fr
 
 ### 🎨 Design Moderne
 
+#### Système de Thèmes
+- **Thèmes Multiples** : Clair, sombre, et détection système
+- **Commutation Dynamique** : Changement de thème en temps réel sans rechargement
+- **Stockage Persistant** : Préférence sauvegardée dans localStorage
+- **Variables CSS** : Adaptation automatique de tous les composants
+- **Support RTL** : Le système de thème fonctionne avec les layouts RTL
+
+#### Options de Thème
+- **🌞 Thème Clair** : Interface propre et lumineuse pour une utilisation diurne
+- **🌙 Thème Sombre** : Interface élégante sombre pour réduire la fatigue oculaire
+- **🖥️ Thème Système** : Suit automatiquement la préférence de l'OS (Windows/Mac/Linux)
+
+#### Fonctionnalités Avancées
+- **Commutation Intelligente** : Bascule entre clair et sombre (ignore système)
+- **Détection Temps Réel** : Mise à jour automatique si le thème système change
+- **Persistance** : Le choix de thème est conservé entre les sessions
+- **Transitions Fluides** : Animations douces lors du changement de thème
+
 #### Interface Glassmorphism
 - **Effets de Verre** : Arrière-plans translucides avec flou
 - **Gradients Emeraude-Teal** : Couleurs cohérentes dans toute l'app
@@ -457,46 +475,36 @@ edullm-frontend/
 │   │   ├── 📁 api/                    # Routes API
 │   │   │   └── 📁 chat/               # API de chat
 │   │   │       └── 📄 route.ts        # Endpoint chat
-│   │   ├── 📄 favicon.ico             # Favicon de l'app
-│   │   ├── 📄 globals.css             # Styles globaux
-│   │   ├── 📄 layout.tsx              # Layout racine
-│   │   └── 📄 page.tsx                # Redirection racine
+│   │   ├── 📁 components/             # Composants React
+│   │   │   ├── 📄 Header.tsx          # En-tête de navigation
+│   │   │   ├── 📄 SimpleLanguageSwitcher.tsx  # Sélecteur de langue
+│   │   │   └── 📁 ui/                 # Composants UI
+│   │   │       ├── 📄 button.tsx      # Composant bouton
+│   │   │       ├── 📄 input.tsx       # Composant input
+│   │   │       ├── 📄 file-input-area.tsx # Zone d'upload
+│   │   │       ├── 📄 scroll-area.tsx # Zone de scroll
+│   │   │       └── 📄 avatar.tsx      # Avatar utilisateur
+│   │   ├── 📁 hooks/                  # Hooks React personnalisés
+│   │   │   └── 📄 useChat.ts          # Hook pour le chat
+│   │   ├── 📁 i18n/                   # Configuration i18n
+│   │   │   ├── 📄 navigation.ts       # Navigation localisée
+│   │   │   ├── 📄 request.ts          # Configuration requêtes
+│   │   │   └── 📄 routing.ts          # Configuration routing
+│   │   ├── 📁 lib/                    # Utilitaires
+│   │   │   └── 📄 utils.ts            # Fonctions utilitaires
+│   │   ├── 📁 messages/               # Fichiers de traduction
+│   │   │   ├── 📄 en.json             # Traductions anglaises
+│   │   │   ├── 📄 fr.json             # Traductions françaises
+│   │   │   └── 📄 ar.json             # Traductions arabes
+│   │   └── 📄 middleware.ts           # Middleware Next.js
 │   │
-│   ├── 📁 components/                 # Composants React
-│   │   ├── 📄 Header.tsx              # En-tête de navigation
-│   │   ├── 📄 SimpleLanguageSwitcher.tsx  # Sélecteur de langue
-│   │   └── 📁 ui/                     # Composants UI
-│   │       ├── 📄 button.tsx          # Composant bouton
-│   │       ├── 📄 input.tsx           # Composant input
-│   │       ├── 📄 file-input-area.tsx # Zone d'upload
-│   │       ├── 📄 scroll-area.tsx     # Zone de scroll
-│   │       └── 📄 avatar.tsx          # Avatar utilisateur
-│   │
-│   ├── 📁 hooks/                      # Hooks React personnalisés
-│   │   └── 📄 useChat.ts              # Hook pour le chat
-│   │
-│   ├── 📁 i18n/                       # Configuration i18n
-│   │   ├── 📄 navigation.ts           # Navigation localisée
-│   │   ├── 📄 request.ts              # Configuration requêtes
-│   │   └── 📄 routing.ts              # Configuration routing
-│   │
-│   ├── 📁 lib/                        # Utilitaires
-│   │   └── 📄 utils.ts                # Fonctions utilitaires
-│   │
-│   ├── 📁 messages/                   # Fichiers de traduction
-│   │   ├── 📄 en.json                 # Traductions anglaises
-│   │   ├── 📄 fr.json                 # Traductions françaises
-│   │   └── 📄 ar.json                 # Traductions arabes
-│   │
-│   └── 📄 middleware.ts               # Middleware Next.js
-│
-├── 📄 components.json                 # Configuration UI components
-├── 📄 eslint.config.mjs               # Configuration ESLint
-├── 📄 next.config.ts                  # Configuration Next.js
-├── 📄 package.json                    # Dépendances npm
-├── 📄 postcss.config.mjs              # Configuration PostCSS
-├── 📄 tailwind.config.js              # Configuration Tailwind
-├── 📄 tsconfig.json                   # Configuration TypeScript
+│   ├── 📄 components.json             # Configuration UI components
+│   ├── 📄 eslint.config.mjs           # Configuration ESLint
+│   ├── 📄 next.config.ts              # Configuration Next.js
+│   ├── 📄 package.json                # Dépendances npm
+│   ├── 📄 postcss.config.mjs          # Configuration PostCSS
+│   ├── 📄 tailwind.config.js          # Configuration Tailwind
+│   └── 📄 tsconfig.json               # Configuration TypeScript
 └── 📄 README.md                       # Documentation principale
 ```
 
@@ -532,43 +540,84 @@ type MonType = string;
 
 ## 🎨 Système de Design
 
-### Palette de Couleurs
+### Système de Thèmes
 
-#### Couleurs Principales
-```css
-/* Couleurs d'accent */
---emerald-400: #34d399    /* Vert principal */
---teal-400: #2dd4bf       /* Bleu-vert principal */
---emerald-500: #10b981    /* Vert hover */
---teal-500: #14b8a6       /* Bleu-vert hover */
+EduLLM prend en charge les thèmes clair et sombre avec détection des préférences système :
 
-/* Couleurs de fond */
---slate-950: #020617      /* Arrière-plan principal */
---slate-900: #0f172a      /* Arrière-plan cartes */
---slate-800: #1e293b      /* Éléments interactifs */
+```typescript
+// Options de thème
+type Theme = 'light' | 'dark' | 'system';
 
-/* Couleurs de texte */
---white: #ffffff          /* Texte principal */
---slate-300: #cbd5e1      /* Texte secondaire */
---slate-400: #94a3b8      /* Texte désactivé */
+// Commutation de thème
+const { theme, actualTheme, setTheme, toggleTheme } = useTheme();
 ```
 
-#### Effets Glassmorphism
+**Fonctionnalités du Thème:**
+- **Détection Automatique** : Suit les préférences système par défaut
+- **Stockage Persistant** : Choix de thème sauvegardé dans localStorage
+- **Commutation Temps Réel** : Changements instantanés sans rechargement
+- **Variables CSS** : Toutes les couleurs utilisent des propriétés personnalisées
+
+### Palette de Couleurs
+
+#### Thème Clair
 ```css
-/* Arrière-plans vitrés */
-.glass-light {
-  background: rgba(15, 23, 42, 0.3);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(148, 163, 184, 0.1);
-}
+--background: oklch(0.995 0 0)      /* Arrière-plan blanc pur */
+--foreground: oklch(0.165 0 0)      /* Texte sombre */
+--card: oklch(0.995 0 0)            /* Arrière-plan carte */
+--border: oklch(0.912 0 0)          /* Couleur bordure */
+--muted: oklch(0.96 0 0)            /* Arrière-plans atténués */
+```
 
-.glass-medium {
-  background: rgba(15, 23, 42, 0.5);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(148, 163, 184, 0.2);
-}
+#### Thème Sombre
+```css
+--background: oklch(0.135 0 0)      /* Arrière-plan sombre */
+--foreground: oklch(0.975 0 0)      /* Texte clair */
+--card: oklch(0.195 0 0)            /* Arrière-plan carte */
+--border: oklch(0.259 0 0)          /* Couleur bordure */
+--muted: oklch(0.259 0 0)           /* Arrière-plans atténués */
+```
 
-.glass-strong {
+#### Couleurs d'Accent (Tous Thèmes)
+```css
+/* Couleurs principales */
+--emerald-400: #34d399    /* Vert principal */
+--teal-400: #2dd4bf       /* Bleu-vert principal */
+
+/* Effets de verre */
+--glass-bg: rgba(15, 23, 42, 0.3)
+--glass-border: rgba(148, 163, 184, 0.1)
+--backdrop-blur: 12px
+```
+
+### Utilisation du Thème
+
+```typescript
+// Utilisation du thème dans les composants
+import { useTheme } from '@/components/ThemeProvider';
+
+function MonComposant() {
+  const { theme, actualTheme, setTheme, toggleTheme } = useTheme();
+  
+  return (
+    <div className="bg-background text-foreground border-border">
+      <button onClick={toggleTheme}>
+        Basculer le Thème ({actualTheme})
+      </button>
+    </div>
+  );
+}
+```
+
+### Composants
+
+Tous les composants suivent un modèle de design cohérent :
+- **Style adaptatif au thème** : Adaptation automatique des couleurs selon le thème actuel
+- **Propriétés CSS personnalisées** : Toutes les couleurs utilisent des variables CSS
+- **Arrière-plans glassmorphism** : Superpositions semi-transparentes avec flou
+- **Accents gradient emeraude-teal** : Couleurs de marque cohérentes à travers les thèmes
+- **Coins arrondis** : (xl: 12px, 2xl: 16px)
+- **Transitions fluides** : (300ms) pour les changements de thème et interactions
   background: rgba(15, 23, 42, 0.8);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(148, 163, 184, 0.3);

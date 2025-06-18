@@ -23,19 +23,17 @@ export default async function SignInPage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations('SignIn');
   const tNav = await getTranslations('nav');
-
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-background">
       {/* Navigation */}
-      <nav className="border-b border-slate-800/50 backdrop-blur-sm">
+      <nav className="border-b border-border backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3 rtl:flex-row-reverse">
               <Link href={`/${locale}`}>
-                <Button
-                  variant="ghost"
+                <Button                  variant="ghost"
                   size="sm"
-                  className="text-slate-400 hover:text-white transition-colors"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <ArrowLeft className="h-4 w-4 ltr:mr-2 rtl:ml-2" />
                   {tNav('back')}
@@ -54,10 +52,10 @@ export default async function SignInPage({ params }: Props) {
               <GraduationCap className="h-8 w-8 text-white" />
             </div>
             {/* Title with gradient text */}
-            <h2 className="text-4xl font-bold text-white mb-2">
+            <h2 className="text-4xl font-bold text-foreground mb-2">
               {t('title')}
             </h2>
-            <p className="text-slate-400 text-lg">
+            <p className="text-muted-foreground text-lg">
               {t('subtitle')}
             </p>
           </div>

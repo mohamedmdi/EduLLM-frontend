@@ -24,11 +24,19 @@ EduLLM Frontend is a modern, trilingual educational platform powered by AI, feat
 - **File Upload**: Support for PDF, DOC, DOCX, TXT
 - **Real-time Feedback**: Instant AI responses
 
-### 🎨 Modern Design
-- **Glassmorphism**: Modern glass-effect UI
-- **Dark Theme**: Elegant dark mode with emerald-teal gradients
-- **Responsive**: Mobile-first design
-- **Animations**: Smooth transitions and micro-interactions
+### 🎨 Modern Design & Theme System
+- **Advanced Theme System**: Light, dark, and system preference themes with real-time switching
+- **Theme Features**:
+  - 🌞 **Light Theme**: Clean, bright interface for daytime use
+  - 🌙 **Dark Theme**: Elegant dark interface to reduce eye strain
+  - 🖥️ **System Theme**: Automatically follows OS preference
+  - 💾 **Persistent Storage**: Theme choice saved across sessions
+  - ⚡ **Real-time Switching**: Instant theme changes without page reload
+  - 🎨 **CSS Variables**: All colors use custom properties for seamless adaptation
+- **UI Design**: Glassmorphism with modern glass-effect UI and backdrop blur
+- **Responsive Design**: Mobile-first approach that works on all devices
+- **Smooth Animations**: Fluid transitions and micro-interactions
+- **RTL Theme Support**: Theme system fully compatible with Arabic RTL layout
 
 ## Technical Stack 🛠️
 
@@ -61,9 +69,10 @@ EduLLM-frontend/
 │   │   │   ├── auth/          # Authentication pages
 │   │   │   ├── chat/          # Chat feature
 │   │   │   └── qcm/           # QCM feature
-│   │   └── api/auth/          # NextAuth API routes
-│   ├── components/
+│   │   └── api/auth/          # NextAuth API routes   │   ├── components/
 │   │   ├── auth/              # Auth components
+│   │   ├── ThemeProvider.tsx  # Theme context provider
+│   │   ├── ThemeSwitcher.tsx  # Theme switching components
 │   │   └── ui/                # UI components
 │   ├── lib/
 │   │   ├── auth.ts            # NextAuth config
@@ -72,6 +81,7 @@ EduLLM-frontend/
 │   └── i18n/                  # i18n configuration
 ├── OAUTH_SETUP.md             # OAuth setup guide
 ├── AUTHENTICATION_STATUS.md   # Auth implementation status
+├── THEME_SYSTEM.md            # Theme system documentation
 ├── DOCS_FR.md                 # French documentation
 ├── CONTRIBUTING.md            # Contributing guidelines
 └── README.md                  # Main documentation
@@ -141,6 +151,7 @@ DATABASE_URL=file:./dev.db
 
 - **English**: README.md (main documentation)
 - **French**: DOCS_FR.md (complete French documentation)
+- **Theme System**: THEME_SYSTEM.md (theme implementation guide)
 - **OAuth Setup**: OAUTH_SETUP.md (step-by-step OAuth guide)
 - **Auth Status**: AUTHENTICATION_STATUS.md (implementation details)
 - **Contributing**: CONTRIBUTING.md (contribution guidelines)
@@ -156,6 +167,42 @@ DATABASE_URL=file:./dev.db
 1. Configure OAuth credentials in `.env`
 2. Visit: `http://localhost:3000/en/auth/signin`
 3. Test: "Sign in with Google" or "Sign in with Microsoft"
+
+## Testing Themes 🎨
+
+### Theme System Testing
+1. **Navigation**: Visit any page: `http://localhost:3000/en`
+2. **Theme Toggle**: Look for theme toggle button in header (sun/moon icon)
+3. **Switch Themes**: Click to cycle through light → dark → system
+4. **Verify Persistence**: Refresh page, theme should be maintained
+5. **System Detection**: Change OS theme, verify app updates when "system" is selected
+
+### Theme Options & Features
+- **🌞 Light Theme**: Clean, bright interface with dark text on light backgrounds
+- **🌙 Dark Theme**: Elegant dark interface with light text on dark backgrounds  
+- **🖥️ System Theme**: Automatically follows OS preference (Windows/Mac/Linux)
+- **⚡ Real-time Updates**: No page reload required for theme changes
+- **💾 Persistent Storage**: Theme choice saved in browser localStorage
+
+### Testing Checklist
+- [ ] ✅ Theme toggle works on all pages (`/en`, `/fr`, `/ar`)
+- [ ] ✅ Theme preference persists after browser refresh
+- [ ] ✅ All components adapt correctly to theme changes
+- [ ] ✅ Text contrast is sufficient in both light and dark themes
+- [ ] ✅ RTL layout (Arabic) works perfectly with both themes
+- [ ] ✅ System theme detection responds to OS changes
+- [ ] ✅ Theme switching animations are smooth (300ms transitions)
+- [ ] ✅ CSS variables update correctly for all UI elements
+
+### Component Theme Adaptation
+All components automatically adapt using CSS variables:
+```css
+/* Theme-aware classes */
+.bg-background    /* Adapts to current theme background */
+.text-foreground  /* Adapts to current theme text color */
+.border-border    /* Adapts to current theme border color */
+.bg-card          /* Adapts to current theme card background */
+```
 
 ## Features in Action 🎯
 
