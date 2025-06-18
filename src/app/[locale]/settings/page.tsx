@@ -30,13 +30,8 @@ import {
 import { getUserFiles, deleteUserFile } from "@/lib/file-utils";
 
 interface UploadedFile {
-  id: string;
-  filename: string;
-  originalName: string;
-  uploadDate: string;
-  fileSize: number;
-  fileType: string;
-  status: 'processed' | 'processing' | 'error';
+  file: string;
+  hash: string;
 }
 
 export default function SettingsPage() {
@@ -54,47 +49,60 @@ export default function SettingsPage() {
       window.location.href = `/${locale}/auth/signin`;
       return;
     }
-      const info = getUserInfo();
+    const info = getUserInfo();
     setUserInfo(info);
     setAuthChecked(true);
   }, [locale]);
 
-  const loadUserFiles = async () => {
-    try {
-      setLoading(true);
-      const userFiles = await getUserFiles(userInfo?.uniqueId || '');
-      setFiles(userFiles);
-    } catch (error) {
-      console.error("Failed to load user files:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Load user files
   useEffect(() => {
-    if (authChecked && userInfo) {
-      loadUserFiles();
-    }
-  }, [authChecked, userInfo]);
+    const authenticateAndFetchFiles = async () => {
+      if (!isAuthenticated()) {
+        window.location.href = `/${locale}/auth/signin`;
+        return;
+      }
+
+      const info = getUserInfo();
+      setUserInfo(info);
+      setAuthChecked(true);
+      setLoading(true);
+
+      try {
+        const res = await fetch(`/api/list-files?user_id=${info?.userId}`);
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+          throw new Error(data.message || "Failed to fetch files");
+        }
+
+        console.log("Fetched files:", data.files);
+        setFiles(data.files);
+      } catch (err: any) {
+        console.error("Error fetching files:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    authenticateAndFetchFiles();
+  }, [locale]);
 
   const handleDeleteFile = async (fileId: string, filename: string) => {
     try {
-      setDeletingFiles(prev => new Set(prev).add(fileId));
-      
+      setDeletingFiles((prev) => new Set(prev).add(fileId));
+
       // Call backend to delete file and embeddings
       await deleteUserFile(userInfo.uniqueId, fileId, filename);
-      
+
       // Remove from local state
-      setFiles(prev => prev.filter(file => file.id !== fileId));
-      
+      setFiles((prev) => prev.filter((file) => file.hash !== fileId));
+
       // Show success message (you can implement a toast system)
       console.log(`File ${filename} deleted successfully`);
     } catch (error) {
       console.error("Failed to delete file:", error);
       // Show error message
     } finally {
-      setDeletingFiles(prev => {
+      setDeletingFiles((prev) => {
         const newSet = new Set(prev);
         newSet.delete(fileId);
         return newSet;
@@ -103,26 +111,30 @@ export default function SettingsPage() {
   };
 
   const formatFileSize = (bytes: number): string => {
-    const sizes = ['B', 'KB', 'MB', 'GB'];
-    if (bytes === 0) return '0 B';
+    const sizes = ["B", "KB", "MB", "GB"];
+    if (bytes === 0) return "0 B";
     const i = Math.floor(Math.log(bytes) / Math.log(1024));
     return `${(bytes / Math.pow(1024, i)).toFixed(1)} ${sizes[i]}`;
   };
 
   const getFileIcon = (fileType: string) => {
-    if (fileType.includes('pdf')) return '📄';
-    if (fileType.includes('word') || fileType.includes('doc')) return '📝';
-    if (fileType.includes('text')) return '📋';
-    return '📎';
+    if (fileType.includes("pdf")) return "📄";
+    if (fileType.includes("word") || fileType.includes("doc")) return "📝";
+    if (fileType.includes("text")) return "📋";
+    return "📎";
   };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'processed':
-        return <Badge variant="default" className="bg-green-500">Processed</Badge>;
-      case 'processing':
+      case "processed":
+        return (
+          <Badge variant="default" className="bg-green-500">
+            Processed
+          </Badge>
+        );
+      case "processing":
         return <Badge variant="secondary">Processing</Badge>;
-      case 'error':
+      case "error":
         return <Badge variant="destructive">Error</Badge>;
       default:
         return <Badge variant="outline">Unknown</Badge>;
@@ -166,14 +178,18 @@ export default function SettingsPage() {
                 />
               ) : (
                 <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xl font-bold">
-                  {userInfo?.name?.charAt(0)?.toUpperCase() || <User className="w-8 h-8" />}
+                  {userInfo?.name?.charAt(0)?.toUpperCase() || (
+                    <User className="w-8 h-8" />
+                  )}
                 </div>
               )}
               <div>
                 <h3 className="text-lg font-semibold text-foreground">
                   {userInfo?.name || "Anonymous User"}
                 </h3>
-                <p className="text-muted-foreground">{userInfo?.email || "No email"}</p>
+                <p className="text-muted-foreground">
+                  {userInfo?.email || "No email"}
+                </p>
                 <p className="text-sm text-muted-foreground">
                   ID: {userInfo?.uniqueId}
                 </p>
@@ -194,14 +210,17 @@ export default function SettingsPage() {
                 </Badge>
               )}
             </CardTitle>
-          </CardHeader>          <CardContent>
+          </CardHeader>{" "}
+          <CardContent>
             {loading && (
               <div className="flex items-center justify-center py-8">
                 <Loader2 className="w-6 h-6 animate-spin text-emerald-400" />
-                <span className="ml-2 text-muted-foreground">Loading files...</span>
+                <span className="ml-2 text-muted-foreground">
+                  Loading files...
+                </span>
               </div>
             )}
-            
+
             {!loading && files.length === 0 && (
               <div className="text-center py-8">
                 <Upload className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
@@ -210,41 +229,46 @@ export default function SettingsPage() {
                 </p>
                 <p className="text-sm text-muted-foreground mt-2">
                   Upload files in the{" "}
-                  <a href={`/${locale}/chat`} className="text-emerald-400 hover:underline">
+                  <a
+                    href={`/${locale}/chat`}
+                    className="text-emerald-400 hover:underline"
+                  >
                     Chat
                   </a>{" "}
                   or{" "}
-                  <a href={`/${locale}/qcm`} className="text-emerald-400 hover:underline">
+                  <a
+                    href={`/${locale}/qcm`}
+                    className="text-emerald-400 hover:underline"
+                  >
                     QCM
                   </a>{" "}
                   sections to see them here.
                 </p>
               </div>
             )}
-            
+
             {!loading && files.length > 0 && (
               <ScrollArea className="h-96">
                 <div className="space-y-4">
                   {files.map((file) => (
                     <div
-                      key={file.id}
+                      key={file.hash}
                       className="flex items-center justify-between p-4 border border-border rounded-lg bg-muted/50"
                     >
                       <div className="flex items-center gap-3">
                         <div className="text-2xl">
-                          {getFileIcon(file.fileType)}
+                          {getFileIcon(file.file.split(".").pop() || "file")}
                         </div>
                         <div>
                           <h4 className="font-medium text-foreground">
-                            {file.originalName}
+                            {file.file || file.file}
                           </h4>
                           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                            <span>{formatFileSize(file.fileSize)}</span>
                             <span className="flex items-center gap-1">
                               <Calendar className="w-3 h-3" />
-                              {new Date(file.uploadDate).toLocaleDateString()}
+                              {/*  {new Date(file.uploadDate).toLocaleDateString()} */}
                             </span>
-                            {getStatusBadge(file.status)}
+                            {/* {getStatusBadge(file.status)} */}
                           </div>
                         </div>
                       </div>
@@ -254,10 +278,10 @@ export default function SettingsPage() {
                             <Button
                               variant="destructive"
                               size="sm"
-                              disabled={deletingFiles.has(file.id)}
+                              disabled={deletingFiles.has(file.hash)}
                               className="text-white"
                             >
-                              {deletingFiles.has(file.id) ? (
+                              {deletingFiles.has(file.hash) ? (
                                 <Loader2 className="w-4 h-4 animate-spin" />
                               ) : (
                                 <Trash2 className="w-4 h-4" />
@@ -267,11 +291,12 @@ export default function SettingsPage() {
                           <AlertDialogContent className="bg-card border-border">
                             <AlertDialogHeader>
                               <AlertDialogTitle className="text-foreground">
-                                {t("settings.files.delete.title") || "Delete File"}
+                                {t("settings.files.delete.title") ||
+                                  "Delete File"}
                               </AlertDialogTitle>
                               <AlertDialogDescription className="text-muted-foreground">
-                                {t("settings.files.delete.description") || 
-                                `Are you sure you want to delete "${file.originalName}"? This will permanently remove the file and all its embeddings from the system. This action cannot be undone.`}
+                                {t("settings.files.delete.description") ||
+                                  `Are you sure you want to delete "${file.file}"? This will permanently remove the file and all its embeddings from the system. This action cannot be undone.`}
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
@@ -279,7 +304,12 @@ export default function SettingsPage() {
                                 {t("settings.files.delete.cancel") || "Cancel"}
                               </AlertDialogCancel>
                               <AlertDialogAction
-                                onClick={() => handleDeleteFile(file.id, file.filename)}
+                                onClick={() =>
+                                  handleDeleteFile(
+                                    file.hash,
+                                    file.file.split(".")[0]
+                                  )
+                                }
                                 className="bg-red-500 hover:bg-red-600 text-white"
                               >
                                 {t("settings.files.delete.confirm") || "Delete"}
@@ -289,7 +319,8 @@ export default function SettingsPage() {
                         </AlertDialog>
                       </div>
                     </div>
-                  ))}                </div>
+                  ))}{" "}
+                </div>
               </ScrollArea>
             )}
           </CardContent>

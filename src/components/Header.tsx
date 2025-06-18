@@ -99,7 +99,7 @@ export default function Header() {
             {auth && (
               <div className="relative">
                 <button
-                  className="flex items-center justify-center overflow-hidden border-2 rounded-full w-9 h-9 border-emerald-400/40"
+                  className="cursor-pointer flex items-center justify-center overflow-hidden border-2 rounded-full w-9 h-9 border-emerald-400/40"
                   onClick={() => setMenuOpen((v) => !v)}
                 >
                   {renderAvatar()}
