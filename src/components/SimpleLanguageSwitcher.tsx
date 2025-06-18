@@ -4,11 +4,14 @@ import { Globe, ChevronDown } from "lucide-react";
 import { useLocale } from "next-intl";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
+import { CircleFlagsUs } from "./icons/CircleFlagsUs";
+import { CircleFlagsFr } from "./icons/CircleFlagsFr";
+import { CircleFlagsSa } from "./icons/CircleFlagsSa";
 
 const languages = [
-  { code: "en", name: "English", flag: "🇺🇸" },
-  { code: "fr", name: "Français", flag: "🇫🇷" },
-  { code: "ar", name: "العربية", flag: "🇸🇦" },
+  { code: "en", name: "English", flag: <CircleFlagsUs /> },
+  { code: "fr", name: "Français", flag: <CircleFlagsFr /> },
+  { code: "ar", name: "العربية", flag: <CircleFlagsSa /> },
 ];
 
 export default function SimpleLanguageSwitcher() {

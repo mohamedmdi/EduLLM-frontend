@@ -1,85 +1,93 @@
-'use client';
+"use client";
 
-import { useTranslations } from 'next-intl';
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
-import { Button } from '@/components/ui/button';
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { Button } from "@/components/ui/button";
 
 export function SignInForm() {
-  const t = useTranslations('SignIn');
+  const t = useTranslations("SignIn");
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [message, setMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
 
   const handleSignIn = async (provider: string) => {
     setIsLoading(true);
     setMessage(null);
-    
+
     try {
-      setMessage({ type: 'success', text: t('authenticating', { provider }) });
-      
+      setMessage({ type: "success", text: t("authenticating", { provider }) });
+
       // Use NextAuth signIn function for real OAuth
-      const result = await signIn(provider, { 
-        callbackUrl: '/',
-        redirect: false 
+      const result = await signIn(provider, {
+        callbackUrl: "/chat",
+        redirect: false,
       });
-      
+
       if (result?.error) {
-        setMessage({ type: 'error', text: t('signInError') });
+        setMessage({ type: "error", text: t("signInError") });
         setIsLoading(false);
       } else if (result?.url) {
-        setMessage({ type: 'success', text: t('signInSuccess') });
+        setMessage({ type: "success", text: t("signInSuccess") });
         // Redirect to the OAuth provider
         window.location.href = result.url;
       }
-      
     } catch (error) {
-      console.error('Sign in error:', error);
-      setMessage({ type: 'error', text: t('signInError') });
+      console.error("Sign in error:", error);
+      setMessage({ type: "error", text: t("signInError") });
       setIsLoading(false);
     }
   };
 
   const handleGuestSignIn = async () => {
     setIsLoading(true);
-    setMessage({ type: 'success', text: t('settingUpGuest') });
-    
+    setMessage({ type: "success", text: t("settingUpGuest") });
+
     // Brief delay for UX
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     // Generate a unique guest ID and store it in localStorage
-    const guestId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const guestId = `guest_${Date.now()}_${Math.random()
+      .toString(36)
+      .substr(2, 9)}`;
     const guestData = {
       id: guestId,
-      provider: 'guest',
-      email: 'guest@local',
-      name: t('guestUser'),
-      signedInAt: new Date().toISOString()
+      provider: "guest",
+      email: "guest@local",
+      name: t("guestUser"),
+      signedInAt: new Date().toISOString(),
     };
-    
-    localStorage.setItem('userId', guestId);
-    localStorage.setItem('userProvider', 'guest');
-    localStorage.setItem('userEmail', guestData.email);
-    localStorage.setItem('userName', guestData.name);
-    localStorage.setItem('signedInAt', guestData.signedInAt);
-    
-    window.location.href = '/';
-  };return (
+
+    localStorage.setItem("userId", guestId);
+    localStorage.setItem("userProvider", "guest");
+    localStorage.setItem("userEmail", guestData.email);
+    localStorage.setItem("userName", guestData.name);
+    localStorage.setItem("signedInAt", guestData.signedInAt);
+
+    window.location.href = "/chat";
+  };
+  return (
     <div className="space-y-6">
       {/* Status message */}
       {message && (
-        <div className={`p-4 rounded-xl border text-sm ${
-          message.type === 'success' 
-            ? 'bg-emerald-900/20 border-emerald-500/20 text-emerald-400' 
-            : 'bg-red-900/20 border-red-500/20 text-red-400'
-        }`}>
+        <div
+          className={`p-4 rounded-xl border text-sm ${
+            message.type === "success"
+              ? "bg-emerald-900/20 border-emerald-500/20 text-emerald-400"
+              : "bg-red-900/20 border-red-500/20 text-red-400"
+          }`}
+        >
           {message.text}
         </div>
       )}
 
-      <div className="space-y-4">        <Button
-          onClick={() => handleSignIn('google')}
+      <div className="space-y-4">
+        <Button
+          onClick={() => handleSignIn("google")}
           disabled={isLoading}
-          className="w-full flex items-center justify-center px-6 py-4 bg-slate-800/50 border border-slate-700/50 rounded-xl text-white hover:bg-slate-800 hover:border-slate-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="cursor-pointer w-full flex items-center justify-center px-6 py-4 bg-slate-800/50 border border-slate-700/50 rounded-xl text-white hover:bg-slate-800 hover:border-slate-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <div className="flex items-center gap-3 rtl:flex-row-reverse">
             {isLoading ? (
@@ -104,16 +112,13 @@ export function SignInForm() {
                 />
               </svg>
             )}
-            <span className="font-medium">
-              {t('signInWith')} Google
-            </span>
+            <span className="font-medium">{t("signInWith")} Google</span>
           </div>
         </Button>
-
         <Button
-          onClick={() => handleSignIn('azure-ad')}
+          onClick={() => handleSignIn("azure-ad")}
           disabled={isLoading}
-          className="w-full flex items-center justify-center px-6 py-4 bg-slate-800/50 border border-slate-700/50 rounded-xl text-white hover:bg-slate-800 hover:border-slate-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="cursor-pointer w-full flex items-center justify-center px-6 py-4 bg-slate-800/50 border border-slate-700/50 rounded-xl text-white hover:bg-slate-800 hover:border-slate-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <div className="flex items-center gap-3 rtl:flex-row-reverse">
             {isLoading ? (
@@ -126,9 +131,7 @@ export function SignInForm() {
                 <path fill="#ffb900" d="M13 13h10v10H13z" />
               </svg>
             )}
-            <span className="font-medium">
-              {t('signInWith')} Microsoft
-            </span>
+            <span className="font-medium">{t("signInWith")} Microsoft</span>
           </div>
         </Button>
       </div>
@@ -140,23 +143,25 @@ export function SignInForm() {
           </div>
           <div className="relative flex justify-center text-sm">
             <span className="px-4 bg-slate-900/30 text-slate-400">
-              {t('orContinueAs')}
+              {t("orContinueAs")}
             </span>
           </div>
         </div>
 
-        <div className="mt-6">          <Button
+        <div className="mt-6">
+          {" "}
+          <Button
             onClick={handleGuestSignIn}
             disabled={isLoading}
-            className="w-full px-6 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl font-medium transition-all duration-300 disabled:opacity-50"
+            className="cursor-pointer w-full px-6 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl font-medium transition-all duration-300 disabled:opacity-50"
           >
             {isLoading ? (
               <div className="flex items-center justify-center gap-2">
                 <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                <span>{t('settingUp')}</span>
+                <span>{t("settingUp")}</span>
               </div>
             ) : (
-              t('continueAsGuest')
+              t("continueAsGuest")
             )}
           </Button>
         </div>
