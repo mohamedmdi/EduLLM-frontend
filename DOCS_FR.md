@@ -72,6 +72,25 @@ Plateforme éducative moderne et multilingue, prenant en charge l'anglais, le fr
 - **Icons et Boutons** : Positionnement approprié pour RTL
 - **Formulaires** : Alignement du texte et des champs
 
+### 🔐 Système d'Authentification
+
+#### Fournisseurs OAuth
+- **Google OAuth 2.0** : Connexion avec comptes Google
+- **Microsoft Azure AD** : Comptes Microsoft professionnels et personnels
+- **Mode Invité** : Utilisation sans création de compte
+
+#### Gestion des Sessions
+- **Tokens JWT** : Authentification sécurisée basée sur des tokens
+- **Stockage Base de Données** : Sessions persistantes avec Prisma
+- **Données Utilisateur** : Récupération automatique du profil OAuth
+- **Déconnexion Sécurisée** : Nettoyage complet des sessions
+
+#### Sécurité
+- **Protection CSRF** : Via NextAuth.js
+- **Clés Secrètes** : Variables d'environnement sécurisées
+- **Validation OAuth 2.0** : Flux d'authentification standard
+- **Gestion d'Erreurs** : Messages d'erreur localisés
+
 ### 🎨 Design Moderne
 
 #### Interface Glassmorphism
@@ -105,47 +124,74 @@ git --version   # Dernière version stable
 
 ```bash
 # 1. Cloner le dépôt
-git clone https://github.com/votre-username/edullm-frontend.git
-cd edullm-frontend
+git clone https://github.com/mohamedmdi/EduLLM-frontend.git
+cd EduLLM-frontend
 
 # 2. Installer les dépendances
 npm install
 
-# 3. Lancer le serveur de développement
+# 3. Configurer la base de données
+npx prisma db push
+
+# 4. Lancer le serveur de développement
 npm run dev
 ```
 
-### Configuration Avancée
+L'application sera disponible sur `http://localhost:3000`
 
-#### Variables d'Environnement
+### Configuration de l'Authentification
 
-Créez un fichier `.env.local` :
+#### Mode Invité (Configuration Immédiate)
+Aucune configuration requise - le mode invité fonctionne immédiatement.
+
+#### Configuration OAuth (Recommandée)
+
+1. **Copiez le template des variables d'environnement** :
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Éditez le fichier `.env`** avec vos identifiants OAuth :
+   ```env
+   NEXTAUTH_SECRET=votre-clé-secrète
+   NEXTAUTH_URL=http://localhost:3000
+   GOOGLE_CLIENT_ID=votre-google-client-id
+   GOOGLE_CLIENT_SECRET=votre-google-client-secret
+   AZURE_AD_CLIENT_ID=votre-azure-ad-client-id
+   AZURE_AD_CLIENT_SECRET=votre-azure-ad-client-secret
+   DATABASE_URL=file:./dev.db
+   ```
+
+3. **Consultez le guide complet** : [OAUTH_SETUP.md](./OAUTH_SETUP.md)
+
+#### Variables d'Environnement Requises
+
+| Variable | Description | Obligatoire |
+|----------|-------------|-------------|
+| `NEXTAUTH_SECRET` | Clé secrète pour JWT | Oui |
+| `NEXTAUTH_URL` | URL de base de l'app | Oui |
+| `GOOGLE_CLIENT_ID` | ID client Google OAuth | Pour Google |
+| `GOOGLE_CLIENT_SECRET` | Secret client Google | Pour Google |
+| `AZURE_AD_CLIENT_ID` | ID client Azure AD | Pour Microsoft |
+| `AZURE_AD_CLIENT_SECRET` | Secret client Azure AD | Pour Microsoft |
+| `DATABASE_URL` | URL de la base de données | Oui |
+
+### Configuration de la Base de Données
+
+L'application utilise SQLite avec Prisma pour le développement :
 
 ```bash
-# API Backend (optionnel)
-NEXT_PUBLIC_API_URL=http://localhost:8000
+# Appliquer le schéma de base de données
+npx prisma db push
 
-# Configuration de développement
-NODE_ENV=development
-NEXT_PUBLIC_ENV=development
+# Générer le client Prisma
+npx prisma generate
 
-# Analytics (production uniquement)
-NEXT_PUBLIC_GA_ID=your-google-analytics-id
+# Explorer la base de données (optionnel)
+npx prisma studio
 ```
 
-#### Configuration TypeScript
-
-Le projet utilise TypeScript strict. Configuration dans `tsconfig.json` :
-
-```json
-{
-  "compilerOptions": {
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true
-  }
-}
-```
+Le fichier de base de données sera créé automatiquement à `./dev.db`.
 
 ---
 
@@ -169,8 +215,10 @@ npm run lint
 # Vérification des types TypeScript
 npx tsc --noEmit
 
-# Analyse du bundle
-npm run analyze
+# Opérations de base de données
+npx prisma db push        # Appliquer les changements de schéma
+npx prisma studio         # Interface web pour la DB
+npx prisma generate       # Régénérer le client Prisma
 ```
 
 ### Workflow de Développement
@@ -187,7 +235,20 @@ npm run dev
 # http://localhost:3000/ar (Arabe)
 ```
 
-#### 2. Développement de Composants
+#### 2. Test de l'Authentification
+
+```bash
+# Mode Invité (fonctionne immédiatement)
+# Visitez : http://localhost:3000/en/auth/signin
+# Cliquez sur "Continue as Guest"
+
+# OAuth (nécessite configuration)
+# 1. Configurez .env avec vos identifiants OAuth
+# 2. Visitez : http://localhost:3000/en/auth/signin  
+# 3. Testez "Sign in with Google" ou "Sign in with Microsoft"
+```
+
+#### 3. Développement de Composants
 
 ```bash
 # Structure recommandée pour un nouveau composant
