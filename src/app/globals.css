@@ -407,7 +407,58 @@
 
 /* Better Arabic font support */
 [lang="ar"] {
-  font-family: 'Cairo', 'Amiri', 'Scheherazade New', sans-serif;
+  font-family: 'Cairo', 'Amiri', 'Scheherazade New', system-ui, sans-serif;
+  line-height: 1.7;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "liga" 1, "kern" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Improved Arabic text spacing */
+[lang="ar"] h1,
+[lang="ar"] h2,
+[lang="ar"] h3 {
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+[lang="ar"] p,
+[lang="ar"] div {
+  word-spacing: 0.1em;
+}
+
+/* RTL spacing improvements */
+[dir="rtl"] .prose {
+  text-align: right;
+}
+
+[dir="rtl"] .space-x-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+  margin-right: 0.5rem;
+  margin-left: 0;
+}
+
+[dir="rtl"] .space-x-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+  margin-right: 0.75rem;
+  margin-left: 0;
+}
+
+[dir="rtl"] .space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+  margin-right: 1rem;
+  margin-left: 0;
+}
+
+/* Better message bubble alignment for RTL */
+[dir="rtl"] .max-w-\[80\%\] {
+  text-align: right;
+}
+
+/* Fix send button icon for RTL */
+[dir="rtl"] .send-icon {
+  transform: scaleX(-1);
 }
 
 /* Language Switcher Animations */

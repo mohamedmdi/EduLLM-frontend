@@ -7,6 +7,8 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import Header from "../../components/Header";
 import { ThemeProvider } from "../../components/ThemeProvider";
+import PageTransition from "../../components/PageTransition";
+import { NavigationLoader } from "../../components/NavigationLoader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,27 +29,29 @@ export default async function LocaleLayout({
   children,
   params,
 }: {
-  children: React.ReactNode;
-  params: Promise<{ locale: string }>;
+  readonly children: React.ReactNode;
+  readonly params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
 
   // Validate that the incoming `locale` parameter is valid
   if (!hasLocale(routing.locales, locale)) {
     notFound();
-  }
-
-  // Providing all messages to the client
+  }  // Providing all messages to the client
   // side is the easiest way to get started
-  const messages = await getMessages();  return (
-    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
+  const messages = await getMessages();
+
+  return (
+    <html lang={locale}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ThemeProvider>
+      ><ThemeProvider>
+          <NavigationLoader />
           <NextIntlClientProvider messages={messages}>
             <Header />
-            {children}
+            <PageTransition>
+              {children}
+            </PageTransition>
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

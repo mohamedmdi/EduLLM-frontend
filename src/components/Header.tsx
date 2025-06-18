@@ -17,11 +17,16 @@ export default function Header() {
   const [auth, setAuth] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Check if the current locale is RTL - only after mount to avoid hydration issues
+  const isRTL = mounted && locale === 'ar';
 
   // Check if we're on the home page
   const isHomePage = pathname === `/${locale}` || pathname === `/${locale}/`;
 
   useEffect(() => {
+    setMounted(true);
     const authed = isAuthenticated();
     setAuth(authed);
     setUser(authed ? getUserInfo() : null);
@@ -54,25 +59,21 @@ export default function Header() {
         </span>
       );
     }
-  };
-
-  return (
+  };  return (
     <nav className="border-b border-border backdrop-blur-sm sticky top-0 z-50 bg-background/80">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="flex justify-between items-center h-16 rtl:flex-row-reverse">
+        <div className={`flex justify-between items-center h-16${isRTL ? ' flex-row-reverse' : ''}`}>
           {/* Logo */}
           <Link
             href={`/${locale}`}
-            className="flex items-center gap-3 rtl:flex-row-reverse"
+            className={`flex items-center gap-3${isRTL ? ' flex-row-reverse' : ''}`}
           >
             <div className="bg-gradient-to-r from-emerald-400 to-teal-400 p-2.5 rounded-xl">
               <GraduationCap className="w-5 h-5 text-white" />
             </div>
             <span className="text-lg font-semibold text-foreground">EduLLM</span>
-          </Link>
-
-          {/* Navigation Items */}
-          <div className="flex items-center gap-4 rtl:flex-row-reverse">
+          </Link>          {/* Navigation Items */}
+          <div className={`flex items-center gap-4${isRTL ? ' flex-row-reverse' : ''}`}>
             {/* Show Chat button for authenticated users (not on home page) */}
             {auth && !isHomePage && (
               <Button
@@ -128,18 +129,16 @@ export default function Header() {
                   onClick={() => setMenuOpen((v) => !v)}
                 >
                   {renderAvatar()}
-                </button>
-                {menuOpen && (
-                  <div className="absolute right-0 z-50 w-40 mt-2 border shadow-lg bg-card border-border rounded-xl">
+                </button>                {menuOpen && (
+                  <div className={`absolute z-50 w-40 mt-2 border shadow-lg bg-card border-border rounded-xl${isRTL ? ' left-0' : ' right-0'}`}>
                     <Link
                       href={`/${locale}/settings`}
                       className="block px-4 py-2 text-sm text-foreground hover:bg-muted rounded-t-xl"
                       onClick={() => setMenuOpen(false)}
                     >
                       {t("nav.settings") || "Settings"}
-                    </Link>
-                    <button
-                      className="block w-full px-4 py-2 text-sm text-left text-red-400 cursor-pointer hover:bg-muted rounded-b-xl"
+                    </Link>                    <button
+                      className={`block w-full px-4 py-2 text-sm text-red-400 cursor-pointer hover:bg-muted rounded-b-xl${isRTL ? ' text-right' : ' text-left'}`}
                       onClick={handleLogout}
                     >
                       {t("nav.logout") || "Logout"}

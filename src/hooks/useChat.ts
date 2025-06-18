@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getUserId } from "@/lib/auth-utils";
+import { getUserId, isAuthenticated } from "@/lib/auth-utils";
 
 type Message = {
   id: string;
@@ -16,23 +16,27 @@ export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
-  
-  const handleSubmit = async (
+    const handleSubmit = async (
     e: React.FormEvent,
     options?: { experimental_attachments?: FileList }
   ) => {
     e.preventDefault();
     if (!input.trim() && !options?.experimental_attachments?.length) return;
 
-    // Get user ID for backend request
-    const userId = getUserId();
-    if (!userId) {
-      console.error("User not authenticated");
-      return;
+    // Get user ID for backend request - supports both authenticated and guest users
+    let userId = getUserId();
+    if (!userId) {      // Create a guest user ID if not authenticated
+      if (!isAuthenticated()) {
+        userId = `guest_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+      } else {
+        console.error("User authentication failed");
+        return;
+      }
     }
 
     const userMessage: Message = {
@@ -46,11 +50,10 @@ export function useChat() {
             url: URL.createObjectURL(file),
           }))
         : undefined,
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
+    };    setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
+    setIsSubmitting(true);
 
     try {
       const formData = new FormData();
@@ -68,10 +71,9 @@ export function useChat() {
 
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
-      let aiResponse = "";
-
-      if (reader) {
+      let aiResponse = "";      if (reader) {
         setIsLoading(false);
+        setIsSubmitting(false);
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
@@ -99,13 +101,15 @@ export function useChat() {
         ]);
       }    } catch (err) {
       console.error("Chat error:", err);
+      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
-
   return {
     messages,
     input,
     isLoading,
+    isSubmitting,
     handleInputChange,
     handleSubmit,
   };

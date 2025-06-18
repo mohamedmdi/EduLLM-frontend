@@ -30,25 +30,28 @@
     "footer": {
       "copyright": "© 2025 EduLLM. Tous droits réservés."
     }
-  },
-  "chat": {
+  },  "chat": {
     "title": "Chat EduLLM",
     "subtitle": "Votre compagnon d'apprentissage IA",
     "welcome": "Prêt à apprendre ensemble ?",
     "description": "Téléchargez vos supports d'étude, posez des questions ou explorez de nouveaux sujets. Je suis là pour vous aider à réussir !",
     "placeholder": "Demandez-moi tout sur vos études...",
+    "dropFilesHere": "Déposez les fichiers ici",
+    "supportedFormats": "Formats supportés :",
     "prompts": {
       "explain": "Expliquer un concept",
       "homework": "Aide aux devoirs",
       "strategies": "Stratégies d'étude"
     }
-  },
-  "qcm": {
+  },  "qcm": {
     "title": "QCM EduLLM",
     "subtitle": "Générateur d'examens alimenté par l'IA",
     "welcome": "Créer des examens QCM personnalisés",
     "description": "Téléchargez vos supports d'étude ou fournissez des sujets pour générer des questions à choix multiples personnalisées et des examens avec l'assistance de l'IA.",
-    "placeholder": "Décrivez l'examen que vous voulez créer ou glissez-déposez des fichiers ici...",    "prompts": {
+    "placeholder": "Décrivez l'examen que vous voulez créer ou glissez-déposez des fichiers ici...",
+    "dropFilesHere": "Déposez les fichiers ici",
+    "supportedFormats": "Formats supportés :",
+    "prompts": {
       "generate10": "Générer 10 questions à choix multiples",
       "fromDocument": "Créer un examen à partir du document téléchargé",
       "quick5min": "Quiz rapide de 5 minutes",
@@ -56,7 +59,7 @@
       "trueFalse": "Questions vrai/faux",
       "mixed": "Types de questions mixtes"
     }
-  },  "SignIn": {
+  },"SignIn": {
     "title": "Se connecter à EduLLM",
     "subtitle": "Accédez à votre compagnon d'apprentissage IA",
     "description": "Connectez-vous à EduLLM pour accéder à votre expérience d'apprentissage IA personnalisée",
@@ -105,5 +108,21 @@
     "user": "Utilisateur",
     "signOut": "Se déconnecter",
     "signingOut": "Déconnexion..."
+  },
+  "settings": {
+    "title": "Paramètres",
+    "profile": {
+      "title": "Informations du Profil"
+    },
+    "files": {
+      "title": "Fichiers Téléchargés",
+      "empty": "Aucun fichier téléchargé",
+      "delete": {
+        "title": "Supprimer le Fichier",
+        "description": "Êtes-vous sûr de vouloir supprimer ce fichier ? Cette action supprimera définitivement le fichier et tous ses embeddings du système. Cette action ne peut pas être annulée.",
+        "cancel": "Annuler",
+        "confirm": "Supprimer"
+      }
+    }
   }
 }

@@ -231,3 +231,120 @@ export async function generateQCM(
     files,
   });
 }
+
+/**
+ * Get all files uploaded by the authenticated user
+ */
+export async function getUserFiles(): Promise<BackendResponse<{ files: any[] }>> {
+  if (!isAuthenticated()) {
+    return {
+      success: false,
+      error: 'User not authenticated',
+      status: 401
+    };
+  }
+
+  return makeBackendRequest({
+    endpoint: '/user/files',
+    method: 'GET'
+  });
+}
+
+/**
+ * Delete a specific file and its embeddings for the authenticated user
+ */
+export async function deleteUserFile(fileId: string, filename: string): Promise<BackendResponse> {
+  if (!isAuthenticated()) {
+    return {
+      success: false,
+      error: 'User not authenticated',
+      status: 401
+    };
+  }
+
+  return makeBackendRequest({
+    endpoint: `/user/files/${fileId}`,
+    method: 'DELETE',
+    data: {
+      filename: filename,
+      removeEmbeddings: true
+    }
+  });
+}
+
+/**
+ * Get file storage statistics for the authenticated user
+ */
+export async function getUserFileStats(): Promise<BackendResponse<{
+  totalFiles: number;
+  totalSize: number;
+  storageLimit: number;
+  storageUsed: number;
+}>> {
+  if (!isAuthenticated()) {
+    return {
+      success: false,
+      error: 'User not authenticated',
+      status: 401
+    };
+  }
+
+  return makeBackendRequest({
+    endpoint: '/user/files/stats',
+    method: 'GET'
+  });
+}
+
+/**
+ * Download a specific file for the authenticated user
+ */
+export async function downloadUserFile(fileId: string): Promise<BackendResponse<Blob>> {
+  if (!isAuthenticated()) {
+    return {
+      success: false,
+      error: 'User not authenticated',
+      status: 401
+    };
+  }
+  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+  const userId = getUserId();
+  
+  if (!userId) {
+    return {
+      success: false,
+      error: 'User ID not available',
+      status: 401
+    };
+  }
+  
+  try {
+    const response = await fetch(`${baseUrl}/user/files/${fileId}/download`, {
+      method: 'GET',
+      headers: {
+        'X-User-ID': userId,
+      },
+    });
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: `HTTP ${response.status}: ${response.statusText}`,
+        status: response.status
+      };
+    }
+
+    const blob = await response.blob();
+    return {
+      success: true,
+      data: blob,
+      status: response.status
+    };
+  } catch (error) {
+    console.error('Download request failed:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      status: 500
+    };
+  }
+}
