@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
-import {NextIntlClientProvider, hasLocale} from 'next-intl';
-import {getMessages} from 'next-intl/server';
-import {notFound} from 'next/navigation';
-import {routing} from '@/i18n/routing';
-import Header from '../../components/Header';
+import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { notFound } from "next/navigation";
+import { routing } from "@/i18n/routing";
+import Header from "../../components/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,13 +24,13 @@ export const metadata: Metadata = {
 
 export default async function LocaleLayout({
   children,
-  params
+  params,
 }: {
   children: React.ReactNode;
-  params: Promise<{locale: string}>;
+  params: Promise<{ locale: string }>;
 }) {
-  const {locale} = await params;
-  
+  const { locale } = await params;
+
   // Validate that the incoming `locale` parameter is valid
   if (!hasLocale(routing.locales, locale)) {
     notFound();
@@ -40,10 +40,11 @@ export default async function LocaleLayout({
   // side is the easiest way to get started
   const messages = await getMessages();
   return (
-    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >        <NextIntlClientProvider messages={messages}>
+      >
+        <NextIntlClientProvider messages={messages}>
           <Header />
           {children}
         </NextIntlClientProvider>

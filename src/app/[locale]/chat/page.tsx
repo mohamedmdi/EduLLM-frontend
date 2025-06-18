@@ -19,7 +19,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useChat } from "@/hooks/useChat";
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations, useLocale } from "next-intl";
 
 export default function ChatPage() {
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
@@ -43,62 +43,42 @@ export default function ChatPage() {
   const quickPrompts = [
     {
       icon: BookOpen,
-      text: t('chat.prompts.explain'),
+      text: t("chat.prompts.explain"),
       color: "from-blue-500 to-blue-600",
     },
     {
       icon: Lightbulb,
-      text: t('chat.prompts.homework'),
+      text: t("chat.prompts.homework"),
       color: "from-yellow-500 to-yellow-600",
     },
     {
       icon: Brain,
-      text: t('chat.prompts.strategies'),
+      text: t("chat.prompts.strategies"),
       color: "from-purple-500 to-purple-600",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950">      {/* Navigation */}
-      <nav className="border-b border-slate-800/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-3 rtl:flex-row-reverse">
-              <Link href={`/${locale}`}>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-slate-400 hover:text-white transition-colors"
-                >
-                  <ArrowLeft className="h-4 w-4 ltr:mr-2 rtl:ml-2" />
-                  {t('nav.back')}
-                </Button>
-              </Link>
-              <div className="bg-gradient-to-r from-emerald-400 to-teal-400 p-2.5 rounded-xl">
-                <GraduationCap className="h-5 w-5 text-white" />
-              </div>
-              <span className="text-lg font-semibold text-white">{t('chat.title')}</span>
-            </div>
-          </div>
-        </div>
-      </nav>
-
+    <div className="min-h-screen bg-slate-950">
+      {" "}
+      {/* Navigation */}
       <div className="flex flex-col min-h-[calc(100vh-4rem)]">
         {/* Messages Area */}
         <div className="flex-1 overflow-hidden">
           <ScrollArea className="h-full px-4">
-            <div className="max-w-4xl mx-auto py-6 space-y-6">
+            <div className="max-w-4xl mx-auto py-8 space-y-6">
               {messages.length === 0 && (
-                <div className="text-center py-20">
+                <div className="text-center py-12">
                   <div className="bg-gradient-to-r from-emerald-400 to-teal-400 p-4 rounded-2xl w-20 h-20 mx-auto flex items-center justify-center mb-6">
                     <GraduationCap className="h-10 w-10 text-white" />
                   </div>
                   <h2 className="text-3xl font-bold text-white mb-3">
-                    {t('chat.welcome')}
+                    {t("chat.welcome")}
                   </h2>
                   <p className="text-lg text-slate-400 mb-8 max-w-md mx-auto">
-                    {t('chat.description')}
-                  </p>                  {/* Quick Action Buttons */}
+                    {t("chat.description")}
+                  </p>{" "}
+                  {/* Quick Action Buttons */}
                   <div className="flex flex-wrap justify-center gap-4 mb-8">
                     {quickPrompts.map((prompt, index) => (
                       <button
@@ -116,7 +96,8 @@ export default function ChatPage() {
                     ))}
                   </div>
                 </div>
-              )}              {messages.map((message) => (
+              )}{" "}
+              {messages.map((message) => (
                 <div
                   key={message.id}
                   className={`flex gap-4 ${
@@ -130,15 +111,21 @@ export default function ChatPage() {
                       <GraduationCap className="h-5 w-5 text-white" />
                     </div>
                   )}
-                  
-                  <div className={`max-w-[80%] ${
-                    message.role === "user" 
-                      ? "bg-slate-800/50 border border-slate-700/50 rounded-2xl p-4" 
-                      : "bg-slate-900/30 border border-slate-800/50 rounded-2xl p-4"
-                  }`}>
-                    <div className={`whitespace-pre-wrap text-base leading-relaxed rtl:text-right ${
-                      message.role === "user" ? "text-white" : "text-slate-100"
-                    }`}>
+
+                  <div
+                    className={`max-w-[80%] ${
+                      message.role === "user"
+                        ? "bg-slate-800/50 border border-slate-700/50 rounded-2xl p-4"
+                        : "bg-slate-900/30 border border-slate-800/50 rounded-2xl p-4"
+                    }`}
+                  >
+                    <div
+                      className={`whitespace-pre-wrap text-base leading-relaxed rtl:text-right ${
+                        message.role === "user"
+                          ? "text-white"
+                          : "text-slate-100"
+                      }`}
+                    >
                       {message.content}
                     </div>
 
@@ -153,7 +140,9 @@ export default function ChatPage() {
                                 className="bg-slate-800/50 border-slate-700 hover:bg-slate-800/70 transition-colors p-3 rounded-xl w-fit"
                               >
                                 <CardContent className="flex items-center gap-2">
-                                  {attachment.contentType?.startsWith("image/") ? (
+                                  {attachment.contentType?.startsWith(
+                                    "image/"
+                                  ) ? (
                                     <Image
                                       src={attachment.url ?? ""}
                                       alt={attachment.name ?? "Attachment"}
@@ -185,7 +174,6 @@ export default function ChatPage() {
                   )}
                 </div>
               ))}
-
               {isLoading && (
                 <div className="flex gap-4 justify-start">
                   <div className="bg-gradient-to-r from-emerald-400 to-teal-400 p-2.5 rounded-xl w-10 h-10 flex items-center justify-center flex-shrink-0">
@@ -211,7 +199,7 @@ export default function ChatPage() {
         </div>
 
         {/* Input Area */}
-        <div className="border-t border-slate-800/50 bg-slate-950/80 backdrop-blur-sm">
+        <div className="fixed bottom-0 left-0 right-0 border-t border-slate-800/50 bg-slate-950/80 backdrop-blur-sm z-10">
           <div className="max-w-4xl mx-auto p-6">
             <FileInputArea
               input={input}
@@ -220,7 +208,7 @@ export default function ChatPage() {
               files={files}
               onFilesChange={handleFilesChange}
               isLoading={isLoading}
-              placeholder={t('chat.placeholder')}
+              placeholder={t("chat.placeholder")}
               acceptedFileTypes="image/*,application/pdf,.pdf,.doc,.docx,.txt"
             />
           </div>

@@ -2,7 +2,6 @@
 
 import type React from "react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FileInputArea } from "@/components/ui/file-input-area";
 import {
@@ -14,138 +13,208 @@ import {
   HelpCircle,
   Zap,
   Brain,
+  GraduationCap,
+  FileText,
+  User,
 } from "lucide-react";
 import Link from "next/link";
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations, useLocale } from "next-intl";
+import { useChat } from "@/hooks/useChat";
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import Image from "next/image";
 
 export default function QCMPage() {
-  const [input, setInput] = useState("");
+  const { messages, input, handleInputChange, handleSubmit, isLoading } =
+    useChat();
   const [files, setFiles] = useState<FileList | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(false);
   const t = useTranslations();
   const locale = useLocale();
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
-  };
 
   const handleFilesChange = (newFiles: FileList | undefined) => {
     setFiles(newFiles);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() && !files?.length) return;
-
-    setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      setInput("");
-      setFiles(undefined);
-    }, 2000);
+    handleSubmit(e, {
+      experimental_attachments: files,
+    });
+    setFiles(undefined);
   };
 
   const quickPrompts = [
     {
       icon: CheckSquare,
-      text: t('qcm.prompts.generate10'),
+      text: t("qcm.prompts.generate10"),
       color: "from-emerald-400 to-teal-400",
     },
     {
       icon: Target,
-      text: t('qcm.prompts.fromDocument'),
+      text: t("qcm.prompts.fromDocument"),
       color: "from-blue-400 to-cyan-400",
     },
     {
       icon: Clock,
-      text: t('qcm.prompts.quick5min'),
+      text: t("qcm.prompts.quick5min"),
       color: "from-cyan-400 to-blue-400",
     },
     {
       icon: Brain,
-      text: t('qcm.prompts.advanced'),
+      text: t("qcm.prompts.advanced"),
       color: "from-violet-400 to-indigo-400",
     },
     {
       icon: HelpCircle,
-      text: t('qcm.prompts.trueFalse'),
+      text: t("qcm.prompts.trueFalse"),
       color: "from-slate-600 to-slate-700",
     },
     {
       icon: Zap,
-      text: t('qcm.prompts.mixed'),
+      text: t("qcm.prompts.mixed"),
       color: "from-teal-400 to-emerald-400",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950">      {/* Navigation */}
-      <nav className="border-b border-slate-800/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-3 rtl:flex-row-reverse">
-              <Link href={`/${locale}`}>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-slate-400 hover:text-white transition-colors"
-                >
-                  <ArrowLeft className="h-4 w-4 ltr:mr-2 rtl:ml-2" />
-                  {t('nav.back')}
-                </Button>
-              </Link>
-              <div className="bg-gradient-to-r from-blue-400 to-cyan-400 p-2.5 rounded-xl">
-                <ListChecks className="h-5 w-5 text-white" />
-              </div>
-              <span className="text-lg font-semibold text-white">{t('qcm.title')}</span>
-            </div>
-          </div>
-        </div>
-      </nav>
-
+    <div className="min-h-screen bg-slate-950">
+      {" "}
+      {/* Navigation */}
       {/* Main Content Area */}
       <div className="flex-1 overflow-hidden">
         <ScrollArea className="h-full px-4">
-          <div className="max-w-4xl mx-auto py-6 space-y-6">
-            {/* Welcome Section */}
-            <div className="text-center py-16">
-              <div className="bg-gradient-to-r from-blue-400 to-cyan-400 p-4 rounded-2xl w-20 h-20 mx-auto flex items-center justify-center mb-6 shadow-lg shadow-blue-500/25">
-                <ListChecks className="h-10 w-10 text-white" />
+          <div className="max-w-4xl mx-auto py-8 space-y-6 pb-40">
+            {messages.length === 0 && (
+              <div className="text-center py-12">
+                <div className="bg-gradient-to-r from-emerald-400 to-teal-400 p-4 rounded-2xl w-20 h-20 mx-auto flex items-center justify-center mb-6">
+                  <GraduationCap className="h-10 w-10 text-white" />
+                </div>
+                <h2 className="text-3xl font-bold text-white mb-3">
+                  {t("chat.welcome")}
+                </h2>
+                <p className="text-lg text-slate-400 mb-8 max-w-md mx-auto">
+                  {t("chat.description")}
+                </p>{" "}
+                {/* Quick Action Buttons */}
+                <div className="flex flex-wrap justify-center gap-4 mb-8">
+                  {quickPrompts.map((prompt, index) => (
+                    <button
+                      key={`${prompt.text}-${index}`}
+                      onClick={() =>
+                        handleInputChange({
+                          target: { value: prompt.text },
+                        } as React.ChangeEvent<HTMLInputElement>)
+                      }
+                      className={`bg-gradient-to-r ${prompt.color} text-white px-6 py-3 rounded-xl font-medium transition-all hover:scale-105 flex items-center gap-2 rtl:flex-row-reverse`}
+                    >
+                      <prompt.icon className="h-5 w-5" />
+                      {prompt.text}
+                    </button>
+                  ))}
+                </div>
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                {t('qcm.welcome')}
-              </h2>
-              <p className="text-lg text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-                {t('qcm.description')}
-              </p>              {/* Quick Action Buttons */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 max-w-5xl mx-auto">
-                {quickPrompts.map((prompt, index) => (
-                  <button
-                    key={`${prompt.text}-${index}`}
-                    onClick={() =>
-                      handleInputChange({
-                        target: { value: prompt.text },
-                      } as React.ChangeEvent<HTMLInputElement>)
-                    }
-                    className={`bg-gradient-to-r ${prompt.color} text-white p-5 rounded-2xl font-medium transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-slate-900/50 flex items-center gap-4 ltr:text-left rtl:text-right min-h-[100px] group border border-white/10 rtl:flex-row-reverse`}
+            )}{" "}
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex gap-4 ${
+                  message.role === "user"
+                    ? "rtl:justify-start ltr:justify-end items-center rtl:flex-row-reverse"
+                    : "rtl:justify-end ltr:justify-start rtl:flex-row-reverse"
+                }`}
+              >
+                {message.role === "assistant" && (
+                  <div className="bg-gradient-to-r from-emerald-400 to-teal-400 p-2.5 rounded-xl w-10 h-10 flex items-center justify-center flex-shrink-0 mt-1">
+                    <GraduationCap className="h-5 w-5 text-white" />
+                  </div>
+                )}
+
+                <div
+                  className={`max-w-[80%] ${
+                    message.role === "user"
+                      ? "bg-slate-800/50 border border-slate-700/50 rounded-2xl p-4"
+                      : "bg-slate-900/30 border border-slate-800/50 rounded-2xl p-4"
+                  }`}
+                >
+                  <div
+                    className={`whitespace-pre-wrap text-base leading-relaxed rtl:text-right ${
+                      message.role === "user" ? "text-white" : "text-slate-100"
+                    }`}
                   >
-                    <div className="bg-white/20 p-2.5 rounded-xl group-hover:bg-white/30 transition-colors">
-                      <prompt.icon className="h-6 w-6 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                    {message.content}
+                  </div>
+
+                  {/* Render attachments */}
+                  {message.experimental_attachments && (
+                    <div className="mt-4 space-y-3">
+                      <div className="flex flex-wrap gap-3">
+                        {message.experimental_attachments.map(
+                          (attachment, index) => (
+                            <Card
+                              key={`${attachment.name}-${attachment.url}-${index}`}
+                              className="bg-slate-800/50 border-slate-700 hover:bg-slate-800/70 transition-colors p-3 rounded-xl w-fit"
+                            >
+                              <CardContent className="flex items-center gap-2">
+                                {attachment.contentType?.startsWith(
+                                  "image/"
+                                ) ? (
+                                  <Image
+                                    src={attachment.url ?? ""}
+                                    alt={attachment.name ?? "Attachment"}
+                                    width={50}
+                                    height={50}
+                                    className="rounded-md"
+                                  />
+                                ) : (
+                                  <FileText className="h-5 w-5 text-slate-400" />
+                                )}
+                                <span className="text-sm text-slate-200">
+                                  {attachment.name ?? "Attachment"}
+                                </span>
+                              </CardContent>
+                            </Card>
+                          )
+                        )}
+                      </div>
                     </div>
-                    <span className="text-sm font-semibold leading-relaxed">{prompt.text}</span>
-                  </button>
-                ))}
+                  )}
+                </div>
+
+                {message.role === "user" && (
+                  <Avatar className="h-10 w-10 mt-1 border-2 border-emerald-400/20 flex-shrink-0">
+                    <AvatarFallback className="bg-gradient-to-r from-slate-700 to-slate-800">
+                      <User className="h-5 w-5 text-white" />
+                    </AvatarFallback>
+                  </Avatar>
+                )}
               </div>
-            </div>
+            ))}
+            {isLoading && (
+              <div className="flex gap-4 justify-start">
+                <div className="bg-gradient-to-r from-emerald-400 to-teal-400 p-2.5 rounded-xl w-10 h-10 flex items-center justify-center flex-shrink-0">
+                  <GraduationCap className="h-5 w-5 text-white" />
+                </div>
+                <div className="bg-slate-900/30 border border-slate-800/50 rounded-2xl p-4">
+                  <div className="flex space-x-2">
+                    <div className="w-2 h-2 bg-emerald-400 rounded-full animate-bounce"></div>
+                    <div
+                      className="w-2 h-2 bg-teal-400 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.1s" }}
+                    ></div>
+                    <div
+                      className="w-2 h-2 bg-emerald-400 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.2s" }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </ScrollArea>
       </div>
-
       {/* Input Area */}
-      <div className="border-t border-slate-800/50 bg-slate-950/80 backdrop-blur-sm">
-        <div className="max-w-4xl mx-auto p-6">
+      <div className="fixed bottom-0 left-0 right-0 border-t border-slate-800/50 bg-slate-950/80 backdrop-blur-sm z-10">
+        <div className="max-w-4xl mx-auto px-6 pt-6 pb-2">
           <FileInputArea
             input={input}
             onInputChange={handleInputChange}
@@ -153,7 +222,7 @@ export default function QCMPage() {
             files={files}
             onFilesChange={handleFilesChange}
             isLoading={isLoading}
-            placeholder={t('qcm.placeholder')}
+            placeholder={t("qcm.placeholder")}
             acceptedFileTypes=".pdf,.doc,.docx,.txt"
           />
         </div>

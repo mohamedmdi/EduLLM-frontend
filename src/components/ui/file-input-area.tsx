@@ -4,12 +4,7 @@ import type React from "react";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Paperclip,
-  Send,
-  X,
-  FileText,
-} from "lucide-react";
+import { Paperclip, Send, X, FileText } from "lucide-react";
 
 interface FileInputAreaProps {
   input: string;
@@ -81,7 +76,9 @@ export function FileInputArea({
         dataTransfer.items.add(file);
       });
 
-      onFilesChange(dataTransfer.files.length > 0 ? dataTransfer.files : undefined);
+      onFilesChange(
+        dataTransfer.files.length > 0 ? dataTransfer.files : undefined
+      );
     }
   };
 
@@ -100,7 +97,9 @@ export function FileInputArea({
   };
 
   return (
-    <div className={`space-y-4 ${className}`}>      {/* File List */}
+    <div className={`space-y-4 ${className}`}>
+      {" "}
+      {/* File List */}
       {files && files.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {Array.from(files).map((file, index) => (
@@ -122,12 +121,13 @@ export function FileInputArea({
           ))}
         </div>
       )}
-
       {/* Input Form */}
       <form onSubmit={onSubmit} className="relative">
-        <div 
+        <div
           className={`relative group transition-all duration-200 ${
-            dragActive ? "ring-2 ring-indigo-500/50 ring-offset-2 ring-offset-slate-900" : ""
+            dragActive
+              ? "ring-2 ring-indigo-500/50 ring-offset-2 ring-offset-slate-900"
+              : ""
           }`}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
@@ -135,7 +135,9 @@ export function FileInputArea({
           onDrop={handleDrop}
         >
           <div className="flex gap-3 items-end">
-            <div className="flex-1 relative">              <Input
+            <div className="flex-1 relative">
+              {" "}
+              <Input
                 value={input}
                 onChange={onInputChange}
                 placeholder={placeholder}
@@ -144,25 +146,26 @@ export function FileInputArea({
                 }`}
                 disabled={disabled || isLoading}
               />
-              
               {/* File attach button inside input */}
               <Button
                 type="button"
                 onClick={handleFileSelect}
                 variant="ghost"
                 size="sm"
-                className="absolute ltr:right-2 rtl:left-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 text-slate-400 hover:text-white hover:bg-slate-700/50 transition-colors"
+                className="cursor-pointer absolute ltr:right-2 rtl:left-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 text-slate-400 hover:text-white hover:bg-slate-700/50 transition-colors"
                 disabled={disabled || isLoading}
               >
                 <Paperclip className="h-4 w-4" />
               </Button>
             </div>
-            
+
             {/* Send button */}
             <Button
               type="submit"
-              className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white h-12 px-6 transition-all duration-200 hover:scale-105 disabled:hover:scale-100"
-              disabled={disabled || isLoading || (!input.trim() && !files?.length)}
+              className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white h-12 w-18 px-16 transition-all duration-200 hover:scale-105 disabled:hover:scale-100"
+              disabled={
+                disabled || isLoading || (!input.trim() && !files?.length)
+              }
             >
               {isLoading ? (
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
@@ -177,10 +180,21 @@ export function FileInputArea({
             <div className="absolute inset-0 bg-indigo-500/10 border-2 border-dashed border-indigo-500 rounded-lg flex items-center justify-center pointer-events-none backdrop-blur-sm">
               <div className="text-center">
                 <FileText className="h-8 w-8 text-indigo-400 mx-auto mb-2" />
-                <p className="text-indigo-400 text-sm font-medium">Drop files here</p>
+                <p className="text-indigo-400 text-sm font-medium">
+                  Drop files here
+                </p>
               </div>
             </div>
           )}
+        </div>
+        <div className="mt-3 flex justify-center">
+          <span className="inline-flex items-center gap-2 rounded-full bg-slate-800/60 px-3 py-1 text-xs font-medium text-slate-300 shadow-sm border border-slate-700/40">
+            <Paperclip className="h-3 w-3 text-indigo-400" />
+            Supported formats:&nbsp;
+            <span className="font-semibold text-indigo-300">
+              .pdf, .doc, .docx, .txt
+            </span>
+          </span>
         </div>
 
         {/* Hidden file input */}
