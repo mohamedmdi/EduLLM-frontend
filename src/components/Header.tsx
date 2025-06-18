@@ -33,12 +33,14 @@ export default function Header() {
           {/* Navigation Items */}
           <div className="flex items-center gap-4 rtl:flex-row-reverse">
             {isHomePage && (
-              <>
-                <Button
+              <>                <Button
+                  asChild
                   variant="ghost"
                   className="text-slate-400 hover:text-white transition-colors"
                 >
-                  {t("nav.signIn")}
+                  <Link href={`/${locale}/auth/signin`}>
+                    {t("nav.signIn")}
+                  </Link>
                 </Button>
                 <Link href={`/${locale}/chat`}>
                   <Button className="bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-500 hover:to-teal-500 text-white px-6 py-2 rounded-full">

@@ -48,6 +48,12 @@ A modern, multilingual educational platform powered by artificial intelligence, 
 - **3 Languages**: English, French, and Arabic
 - **RTL Support**: Full right-to-left layout for Arabic
 - **Dynamic Switching**: Seamless language switching with URL preservation
+
+### 🔐 Authentication System
+- **OAuth Integration**: Sign in with Google and Microsoft accounts
+- **Guest Mode**: Use the application without creating an account
+- **Secure Sessions**: JWT-based authentication with database storage
+- **User Profiles**: Automatic profile data retrieval from OAuth providers
 - **Localized Content**: All UI elements and messages translated
 
 ### 🎨 Modern Design
@@ -99,11 +105,14 @@ Visit the live demo at: `http://localhost:3000` (after installation)
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/edullm-frontend.git
-cd edullm-frontend
+git clone https://github.com/mohamedmdi/EduLLM-frontend.git
+cd EduLLM-frontend
 
 # Install dependencies
 npm install
+
+# Set up the database
+npx prisma db push
 
 # Start development server
 npm run dev
@@ -113,12 +122,32 @@ The application will be available at `http://localhost:3000`
 
 ### Environment Setup
 
-No environment variables required for basic functionality. For backend integration:
+#### Basic Setup (Guest Mode Only)
+No environment variables required for basic functionality with guest mode.
+
+#### OAuth Setup (Recommended)
+For full authentication with Google and Microsoft:
 
 ```bash
-# Create .env.local file
-echo "NEXT_PUBLIC_API_URL=http://localhost:8000" > .env.local
+# Copy environment template
+cp .env.example .env
+
+# Edit .env with your OAuth credentials
+# See OAUTH_SETUP.md for detailed instructions
 ```
+
+**Required OAuth Environment Variables:**
+```env
+NEXTAUTH_SECRET=your-secret-key
+NEXTAUTH_URL=http://localhost:3000
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+AZURE_AD_CLIENT_ID=your-azure-ad-client-id
+AZURE_AD_CLIENT_SECRET=your-azure-ad-client-secret
+DATABASE_URL=file:./dev.db
+```
+
+📖 **See [OAUTH_SETUP.md](./OAUTH_SETUP.md) for complete OAuth configuration guide**
 
 ---
 
@@ -141,6 +170,11 @@ npm run lint
 
 # Type checking
 npx tsc --noEmit
+
+# Database operations
+npx prisma db push        # Apply schema changes
+npx prisma studio         # View database in browser
+npx prisma generate       # Regenerate Prisma client
 ```
 
 ### Development Workflow
@@ -150,7 +184,10 @@ npx tsc --noEmit
    npm run dev
    ```
 
-2. **Make changes** to files in `src/`
+2. **Test authentication** (requires OAuth setup):
+   - Visit `/en/auth/signin` to test login
+   - Try Google and Microsoft OAuth
+   - Test guest mode functionality
 
 3. **Test in multiple languages**:
    - English: `http://localhost:3000/en`
@@ -162,6 +199,12 @@ npx tsc --noEmit
    npm run build
    npm run start
    ```
+
+### Authentication Testing
+
+1. **Guest Mode**: Works immediately without setup
+2. **OAuth Mode**: Requires environment variables (see OAUTH_SETUP.md)
+3. **Database**: SQLite file created automatically at `./dev.db`
 
 ---
 
@@ -217,23 +260,37 @@ The application automatically switches to RTL layout for Arabic:
 ```
 edullm-frontend/
 ├── 📁 public/                     # Static assets
+├── 📁 prisma/                     # Database schema
+│   └── 📄 schema.prisma          # Prisma schema file
 ├── 📁 src/                        # Source code
 │   ├── 📁 app/                    # Next.js App Router
 │   │   ├── 📁 [locale]/          # Localized routes
 │   │   │   ├── 📄 layout.tsx     # Localized layout
 │   │   │   ├── 📄 page.tsx       # Home page
+│   │   │   ├── 📁 auth/          # Authentication pages
+│   │   │   │   ├── 📁 signin/    # Sign in page
+│   │   │   │   ├── 📁 signup/    # Sign up page
+│   │   │   │   └── 📁 error/     # Auth error page
 │   │   │   ├── 📁 chat/          # Chat feature
 │   │   │   └── 📁 qcm/           # QCM feature
 │   │   ├── 📁 api/               # API routes
+│   │   │   └── 📁 auth/          # NextAuth API
 │   │   ├── 📄 globals.css        # Global styles
 │   │   └── 📄 layout.tsx         # Root layout
 │   ├── 📁 components/            # React components
 │   │   ├── 📄 Header.tsx         # Navigation header
 │   │   ├── 📄 SimpleLanguageSwitcher.tsx
-│   │   └── 📁 ui/                # UI components
+│   │   ├── 📁 auth/              # Auth components
+│   │   │   ├── 📄 SignInForm.tsx # OAuth sign-in form
+│   │   │   ├── 📄 SignUpForm.tsx # OAuth sign-up form
+│   │   │   ├── 📄 UserSession.tsx # User session display
+│   │   │   └── � AuthProvider.tsx # Session provider
+│   │   └── �📁 ui/                # UI components
 │   ├── 📁 hooks/                 # Custom React hooks
 │   ├── 📁 i18n/                  # Internationalization
 │   ├── 📁 lib/                   # Utility functions
+│   │   ├── 📄 auth.ts            # NextAuth configuration
+│   │   └── 📄 prisma.ts          # Prisma client
 │   ├── 📁 messages/              # Translation files
 │   └── 📄 middleware.ts          # Next.js middleware
 ├── 📄 next.config.ts             # Next.js configuration
@@ -276,7 +333,42 @@ All components follow a consistent design pattern:
 
 ---
 
-## 🔌 API Integration
+## 🔌 Authentication & API Integration
+
+### Authentication System
+
+The application uses NextAuth.js with multiple provider support:
+
+#### OAuth Providers
+- **Google OAuth 2.0**: Full profile access with Google accounts
+- **Microsoft Azure AD**: Enterprise and personal Microsoft accounts  
+- **Guest Mode**: Local usage without account creation
+
+#### Session Management
+```typescript
+// Session data structure
+interface Session {
+  user: {
+    id: string;
+    uniqueId: string;
+    name?: string;
+    email?: string;
+    image?: string;
+  }
+}
+```
+
+#### Database Integration
+- **SQLite Database**: Local development database
+- **Prisma ORM**: Type-safe database access
+- **Automatic Migrations**: Schema updates handled automatically
+
+```bash
+# Database commands
+npx prisma db push        # Apply schema changes
+npx prisma studio         # Browse database
+npx prisma generate       # Update client
+```
 
 ### Backend Connection
 
@@ -290,30 +382,23 @@ const backendRes = await fetch("http://localhost:8000/ask", {
 });
 ```
 
-### Endpoints
+### Authentication Flow
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/ask`   | POST   | Send chat messages and files |
-
-### Error Handling
-
-```typescript
-try {
-  const response = await fetch("/api/chat", {
-    method: "POST",
-    body: formData,
-  });
-} catch (error) {
-  console.error("API Error:", error);
-}
-```
+1. **User Login**: OAuth redirect to provider (Google/Microsoft)
+2. **Data Retrieval**: Profile data fetched automatically
+3. **Session Storage**: Secure JWT tokens with database persistence
+4. **Auto-Redirect**: Seamless return to application
 
 ---
 
-## 📚 Documentation (Français)
+## 📖 Documentation & Setup Guides
 
-**Pour la documentation complète en français, voir:** [DOCS_FR.md](./DOCS_FR.md)
+| Document | Description |
+|----------|-------------|
+| [OAUTH_SETUP.md](./OAUTH_SETUP.md) | Complete OAuth configuration guide |
+| [AUTHENTICATION_STATUS.md](./AUTHENTICATION_STATUS.md) | Current auth implementation status |
+| [DOCS_FR.md](./DOCS_FR.md) | Documentation complète en français |
+| [CONTRIBUTING.md](./CONTRIBUTING.md) | Contributing guidelines |
 
 ---
 

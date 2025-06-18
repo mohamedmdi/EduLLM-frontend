@@ -47,13 +47,54 @@
     "welcome": "Create Custom QCM Exams",
     "description": "Upload your study materials or provide topics to generate personalized multiple choice questions and exams with AI assistance.",
     "placeholder": "Describe the exam you want to create or drag & drop files here...",
-    "prompts": {
-      "generate10": "Generate 10 multiple choice questions",
+    "prompts": {      "generate10": "Generate 10 multiple choice questions",
       "fromDocument": "Create exam from uploaded document",
       "quick5min": "Quick 5-minute quiz",
       "advanced": "Advanced difficulty level",
       "trueFalse": "True/False questions",
       "mixed": "Mixed question types"
     }
+  },  "SignIn": {
+    "title": "Sign in to EduLLM",
+    "subtitle": "Access your AI learning companion",
+    "description": "Sign in to EduLLM to access your personalized AI learning experience",
+    "signInWith": "Sign in with",
+    "orContinueAs": "Or continue as",
+    "continueAsGuest": "Continue as Guest",
+    "authenticating": "Authenticating with {provider}...",
+    "signInSuccess": "Successfully signed in! Redirecting...",
+    "signInError": "Failed to sign in. Please try again.",
+    "settingUpGuest": "Setting up guest session...",
+    "settingUp": "Setting up...",
+    "guestUser": "Guest User"
+  },  "SignUp": {
+    "title": "Create your EduLLM account",
+    "subtitle": "Start your AI-powered learning journey",
+    "description": "Create your EduLLM account to begin your personalized AI learning experience",
+    "signUpWith": "Sign up with",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInInstead": "Sign in instead",
+    "termsNotice": "By creating an account, you agree to our",
+    "termsOfService": "Terms of Service",
+    "and": "and",
+    "privacyPolicy": "Privacy Policy",
+    "creatingAccount": "Creating account with {provider}...",
+    "signUpSuccess": "Account created successfully! Redirecting...",
+    "signUpError": "Failed to create account. Please try again."
+  },  "AuthError": {
+    "title": "Authentication Error",
+    "description": "An error occurred during authentication",
+    "configurationError": "There was a problem with the authentication configuration. Please try again later.",
+    "accessDenied": "Access was denied. You may not have permission to sign in.",
+    "verificationError": "The verification link is invalid or has expired.",
+    "defaultError": "An unexpected error occurred during authentication.",
+    "tryAgain": "Try Again",
+    "backToHome": "Back to Home",
+    "errorCode": "Error code"
+  },
+  "UserSession": {
+    "user": "User",
+    "signOut": "Sign Out",
+    "signingOut": "Signing Out..."
   }
 }

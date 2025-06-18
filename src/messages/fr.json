@@ -46,8 +46,7 @@
     "subtitle": "Générateur d'examens alimenté par l'IA",
     "welcome": "Créer des examens QCM personnalisés",
     "description": "Téléchargez vos supports d'étude ou fournissez des sujets pour générer des questions à choix multiples personnalisées et des examens avec l'assistance de l'IA.",
-    "placeholder": "Décrivez l'examen que vous voulez créer ou glissez-déposez des fichiers ici...",
-    "prompts": {
+    "placeholder": "Décrivez l'examen que vous voulez créer ou glissez-déposez des fichiers ici...",    "prompts": {
       "generate10": "Générer 10 questions à choix multiples",
       "fromDocument": "Créer un examen à partir du document téléchargé",
       "quick5min": "Quiz rapide de 5 minutes",
@@ -55,5 +54,47 @@
       "trueFalse": "Questions vrai/faux",
       "mixed": "Types de questions mixtes"
     }
+  },  "SignIn": {
+    "title": "Se connecter à EduLLM",
+    "subtitle": "Accédez à votre compagnon d'apprentissage IA",
+    "description": "Connectez-vous à EduLLM pour accéder à votre expérience d'apprentissage IA personnalisée",
+    "signInWith": "Se connecter avec",
+    "orContinueAs": "Ou continuer en tant que",
+    "continueAsGuest": "Continuer en tant qu'invité",
+    "authenticating": "Authentification avec {provider}...",
+    "signInSuccess": "Connexion réussie ! Redirection...",
+    "signInError": "Échec de la connexion. Veuillez réessayer.",
+    "settingUpGuest": "Configuration de la session invité...",
+    "settingUp": "Configuration...",
+    "guestUser": "Utilisateur Invité"
+  },  "SignUp": {
+    "title": "Créer votre compte EduLLM",
+    "subtitle": "Commencez votre parcours d'apprentissage alimenté par l'IA",
+    "description": "Créez votre compte EduLLM pour commencer votre expérience d'apprentissage IA personnalisée",
+    "signUpWith": "S'inscrire avec",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "signInInstead": "Se connecter plutôt",
+    "termsNotice": "En créant un compte, vous acceptez nos",
+    "termsOfService": "Conditions d'utilisation",
+    "and": "et",
+    "privacyPolicy": "Politique de confidentialité",
+    "creatingAccount": "Création du compte avec {provider}...",
+    "signUpSuccess": "Compte créé avec succès ! Redirection...",
+    "signUpError": "Échec de la création du compte. Veuillez réessayer."
+  },  "AuthError": {
+    "title": "Erreur d'authentification",
+    "description": "Une erreur s'est produite lors de l'authentification",
+    "configurationError": "Il y a eu un problème avec la configuration d'authentification. Veuillez réessayer plus tard.",
+    "accessDenied": "L'accès a été refusé. Vous n'avez peut-être pas l'autorisation de vous connecter.",
+    "verificationError": "Le lien de vérification est invalide ou a expiré.",
+    "defaultError": "Une erreur inattendue s'est produite lors de l'authentification.",
+    "tryAgain": "Réessayer",
+    "backToHome": "Retour à l'accueil",
+    "errorCode": "Code d'erreur"
+  },
+  "UserSession": {
+    "user": "Utilisateur",
+    "signOut": "Se déconnecter",
+    "signingOut": "Déconnexion..."
   }
 }
