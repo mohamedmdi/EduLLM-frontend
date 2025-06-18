@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { generateUserId, setUserAuth } from '@/lib/auth-utils';
 
 export function SignInForm() {
   const t = useTranslations('SignIn');
@@ -11,10 +12,12 @@ export function SignInForm() {
   const handleSignIn = async (provider: string) => {
     setIsLoading(true);
     try {
-      // For now, just simulate a sign-in
-      const uniqueId = `${provider}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      localStorage.setItem('userId', uniqueId);
-      localStorage.setItem('userProvider', provider);
+      // Generate a unique ID for the user
+      const uniqueId = generateUserId(provider);
+      
+      // Store authentication data
+      setUserAuth(uniqueId, provider);
+      
       console.log(`Signed in with ${provider}, unique ID: ${uniqueId}`);
       
       // Redirect to home page
@@ -22,8 +25,7 @@ export function SignInForm() {
     } catch (error) {
       console.error('Sign in error:', error);
       setIsLoading(false);
-    }
-  };
+    }  };
 
   return (
     <div className="mt-8 space-y-4">
@@ -87,15 +89,12 @@ export function SignInForm() {
               {t('orContinueAs')}
             </span>
           </div>
-        </div>
-
-        <div className="mt-6">
+        </div>        <div className="mt-6">
           <Button
             onClick={() => {
-              // Generate a unique guest ID and store it in localStorage
-              const guestId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-              localStorage.setItem('userId', guestId);
-              localStorage.setItem('userProvider', 'guest');
+              // Generate a unique guest ID and store it using auth utils
+              const guestId = generateUserId('guest');
+              setUserAuth(guestId, 'guest');
               console.log(`Continue as guest, unique ID: ${guestId}`);
               window.location.href = '/';
             }}

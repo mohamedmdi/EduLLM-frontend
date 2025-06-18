@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -20,13 +20,38 @@ import Image from "next/image";
 import Link from "next/link";
 import { useChat } from "@/hooks/useChat";
 import { useTranslations, useLocale } from "next-intl";
+import { isAuthenticated, getUserInfo } from "@/lib/auth-utils";
 
 export default function ChatPage() {
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat();
   const [files, setFiles] = useState<FileList | undefined>(undefined);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [userInfo, setUserInfo] = useState<any>(null);
   const t = useTranslations();
   const locale = useLocale();
+
+  // Check authentication on component mount
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      // Redirect to sign in page if not authenticated
+      window.location.href = `/${locale}/auth/signin`;
+      return;
+    }
+    
+    const info = getUserInfo();
+    setUserInfo(info);
+    setAuthChecked(true);
+  }, [locale]);
+
+  // Don't render anything until auth is checked
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-white">Loading...</div>
+      </div>
+    );
+  }
 
   const handleFilesChange = (newFiles: FileList | undefined) => {
     setFiles(newFiles);

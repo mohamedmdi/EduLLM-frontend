@@ -4,6 +4,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { generateUserId, setUserAuth } from '@/lib/auth-utils';
 
 export function SignUpForm() {
   const t = useTranslations('SignUp');
@@ -13,10 +14,12 @@ export function SignUpForm() {
   const handleSignUp = async (provider: string) => {
     setIsLoading(true);
     try {
-      // For now, just simulate a sign-up
-      const uniqueId = `${provider}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      localStorage.setItem('userId', uniqueId);
-      localStorage.setItem('userProvider', provider);
+      // Generate a unique ID for the new user
+      const uniqueId = generateUserId(provider);
+      
+      // Store authentication data
+      setUserAuth(uniqueId, provider);
+      
       console.log(`Signed up with ${provider}, unique ID: ${uniqueId}`);
       
       // Redirect to home page

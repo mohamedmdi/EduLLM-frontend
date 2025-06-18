@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getUserId } from "@/lib/auth-utils";
 
 type Message = {
   id: string;
@@ -19,12 +20,20 @@ export function useChat() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
+  
   const handleSubmit = async (
     e: React.FormEvent,
     options?: { experimental_attachments?: FileList }
   ) => {
     e.preventDefault();
     if (!input.trim() && !options?.experimental_attachments?.length) return;
+
+    // Get user ID for backend request
+    const userId = getUserId();
+    if (!userId) {
+      console.error("User not authenticated");
+      return;
+    }
 
     const userMessage: Message = {
       id: crypto.randomUUID(),
@@ -46,6 +55,8 @@ export function useChat() {
     try {
       const formData = new FormData();
       formData.append("query", userMessage.content);
+      formData.append("userId", userId); // Include user ID
+      
       if (options?.experimental_attachments?.[0]) {
         formData.append("file", options.experimental_attachments[0]);
       }
