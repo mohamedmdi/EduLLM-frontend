@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { GraduationCap, User, MessageCircle } from "lucide-react";
+import { GraduationCap, User, MessageCircle, KeyRound } from "lucide-react";
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { usePathname } from "next/navigation";
@@ -20,6 +20,8 @@ export default function Header() {
 
   // Check if we're on the home page
   const isHomePage = pathname === `/${locale}` || pathname === `/${locale}/`;
+  const isSignin =
+    pathname === `/${locale}` || pathname === `/${locale}/auth/signin`;
 
   useEffect(() => {
     const authed = isAuthenticated();
@@ -29,7 +31,7 @@ export default function Header() {
 
   const handleLogout = () => {
     clearUserAuth();
-    window.location.href = `/${locale}/auth/signin`;
+    window.location.href = `/${locale}/`;
   };
 
   const renderAvatar = () => {
@@ -57,9 +59,9 @@ export default function Header() {
   };
 
   return (
-    <nav className="border-b border-border backdrop-blur-sm sticky top-0 z-50 bg-background/80">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="flex justify-between items-center h-16 rtl:flex-row-reverse">
+    <nav className="sticky top-0 z-50 border-b border-border backdrop-blur-sm bg-background/80">
+      <div className="max-w-6xl px-6 mx-auto">
+        <div className="flex items-center justify-between h-16 rtl:flex-row-reverse">
           {/* Logo */}
           <Link
             href={`/${locale}`}
@@ -68,56 +70,29 @@ export default function Header() {
             <div className="bg-gradient-to-r from-emerald-400 to-teal-400 p-2.5 rounded-xl">
               <GraduationCap className="w-5 h-5 text-white" />
             </div>
-            <span className="text-lg font-semibold text-foreground">EduLLM</span>
+            <span className="text-lg font-semibold text-foreground">
+              EduLLM
+            </span>
           </Link>
 
           {/* Navigation Items */}
           <div className="flex items-center gap-4 rtl:flex-row-reverse">
             {/* Show Chat button for authenticated users (not on home page) */}
-            {auth && !isHomePage && (
-              <Button
-                asChild
-                variant="outline"
-                className="text-foreground border-emerald-500 bg-emerald-500/10 hover:bg-emerald-500/20"
-              >
-                <Link href={`/${locale}/chat`} className="flex items-center gap-2">
-                  <MessageCircle className="w-4 h-4" />
-                  {t("chat.title") || "Chat"}
-                </Link>
-              </Button>
-            )}
-
+            
             {/* Show sign in and get started buttons on home page for non-authenticated users */}
-            {isHomePage && !auth && (
+            {isHomePage && (
               <>
                 <Button
                   asChild
                   variant="ghost"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <Link href={`/${locale}/auth/signin`}>
-                    {t("nav.signIn")}
-                  </Link>
-                </Button>
+                  className="transition-colors border cursor-pointer text-muted-foreground hover:text-foreground "
+                ></Button>
                 <Link href={`/${locale}/chat`}>
-                  <Button className="bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-500 hover:to-teal-500 text-white px-6 py-2 rounded-full">
+                  <Button className="px-6 py-2 text-white rounded-full cursor-pointer bg-transparent border border-emerald-500 hover:bg-emerald-500 transition-colors">
                     {t("nav.getStarted")}
                   </Button>
                 </Link>
               </>
-            )}
-
-            {/* Show sign in button on non-home pages for non-authenticated users */}
-            {!isHomePage && !auth && (
-              <Button
-                asChild
-                variant="ghost"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Link href={`/${locale}/auth/signin`}>
-                  {t("nav.signIn")}
-                </Link>
-              </Button>
             )}
 
             {/* Show user avatar with dropdown for authenticated users */}
@@ -151,7 +126,7 @@ export default function Header() {
 
             {/* Theme Switcher */}
             <SimpleThemeToggle />
-            
+
             {/* Language Switcher */}
             <SimpleLanguageSwitcher />
           </div>
