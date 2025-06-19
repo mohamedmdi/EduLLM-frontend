@@ -14,8 +14,8 @@ export async function GET(req: NextRequest) {
     );
     const data = await res.json();
     console.log("Response from backend:", data);
-    return NextResponse.json(data);
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json(data);  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

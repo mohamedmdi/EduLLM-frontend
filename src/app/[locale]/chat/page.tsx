@@ -5,9 +5,8 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
-import { getUserInfo, isAuthenticated } from "@/lib/auth-utils";
 import { useChat } from "@/hooks/useChat";
-import { Loading } from "@/components/ui/loading";
+import AuthGuard from "@/components/auth/AuthGuard";
 
 // Lazy load heavy components
 const ScrollArea = dynamic(
@@ -105,6 +104,14 @@ const CardContent = dynamic(() =>
 );
 
 export default function ChatPage() {
+  return (
+    <AuthGuard loadingVariant="chat">
+      <ChatPageContent />
+    </AuthGuard>
+  );
+}
+
+function ChatPageContent() {
   const {
     messages,
     input,
@@ -112,27 +119,22 @@ export default function ChatPage() {
     handleSubmit,
     isLoading,
     isSubmitting,
+    sendInitialPrompt,
   } = useChat();
   const [files, setFiles] = useState<FileList | undefined>(undefined);
-  const [authChecked, setAuthChecked] = useState(false);
   const t = useTranslations();
-  const locale = useLocale(); // Check authentication on component mount
-  const [userInfo, setUserInfo] = useState<any>(null);
+  const locale = useLocale();
+
+  // Initialize prompt when component mounts
   useEffect(() => {
-    if (!isAuthenticated()) {
-      // Redirect to sign in page if not authenticated
-      window.location.href = `/${locale}/auth/signin`;
-      return;
+    if (messages.length === 0) {
+      const timer = setTimeout(() => {
+        sendInitialPrompt("Hello! I'm EduLLM, your educational AI assistant. How can I help you with your learning today?");
+      }, 500);
+      
+      return () => clearTimeout(timer);
     }
-
-    const info = getUserInfo();
-    setUserInfo(info);
-    setAuthChecked(true);
-  }, [locale]); // Don't render anything until auth is checked
-
-  if (!authChecked) {
-    return <Loading variant="chat" />;
-  }
+  }, [messages.length, sendInitialPrompt]);
 
   const handleFilesChange = (newFiles: FileList | undefined) => {
     setFiles(newFiles);

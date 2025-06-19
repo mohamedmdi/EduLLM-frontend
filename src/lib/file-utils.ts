@@ -17,12 +17,20 @@ export interface UploadedFile {
 /**
  * Get all files uploaded by a user
  */
-export async function getUserFiles(_userId: string): Promise<UploadedFile[]> {
+export async function getUserFiles(): Promise<UploadedFile[]> {
   try {
     const response = await getFilesFromBackend();
-    
-    if (response.success && response.data) {
-      return response.data.files;
+      if (response.success && response.data) {
+      // Adapt UserFile to UploadedFile format
+      return response.data.files.map((file, index) => ({
+        id: file.hash || index.toString(),
+        filename: file.file,
+        originalName: file.file,
+        uploadDate: file.uploadDate || new Date().toISOString(),
+        fileSize: 0, // Not available from backend
+        fileType: file.file.split('.').pop() || 'unknown',
+        status: (file.status as 'processed' | 'processing' | 'error') || 'processed'
+      }));
     } else {
       console.warn('Failed to fetch user files from backend:', response.error);
       // Return mock data for development if backend is not available
@@ -104,7 +112,7 @@ function getMockFiles(): UploadedFile[] {
 /**
  * Get file storage statistics for a user
  */
-export async function getUserFileStats(_userId: string): Promise<{
+export async function getUserFileStats(): Promise<{
   totalFiles: number;
   totalSize: number;
   storageLimit: number;

@@ -1,14 +1,6 @@
-"use client";
+// This file has been removed - use page.tsx instead
+// Keeping this file empty to avoid build conflicts
 
-import dynamic from 'next/dynamic';
-import { Loading } from '@/components/ui/loading';
-
-// Lazy load the heavy chat page component
-const ChatPageComponent = dynamic(() => import('./ChatPageComponent'), {
-  loading: () => <Loading variant="chat" />,
-  ssr: false
-});
-
-export default function ChatPage() {
-  return <ChatPageComponent />;
+export default function EmptyComponent() {
+  return null;
 }
