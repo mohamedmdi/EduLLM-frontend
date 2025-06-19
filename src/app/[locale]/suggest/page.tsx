@@ -12,6 +12,8 @@ interface SearchResult {
 interface SuggestData {
   topics: string[];
   search_results: Record<string, SearchResult[]>;
+}
+
 interface UserInfo {
   userId: string;
   provider: string;
@@ -25,18 +27,12 @@ export default function SuggestPage() {
   const [data, setData] = useState<SuggestData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const locale = useLocale();
-  const [authChecked, setAuthChecked] = useState(false);
-
   useEffect(() => {
     if (!isAuthenticated()) {
       window.location.href = `/${locale}/auth/signin`;
       return;
     }
-    const info = getUserInfo();
-    setUserInfo(info);
-    setAuthChecked(true);
   }, [locale]);
 
   useEffect(() => {
@@ -47,7 +43,6 @@ export default function SuggestPage() {
       }
 
       const info = getUserInfo();
-      setAuthChecked(true);
       setLoading(true);
       try {
         const res = await fetch(`/api/suggest?user_id=${info?.userId}`);
@@ -119,21 +114,21 @@ export default function SuggestPage() {
                     <li
                       key={idx}
                       className="border-b last:border-b-0 border-slate-200 dark:border-slate-700 pb-4 last:pb-0"
-                    >
-                      <a
+                    >                      <a
                         href={item.link}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-lg font-medium text-blue-600 hover:underline flex items-center gap-2"
-                      >                        {faviconUrl && (
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                      >
+                        {faviconUrl && (
+                          // eslint-disable-next-line @next/next/no-img-element
                           <img
                             src={faviconUrl}
                             alt="favicon"
                             className="w-5 h-5 rounded mr-1 border border-slate-200 dark:border-slate-700 bg-white"
-                            onError={(e: React.SyntheticEvent<HTMLImageElement>) =>
-                              (e.currentTarget.style.display = "none")
-                            }
+                            onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                              e.currentTarget.style.display = "none";
+                            }}
                           />
                         )}
                         {item.title}
