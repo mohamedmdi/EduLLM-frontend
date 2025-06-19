@@ -15,10 +15,10 @@ export async function GET(req: NextRequest) {
         { error: "Failed to fetch suggestions" },
         { status: 500 }
       );
-    }
-    const data = await apiRes.json();
+    }    const data = await apiRes.json();
     return NextResponse.json({ data }, { status: 200 });
-  } catch (e) {
+  } catch (error) {
+    console.error("Error fetching suggestions:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
