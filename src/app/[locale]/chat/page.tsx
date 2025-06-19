@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
@@ -138,6 +138,7 @@ export default function ChatPage() {
     setFiles(newFiles);
   };
 
+
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleSubmit(e, {
@@ -163,6 +164,8 @@ export default function ChatPage() {
       color: "from-purple-500 to-purple-600",
     },
   ];
+
+
   return (
     <div className="min-h-screen bg-background">
       {" "}

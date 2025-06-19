@@ -21,7 +21,7 @@ export function useChat() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
-    const handleSubmit = async (
+  const handleSubmit = async (
     e: React.FormEvent,
     options?: { experimental_attachments?: FileList }
   ) => {
@@ -30,9 +30,12 @@ export function useChat() {
 
     // Get user ID for backend request - supports both authenticated and guest users
     let userId = getUserId();
-    if (!userId) {      // Create a guest user ID if not authenticated
+    if (!userId) {
+      // Create a guest user ID if not authenticated
       if (!isAuthenticated()) {
-        userId = `guest_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+        userId = `guest_${Date.now()}_${Math.random()
+          .toString(36)
+          .substring(2, 11)}`;
       } else {
         console.error("User authentication failed");
         return;
@@ -50,7 +53,8 @@ export function useChat() {
             url: URL.createObjectURL(file),
           }))
         : undefined,
-    };    setMessages((prev) => [...prev, userMessage]);
+    };
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
     setIsSubmitting(true);
@@ -59,9 +63,15 @@ export function useChat() {
       const formData = new FormData();
       formData.append("query", userMessage.content);
       formData.append("userId", userId); // Include user ID
-      
-      if (options?.experimental_attachments?.[0]) {
+
+      /*       if (options?.experimental_attachments?.[0]) {
         formData.append("file", options.experimental_attachments[0]);
+      } */
+
+      if (options?.experimental_attachments) {
+        Array.from(options.experimental_attachments).forEach((file) => {
+          formData.append("file", file);
+        });
       }
 
       const res = await fetch("/api/chat", {
@@ -71,7 +81,8 @@ export function useChat() {
 
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
-      let aiResponse = "";      if (reader) {
+      let aiResponse = "";
+      if (reader) {
         setIsLoading(false);
         setIsSubmitting(false);
         while (true) {
@@ -99,7 +110,8 @@ export function useChat() {
             content: aiResponse.trim(),
           },
         ]);
-      }    } catch (err) {
+      }
+    } catch (err) {
       console.error("Chat error:", err);
       setIsLoading(false);
       setIsSubmitting(false);

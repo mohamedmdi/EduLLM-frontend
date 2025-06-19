@@ -86,25 +86,37 @@ export default function SettingsPage() {
     authenticateAndFetchFiles();
   }, [locale]);
 
-  const handleDeleteFile = async (fileId: string, filename: string) => {
+  const handleDeleteFile = async (hash: string) => {
     try {
-      setDeletingFiles((prev) => new Set(prev).add(fileId));
+      setDeletingFiles((prev) => new Set(prev).add(hash));
 
       // Call backend to delete file and embeddings
-      await deleteUserFile(userInfo.uniqueId, fileId, filename);
+      const res = await fetch(
+        `http://127.0.0.1:8000/delete_file?user_id=${userInfo?.userId}&file_hash=${hash}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || "Failed to delete file");
+      }
 
       // Remove from local state
-      setFiles((prev) => prev.filter((file) => file.hash !== fileId));
+      setFiles((prev) => prev.filter((file) => file.hash !== hash));
 
       // Show success message (you can implement a toast system)
-      console.log(`File ${filename} deleted successfully`);
+      console.log(`File deleted successfully`);
     } catch (error) {
       console.error("Failed to delete file:", error);
       // Show error message
     } finally {
       setDeletingFiles((prev) => {
         const newSet = new Set(prev);
-        newSet.delete(fileId);
+        newSet.delete(hash);
         return newSet;
       });
     }
@@ -304,12 +316,7 @@ export default function SettingsPage() {
                                 {t("settings.files.delete.cancel") || "Cancel"}
                               </AlertDialogCancel>
                               <AlertDialogAction
-                                onClick={() =>
-                                  handleDeleteFile(
-                                    file.hash,
-                                    file.file.split(".")[0]
-                                  )
-                                }
+                                onClick={() => handleDeleteFile(file.hash)}
                                 className="bg-red-500 hover:bg-red-600 text-white"
                               >
                                 {t("settings.files.delete.confirm") || "Delete"}
