@@ -28,7 +28,6 @@ import {
   HardDrive,
   Loader2,
 } from "lucide-react";
-import { deleteUserFile } from "@/lib/file-utils";
 
 interface UploadedFile {
   file: string;
@@ -91,25 +90,12 @@ export default function SettingsPage() {
       } finally {
         setLoading(false);
       }
-    };
-
-    authenticateAndFetchFiles();
+    };    authenticateAndFetchFiles();
   }, [locale]);
-<<<<<<< HEAD
-  const handleDeleteFile = async (fileId: string, filename: string) => {
-    try {
-      if (!userInfo?.uniqueId) {
-        console.error("User ID not found");
-        return;
-      }
-
-      setDeletingFiles((prev) => new Set(prev).add(fileId));
-=======
 
   const handleDeleteFile = async (hash: string) => {
     try {
       setDeletingFiles((prev) => new Set(prev).add(hash));
->>>>>>> main
 
       // Call backend to delete file and embeddings
       const res = await fetch(

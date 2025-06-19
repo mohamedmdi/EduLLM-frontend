@@ -1,13 +1,12 @@
 "use client";
 
 import type React from "react";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { useChat } from "@/hooks/useChat";
 import AuthGuard from "@/components/auth/AuthGuard";
-import { Loading } from "@/components/ui/loading";
 import ReactMarkdown from "react-markdown";
 
 // Lazy load heavy components
