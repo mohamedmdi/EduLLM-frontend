@@ -14,14 +14,6 @@ interface SuggestData {
   search_results: Record<string, SearchResult[]>;
 }
 
-interface UserInfo {
-  userId: string;
-  provider: string;
-  isGuest: boolean;
-  name?: string;
-  email?: string;
-}
-
 export default function SuggestPage() {
   const t = useTranslations();
   const [data, setData] = useState<SuggestData | null>(null);
