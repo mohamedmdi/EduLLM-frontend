@@ -17,38 +17,32 @@ export default function PageTransition({ children }: PageTransitionProps) {
       y: 20,
       scale: 0.98,
     },
-    enter: {
+    animate: {
       opacity: 1,
       y: 0,
-      scale: 1,
-      transition: {
+      scale: 1,      transition: {
         duration: 0.4,
-        ease: [0.25, 0.46, 0.45, 0.94],
         staggerChildren: 0.1,
       },
     },
     exit: {
       opacity: 0,
       y: -20,
-      scale: 0.98,
-      transition: {
+      scale: 0.98,      transition: {
         duration: 0.3,
-        ease: [0.25, 0.46, 0.45, 0.94],
       },
     },
   };
-
   const childVariants = {
     initial: {
       opacity: 0,
       y: 10,
     },
-    enter: {
+    animate: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.3,
-        ease: "easeOut",
       },
     },
   };
@@ -77,9 +71,9 @@ export function AnimatedSection({
   delay = 0,
   className = ""
 }: { 
-  children: ReactNode; 
-  delay?: number;
-  className?: string;
+  readonly children: ReactNode; 
+  readonly delay?: number;
+  readonly className?: string;
 }) {
   return (
     <motion.div
@@ -103,9 +97,9 @@ export function HoverCard({
   className = "",
   scale = 1.02
 }: { 
-  children: ReactNode; 
-  className?: string;
-  scale?: number;
+  readonly children: ReactNode; 
+  readonly className?: string;
+  readonly scale?: number;
 }) {
   return (
     <motion.div
@@ -128,10 +122,10 @@ export function AnimatedButton({
   isLoading = false,
   ...props
 }: { 
-  children: ReactNode; 
-  className?: string;
-  isLoading?: boolean;
-  [key: string]: any;
+  readonly children: ReactNode; 
+  readonly className?: string;
+  readonly isLoading?: boolean;
+  readonly [key: string]: unknown;
 }) {
   return (
     <motion.button

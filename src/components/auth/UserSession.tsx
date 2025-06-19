@@ -3,6 +3,7 @@
 import { useSession, signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 
 export function UserSession() {
@@ -36,16 +37,17 @@ export function UserSession() {
   return (
     <div className="flex items-center space-x-3">
       {/* User Avatar */}
-      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center overflow-hidden">
-        {session.user?.image ? (
-          <img 
+      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center overflow-hidden">        {session.user?.image ? (
+          <Image 
             src={session.user.image} 
-            alt={session.user.name || 'User'} 
+            alt={session.user.name ?? 'User'} 
+            width={32}
+            height={32}
             className="w-full h-full object-cover"
           />
         ) : (
           <span className="text-white text-sm font-medium">
-            {session.user?.name?.charAt(0) || session.user?.email?.charAt(0) || 'U'}
+            {session.user?.name?.charAt(0) ?? session.user?.email?.charAt(0) ?? 'U'}
           </span>
         )}
       </div>
@@ -53,7 +55,7 @@ export function UserSession() {
       {/* User Info */}
       <div className="hidden sm:block">
         <p className="text-sm font-medium text-white truncate max-w-32">
-          {session.user?.name || session.user?.email || t('user')}
+          {session.user?.name ?? session.user?.email ?? t('user')}
         </p>
       </div>
 

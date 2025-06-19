@@ -37,15 +37,13 @@ export default async function LocaleLayout({
   // Validate that the incoming `locale` parameter is valid
   if (!hasLocale(routing.locales, locale)) {
     notFound();
-  }  // Providing all messages to the client
-  // side is the easiest way to get started
+  }  // Providing all messages to the client  // side is the easiest way to get started
   const messages = await getMessages();
 
   return (
     <html lang={locale}>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      ><ThemeProvider>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ThemeProvider>
           <NavigationLoader />
           <NextIntlClientProvider messages={messages}>
             <Header />

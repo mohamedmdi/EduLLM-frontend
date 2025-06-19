@@ -2,11 +2,16 @@
 
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { generateUserId, setUserAuth } from "@/lib/auth-utils";
 import { Button } from "@/components/ui/button";
 
 export function SignInForm() {
   const t = useTranslations("SignIn");
+  const searchParams = useSearchParams();
+  const returnTo = searchParams.get('returnTo');
+  
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<{
     type: "success" | "error";
@@ -18,11 +23,10 @@ export function SignInForm() {
     setMessage(null);
 
     try {
-      setMessage({ type: "success", text: t("authenticating", { provider }) });
-
-      // Use NextAuth signIn function for real OAuth
+      setMessage({ type: "success", text: t("authenticating", { provider }) });      // Use NextAuth signIn function for real OAuth
+      const callbackUrl = returnTo ? `/${returnTo}` : "/chat";
       const result = await signIn(provider, {
-        callbackUrl: "/chat",
+        callbackUrl,
         redirect: false,
       });
 
@@ -46,27 +50,14 @@ export function SignInForm() {
     setMessage({ type: "success", text: t("settingUpGuest") });
 
     // Brief delay for UX
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));    // Generate a unique guest ID using auth utils
+    const guestId = generateUserId('guest');
+    setUserAuth(guestId, 'guest');
+      console.log(`Continue as guest, unique ID: ${guestId}`);
 
-    // Generate a unique guest ID and store it in localStorage
-    const guestId = `guest_${Date.now()}_${Math.random()
-      .toString(36)
-      .substr(2, 9)}`;
-    const guestData = {
-      id: guestId,
-      provider: "guest",
-      email: "guest@local",
-      name: t("guestUser"),
-      signedInAt: new Date().toISOString(),
-    };
-
-    localStorage.setItem("userId", guestId);
-    localStorage.setItem("userProvider", "guest");
-    localStorage.setItem("userEmail", guestData.email);
-    localStorage.setItem("userName", guestData.name);
-    localStorage.setItem("signedInAt", guestData.signedInAt);
-
-    window.location.href = "/chat";
+    // Redirect based on returnTo parameter or default to chat
+    const redirectPath = returnTo ? `/${returnTo}` : "/chat";
+    window.location.href = redirectPath;
   };
   return (
     <div className="space-y-6">

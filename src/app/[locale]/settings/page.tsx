@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import Image from "next/image";
 import { isAuthenticated, getUserInfo } from "@/lib/auth-utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,18 +28,27 @@ import {
   HardDrive,
   Loader2,
 } from "lucide-react";
-import { getUserFiles, deleteUserFile } from "@/lib/file-utils";
 
 interface UploadedFile {
   file: string;
   hash: string;
 }
 
+interface ExtendedUserInfo {
+  userId: string;
+  provider: string;
+  isGuest: boolean;
+  uniqueId?: string;
+  name?: string;
+  email?: string;
+  avatar?: string;
+}
+
 export default function SettingsPage() {
   const t = useTranslations();
   const locale = useLocale();
   const [authChecked, setAuthChecked] = useState(false);
-  const [userInfo, setUserInfo] = useState<any>(null);
+  const [userInfo, setUserInfo] = useState<ExtendedUserInfo | null>(null);
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingFiles, setDeletingFiles] = useState<Set<string>>(new Set());
@@ -71,19 +81,16 @@ export default function SettingsPage() {
         const data = await res.json();
 
         if (!res.ok || !data.success) {
-          throw new Error(data.message || "Failed to fetch files");
+          throw new Error(data.message ?? "Failed to fetch files");
         }
 
         console.log("Fetched files:", data.files);
-        setFiles(data.files);
-      } catch (err: any) {
+        setFiles(data.files);      } catch (err: unknown) {
         console.error("Error fetching files:", err);
       } finally {
         setLoading(false);
       }
-    };
-
-    authenticateAndFetchFiles();
+    };    authenticateAndFetchFiles();
   }, [locale]);
 
   const handleDeleteFile = async (hash: string) => {
@@ -121,36 +128,11 @@ export default function SettingsPage() {
       });
     }
   };
-
-  const formatFileSize = (bytes: number): string => {
-    const sizes = ["B", "KB", "MB", "GB"];
-    if (bytes === 0) return "0 B";
-    const i = Math.floor(Math.log(bytes) / Math.log(1024));
-    return `${(bytes / Math.pow(1024, i)).toFixed(1)} ${sizes[i]}`;
-  };
-
   const getFileIcon = (fileType: string) => {
     if (fileType.includes("pdf")) return "📄";
     if (fileType.includes("word") || fileType.includes("doc")) return "📝";
     if (fileType.includes("text")) return "📋";
     return "📎";
-  };
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "processed":
-        return (
-          <Badge variant="default" className="bg-green-500">
-            Processed
-          </Badge>
-        );
-      case "processing":
-        return <Badge variant="secondary">Processing</Badge>;
-      case "error":
-        return <Badge variant="destructive">Error</Badge>;
-      default:
-        return <Badge variant="outline">Unknown</Badge>;
-    }
   };
 
   // Don't render anything until auth is checked
@@ -181,26 +163,25 @@ export default function SettingsPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center gap-4">
-              {userInfo?.avatar ? (
-                <img
+            <div className="flex items-center gap-4">              {userInfo?.avatar ? (
+                <Image
                   src={userInfo.avatar}
                   alt="User Avatar"
+                  width={64}
+                  height={64}
                   className="w-16 h-16 rounded-full border-2 border-emerald-400/40"
                 />
               ) : (
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xl font-bold">
-                  {userInfo?.name?.charAt(0)?.toUpperCase() || (
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xl font-bold">                  {userInfo?.name?.charAt(0)?.toUpperCase() ?? (
                     <User className="w-8 h-8" />
                   )}
                 </div>
               )}
-              <div>
-                <h3 className="text-lg font-semibold text-foreground">
-                  {userInfo?.name || "Anonymous User"}
+              <div>                <h3 className="text-lg font-semibold text-foreground">
+                  {userInfo?.name ?? "Anonymous User"}
                 </h3>
                 <p className="text-muted-foreground">
-                  {userInfo?.email || "No email"}
+                  {userInfo?.email ?? "No email"}
                 </p>
                 <p className="text-sm text-muted-foreground">
                   ID: {userInfo?.uniqueId}
@@ -266,21 +247,19 @@ export default function SettingsPage() {
                     <div
                       key={file.hash}
                       className="flex items-center justify-between p-4 border border-border rounded-lg bg-muted/50"
-                    >
-                      <div className="flex items-center gap-3">
+                    >                      <div className="flex items-center gap-3">
                         <div className="text-2xl">
-                          {getFileIcon(file.file.split(".").pop() || "file")}
+                          {getFileIcon(file.file.split(".").pop() ?? "file")}
                         </div>
                         <div>
                           <h4 className="font-medium text-foreground">
-                            {file.file || file.file}
+                            {file.file}
                           </h4>
                           <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             <span className="flex items-center gap-1">
                               <Calendar className="w-3 h-3" />
-                              {/*  {new Date(file.uploadDate).toLocaleDateString()} */}
+                              Uploaded
                             </span>
-                            {/* {getStatusBadge(file.status)} */}
                           </div>
                         </div>
                       </div>

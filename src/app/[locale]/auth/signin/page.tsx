@@ -1,12 +1,10 @@
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { GraduationCap, ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { GraduationCap } from 'lucide-react';
 import { SignInForm } from '@/components/auth/SignInForm';
 
 type Props = {
-  params: Promise<{ locale: string }>;
+  readonly params: Promise<{ locale: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -19,8 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function SignInPage({ params }: Props) {
-  const { locale } = await params;
+export default async function SignInPage() {
   const t = await getTranslations('SignIn');
   return (
     <div className="min-h-[calc(100vh-5rem)] bg-background">

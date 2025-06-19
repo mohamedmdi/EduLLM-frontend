@@ -7,7 +7,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { usePathname } from "next/navigation";
 import SimpleLanguageSwitcher from "./SimpleLanguageSwitcher";
 import { useEffect, useState } from "react";
-import { isAuthenticated, getUserInfo, clearUserAuth } from "@/lib/auth-utils";
+import { isAuthenticated, clearUserAuth } from "@/lib/auth-utils";
 import { SimpleThemeToggle } from "./ThemeSwitcher";
 
 export default function Header() {
@@ -15,7 +15,6 @@ export default function Header() {
   const locale = useLocale();
   const pathname = usePathname();
   const [auth, setAuth] = useState(false);
-  const [user, setUser] = useState<any>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -23,40 +22,22 @@ export default function Header() {
   const isRTL = mounted && locale === 'ar';
   // Check if we're on the home page
   const isHomePage = pathname === `/${locale}` || pathname === `/${locale}/`;
-
   useEffect(() => {
     setMounted(true);
     const authed = isAuthenticated();
     setAuth(authed);
-    setUser(authed ? getUserInfo() : null);
   }, [pathname]);
 
   const handleLogout = () => {
     clearUserAuth();
     window.location.href = `/${locale}/`;
   };
-
   const renderAvatar = () => {
-    if (user?.avatar) {
-      return (
-        <img
-          src={user.avatar}
-          alt="User Avatar"
-          className="object-cover border-2 rounded-full w-9 h-9 border-emerald-400/40"
-        />
-      );
-    } else if (user?.name) {
-      return (
-        <span className="flex items-center justify-center text-lg font-bold text-white border-2 rounded-full w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 border-emerald-400/40">
-          {user.name.charAt(0).toUpperCase()}
-        </span>
-      );
-    } else {
-      return (
-        <span className="flex items-center justify-center border-2 rounded-full w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 border-emerald-400/40">
-          <User className="w-5 h-5 text-white" />
-        </span>
-      );    }
+    return (
+      <span className="flex items-center justify-center border-2 rounded-full w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 border-emerald-400/40">
+        <User className="w-5 h-5 text-white" />
+      </span>
+    );
   };
 
   return (

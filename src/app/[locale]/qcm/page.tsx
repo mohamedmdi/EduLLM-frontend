@@ -1,14 +1,12 @@
-
 "use client";
 
 import type React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { useChat } from "@/hooks/useChat";
-import { isAuthenticated, getUserInfo } from "@/lib/auth-utils";
-import { Loading } from "@/components/ui/loading";
+import AuthGuard from "@/components/auth/AuthGuard";
 
 // Lazy load heavy components
 const ScrollArea = dynamic(() => import("@/components/ui/scroll-area").then(mod => ({ default: mod.ScrollArea })), {
@@ -49,24 +47,21 @@ const Avatar = dynamic(() => import("@/components/ui/avatar").then(mod => ({ def
 const AvatarFallback = dynamic(() => import("@/components/ui/avatar").then(mod => ({ default: mod.AvatarFallback })));
 
 export default function QCMPage() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading, isSubmitting } =
-    useChat();const [files, setFiles] = useState<FileList | undefined>(undefined);
-  const [authChecked, setAuthChecked] = useState(false);
+  return (
+    <AuthGuard loadingVariant="chat">
+      <QCMPageContent />
+    </AuthGuard>
+  );
+}
+
+function QCMPageContent() {
+  const { messages, handleInputChange, handleSubmit, isLoading, isSubmitting } =
+    useChat();
+
+  const [files, setFiles] = useState<FileList | undefined>(undefined);
 
   const t = useTranslations();
   const locale = useLocale();
-  // Check authentication on component mount
-  useEffect(() => {    // QCM is now accessible to both authenticated and guest users
-    const isAuth = isAuthenticated();
-    if (isAuth) {
-      getUserInfo(); // Just verify auth, but don't store the info
-    }
-    // Guest users are automatically allowed
-    setAuthChecked(true);
-  }, [locale]);  // Don't render anything until auth is checked
-  if (!authChecked) {
-    return <Loading variant="chat" />;
-  }
   const handleFilesChange = (newFiles: FileList | undefined) => {
     setFiles(newFiles);
   };
@@ -241,16 +236,20 @@ export default function QCMPage() {
       </div>
       {/* Input Area */}
       <div className="fixed bottom-0 left-0 right-0 z-10 border-t border-slate-800/50 bg-slate-950/80 backdrop-blur-sm">
-        <div className="max-w-4xl px-6 pt-6 pb-2 mx-auto">          <FileInputArea
-            input={input}
-            onInputChange={handleInputChange}
-            onSubmit={handleSubmit}
-            files={files}
-            onFilesChange={handleFilesChange}
-            isLoading={isLoading || isSubmitting}
-            placeholder={t("qcm.placeholder")}
-            acceptedFileTypes=".pdf,.doc,.docx,.txt"
-          />
+        <div className="max-w-4xl px-6 pt-6 pb-2 mx-auto flex justify-center">
+          <div className="w-full flex justify-center">
+            <FileInputArea
+              input={""} // No text input
+              onInputChange={() => {}} // No-op
+              onSubmit={handleSubmit}
+              files={files}
+              onFilesChange={handleFilesChange}
+              isLoading={isLoading || isSubmitting}
+              placeholder={t("qcm.placeholder")}
+              acceptedFileTypes=".pdf,.doc,.docx,.txt"
+              className="w-full max-w-2xl h-40 text-xl border-2 border-dashed border-emerald-400 bg-slate-900/60 rounded-2xl flex items-center justify-center p-8"
+            />
+          </div>
         </div>
       </div>
     </div>

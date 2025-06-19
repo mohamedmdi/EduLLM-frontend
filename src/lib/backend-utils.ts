@@ -7,12 +7,12 @@ import { getUserId, isAuthenticated } from './auth-utils';
 export interface BackendRequestOptions {
   endpoint: string;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
-  data?: FormData | Record<string, any>;
+  data?: FormData | Record<string, unknown>;
   files?: FileList | File[];
   headers?: Record<string, string>;
 }
 
-export interface BackendResponse<T = any> {
+export interface BackendResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: string;
@@ -24,7 +24,7 @@ export interface BackendResponse<T = any> {
  * @param options Request options
  * @returns Promise with backend response
  */
-export async function makeBackendRequest<T = any>(
+export async function makeBackendRequest<T = unknown>(
   options: BackendRequestOptions
 ): Promise<BackendResponse<T>> {
   // Ensure user is authenticated
@@ -149,7 +149,7 @@ async function processResponse<T>(response: Response): Promise<BackendResponse<T
  */
 export async function uploadDocuments(
   files: FileList | File[],
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 ): Promise<BackendResponse> {
   const formData = new FormData();
   formData.append('action', 'upload');
@@ -232,10 +232,17 @@ export async function generateQCM(
   });
 }
 
+export interface UserFile {
+  file: string;
+  hash: string;
+  uploadDate?: string;
+  status?: string;
+}
+
 /**
  * Get all files uploaded by the authenticated user
  */
-export async function getUserFiles(): Promise<BackendResponse<{ files: any[] }>> {
+export async function getUserFiles(): Promise<BackendResponse<{ files: UserFile[] }>> {
   if (!isAuthenticated()) {
     return {
       success: false,
@@ -306,7 +313,7 @@ export async function downloadUserFile(fileId: string): Promise<BackendResponse<
       status: 401
     };
   }
-  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:8000';
   const userId = getUserId();
   
   if (!userId) {
