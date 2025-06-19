@@ -8,6 +8,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { getUserInfo, isAuthenticated } from "@/lib/auth-utils";
 import { useChat } from "@/hooks/useChat";
 import { Loading } from "@/components/ui/loading";
+import ReactMarkdown from "react-markdown";
 
 // Lazy load heavy components
 const ScrollArea = dynamic(
@@ -138,7 +139,6 @@ export default function ChatPage() {
     setFiles(newFiles);
   };
 
-
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleSubmit(e, {
@@ -164,7 +164,6 @@ export default function ChatPage() {
       color: "from-purple-500 to-purple-600",
     },
   ];
-
 
   return (
     <div className="min-h-screen bg-background">
@@ -237,13 +236,12 @@ export default function ChatPage() {
                       </div>
                     )}{" "}
                     <div className="max-w-[80%] bg-card border border-border rounded-2xl p-4">
-                      {" "}
                       <div
                         className={`whitespace-pre-wrap text-base leading-relaxed ${
                           isRTL ? "text-right" : "text-left"
                         } text-card-foreground`}
                       >
-                        {message.content}
+                        <ReactMarkdown>{message.content}</ReactMarkdown>
                       </div>
                       {/* Render attachments */}{" "}
                       {message.experimental_attachments && (
