@@ -6,7 +6,8 @@
     "settings": "Paramètres",
     "logout": "Déconnexion",
     "chat": "Chat",
-    "qcm": "Générateur QCM"
+    "qcm": "Générateur QCM",
+    "suggest": "Suggestions"
   },
   "home": {
     "poweredByAI": "Alimenté par l'IA",

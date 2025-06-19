@@ -6,7 +6,8 @@
     "settings": "Settings",
     "logout": "Logout",
     "chat": "Chat",
-    "qcm": "QCM Generator"
+    "qcm": "QCM Generator",
+    "suggest": "Suggestions"
   },
   "home": {
     "poweredByAI": "Powered by AI",

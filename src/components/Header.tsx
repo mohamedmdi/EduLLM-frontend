@@ -108,6 +108,11 @@ export default function Header() {
                     {t("nav.qcm") || "QCM"}
                   </Button>
                 </Link>
+                <Link href={`/${locale}/suggest`}>
+                  <Button className="px-4 py-2 text-white rounded-full cursor-pointer bg-transparent border border-purple-500 hover:bg-purple-500 transition-colors">
+                    {t("nav.suggest") || "Suggestions"}
+                  </Button>
+                </Link>
               </>
             )}
 
