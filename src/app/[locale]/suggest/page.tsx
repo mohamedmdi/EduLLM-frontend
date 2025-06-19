@@ -62,8 +62,29 @@ export default function SuggestPage() {
         <span>🔎</span> {t("nav.suggest") || "Suggestions"}
       </h1>
       {loading && (
-        <div className="animate-pulse text-muted-foreground">
-          Loading suggestions...
+        <div className="space-y-8">
+          {[1, 2].map((_, idx) => (
+            <div
+              key={idx}
+              className="bg-white dark:bg-slate-900 rounded-xl shadow p-6 border border-emerald-100 dark:border-slate-700 animate-pulse"
+            >
+              <div className="h-6 w-1/3 bg-emerald-100 dark:bg-slate-700 rounded mb-4 shimmer" />
+              <ul className="space-y-4">
+                {[1, 2, 3].map((_, i) => (
+                  <li
+                    key={i}
+                    className="border-b last:border-b-0 border-slate-200 dark:border-slate-700 pb-4 last:pb-0"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-5 h-5 bg-slate-200 dark:bg-slate-800 rounded mr-1 shimmer" />
+                      <div className="h-5 w-1/4 bg-slate-200 dark:bg-slate-800 rounded shimmer" />
+                    </div>
+                    <div className="h-4 w-2/3 bg-slate-100 dark:bg-slate-700 rounded shimmer" />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       )}
       {error && <div className="text-red-500 font-semibold">{error}</div>}
@@ -128,4 +149,36 @@ export default function SuggestPage() {
       )}
     </div>
   );
+}
+
+// Add shimmer effect via global style (Tailwind doesn't have shimmer by default)
+// You can move this to your global CSS if you prefer
+if (typeof window !== "undefined") {
+  const styleId = "skeleton-shimmer-style";
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.innerHTML = `
+      .shimmer {
+        position: relative;
+        overflow: hidden;
+      }
+      .shimmer::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -150px;
+        width: 150px;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        animation: shimmer 1.2s infinite;
+      }
+      @keyframes shimmer {
+        100% {
+          transform: translateX(100%);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
 }
