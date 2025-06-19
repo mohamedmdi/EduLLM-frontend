@@ -4,7 +4,10 @@
     "getStarted": "🚀 Commencer",
     "back": "Retour",
     "settings": "Paramètres",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "chat": "Chat",
+    "qcm": "Générateur QCM",
+    "suggest": "Suggestions"
   },
   "home": {
     "poweredByAI": "Alimenté par l'IA",

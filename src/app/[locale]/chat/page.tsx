@@ -1,12 +1,14 @@
 "use client";
 
 import type React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { useChat } from "@/hooks/useChat";
 import AuthGuard from "@/components/auth/AuthGuard";
+import { Loading } from "@/components/ui/loading";
+import ReactMarkdown from "react-markdown";
 
 // Lazy load heavy components
 const ScrollArea = dynamic(
@@ -165,6 +167,7 @@ function ChatPageContent() {
       color: "from-purple-500 to-purple-600",
     },
   ];
+
   return (
     <div className="min-h-screen bg-background">
       {" "}
@@ -236,13 +239,12 @@ function ChatPageContent() {
                       </div>
                     )}{" "}
                     <div className="max-w-[80%] bg-card border border-border rounded-2xl p-4">
-                      {" "}
                       <div
                         className={`whitespace-pre-wrap text-base leading-relaxed ${
                           isRTL ? "text-right" : "text-left"
                         } text-card-foreground`}
                       >
-                        {message.content}
+                        <ReactMarkdown>{message.content}</ReactMarkdown>
                       </div>
                       {/* Render attachments */}{" "}
                       {message.experimental_attachments && (

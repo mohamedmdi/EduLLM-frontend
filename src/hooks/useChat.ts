@@ -20,13 +20,14 @@ export function useChat() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
-  };
-  const handleSubmit = async (
+  };  const handleSubmit = async (
     e: React.FormEvent,
     options?: { experimental_attachments?: FileList }
   ) => {
     e.preventDefault();
-    if (!input.trim() && !options?.experimental_attachments?.length) return;    // Get user ID for backend request - supports both authenticated and guest users
+    if (!input.trim() && !options?.experimental_attachments?.length) return;
+
+    // Get user ID for backend request - supports both authenticated and guest users
     let userId = getUserId();
     if (!userId) {
       // Create a guest user ID if not authenticated
@@ -57,12 +58,13 @@ export function useChat() {
     setIsSubmitting(true);
 
     try {
-      const formData = new FormData();
-      formData.append("query", userMessage.content);
+      const formData = new FormData();      formData.append("query", userMessage.content);
       formData.append("userId", userId); // Include user ID
 
-      if (options?.experimental_attachments?.[0]) {
-        formData.append("file", options.experimental_attachments[0]);
+      if (options?.experimental_attachments) {
+        Array.from(options.experimental_attachments).forEach((file) => {
+          formData.append("file", file);
+        });
       }
 
       const res = await fetch("/api/chat", {
