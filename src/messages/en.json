@@ -4,7 +4,9 @@
     "getStarted": "🚀 Get Started",
     "back": "Back",
     "settings": "Settings",
-    "logout": "Logout"
+    "logout": "Logout",
+    "chat": "Chat",
+    "qcm": "QCM Generator"
   },
   "home": {
     "poweredByAI": "Powered by AI",

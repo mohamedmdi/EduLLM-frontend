@@ -4,7 +4,9 @@
     "getStarted": "🚀 Commencer",
     "back": "Retour",
     "settings": "Paramètres",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "chat": "Chat",
+    "qcm": "Générateur QCM"
   },
   "home": {
     "poweredByAI": "Alimenté par l'IA",

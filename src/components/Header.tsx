@@ -95,6 +95,22 @@ export default function Header() {
               </>
             )}
 
+            {/* Show Chat and QCM buttons for authenticated users (not on home page) */}
+            {auth && !isHomePage && (
+              <>
+                <Link href={`/${locale}/chat`}>
+                  <Button className="px-4 py-2 text-white rounded-full cursor-pointer bg-transparent border border-emerald-500 hover:bg-emerald-500 transition-colors">
+                    {t("nav.chat") || "Chat"}
+                  </Button>
+                </Link>
+                <Link href={`/${locale}/qcm`}>
+                  <Button className="px-4 py-2 text-white rounded-full cursor-pointer bg-transparent border border-blue-500 hover:bg-blue-500 transition-colors">
+                    {t("nav.qcm") || "QCM"}
+                  </Button>
+                </Link>
+              </>
+            )}
+
             {/* Show user avatar with dropdown for authenticated users */}
             {auth && (
               <div className="relative">
@@ -103,7 +119,8 @@ export default function Header() {
                   onClick={() => setMenuOpen((v) => !v)}
                 >
                   {renderAvatar()}
-                </button>                {menuOpen && (
+                </button>
+                {menuOpen && (
                   <div className={`absolute z-50 w-40 mt-2 border shadow-lg bg-card border-border rounded-xl${isRTL ? ' left-0' : ' right-0'}`}>
                     <Link
                       href={`/${locale}/settings`}
@@ -111,7 +128,8 @@ export default function Header() {
                       onClick={() => setMenuOpen(false)}
                     >
                       {t("nav.settings") || "Settings"}
-                    </Link>                    <button
+                    </Link>
+                    <button
                       className={`block w-full px-4 py-2 text-sm text-red-400 cursor-pointer hover:bg-muted rounded-b-xl${isRTL ? ' text-right' : ' text-left'}`}
                       onClick={handleLogout}
                     >
