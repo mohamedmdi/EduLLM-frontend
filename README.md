@@ -1,145 +1,107 @@
 # EduLLM Frontend
 
-<div align="center">
+![Next.js](https://img.shields.io/badge/Next.js-15.3.3-black.svg)
+![React](https://img.shields.io/badge/React-19.0.0-blue.svg)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.x-teal.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-![EduLLM Logo](https://img.shields.io/badge/EduLLM-AI%20Learning%20Companion-emerald?style=for-the-badge&logo=graduation-cap)
+A modern, multilingual AI-powered educational frontend that provides an intuitive interface for document-based learning, intelligent Q&A, and interactive quiz generation with comprehensive internationalization support.
 
-[![Next.js](https://img.shields.io/badge/Next.js-15.3.3-black?style=flat-square&logo=next.js)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19.0.0-blue?style=flat-square&logo=react)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.x-teal?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
-[![i18n](https://img.shields.io/badge/i18n-3%20Languages-green?style=flat-square)](https://next-intl.dev/)
+## 🎯 Features
 
-**Your AI-Powered Learning Companion**
+- **🤖 AI-Powered Chat Interface**: Interactive learning conversations with document-aware AI
+- **📝 QCM Generator**: Create custom multiple-choice quizzes from uploaded documents
+- **📁 File Manager**: Upload, manage, and organize educational documents with real-time processing
+- **🌍 Multilingual Support**: Full internationalization with English, French, and Arabic (RTL)
+- **🔐 OAuth Authentication**: Secure login with Google and Microsoft accounts + Guest mode
+- **🎨 Modern UI/UX**: Dark/light themes with glassmorphism design and smooth animations
+- **📱 Responsive Design**: Mobile-first approach with optimized layouts for all devices
+- **⚡ Real-time Streaming**: Live AI response streaming for enhanced user experience
 
-A modern, multilingual educational platform powered by artificial intelligence, supporting English, French, and Arabic with full RTL support.
+## 🏗️ Architecture
 
-[🚀 Demo](#demo) • [📖 Documentation](#documentation) • [🌟 Features](#features) • [🛠️ Installation](#installation)
+The frontend is built with a modern, scalable architecture using Next.js App Router:
 
-</div>
-
----
-
-## 📋 Table of Contents
-
-- [🌟 Features](#features)
-- [🚀 Demo](#demo)
-- [🛠️ Installation](#installation)
-- [🔧 Development](#development)
-- [🌍 Internationalization](#internationalization)
-- [📁 Project Structure](#project-structure)
-- [🎨 Design System](#design-system)
-- [🔌 API Integration](#api-integration)
-- [📚 Documentation (Français)](#documentation-français)
-- [🤝 Contributing](#contributing)
-- [📄 License](#license)
-
----
-
-## 🌟 Features
-
-### 🎓 Core Learning Features
-- **AI Chat Assistant**: Interactive learning conversations with AI
-- **QCM Generator**: Create custom multiple-choice quizzes from documents
-- **Document Upload**: Support for PDF, DOC, DOCX, and TXT files
-- **Instant Feedback**: Real-time AI responses and explanations
-
-### 🌍 Multilingual Support
-- **3 Languages**: English, French, and Arabic
-- **RTL Support**: Full right-to-left layout for Arabic
-- **Dynamic Switching**: Seamless language switching with URL preservation
-
-### 🔐 Authentication System
-- **OAuth Integration**: Sign in with Google and Microsoft accounts
-- **Guest Mode**: Use the application without creating an account
-- **Secure Sessions**: JWT-based authentication with database storage
-- **User Profiles**: Automatic profile data retrieval from OAuth providers
-- **Localized Content**: All UI elements and messages translated
-
-### 🎨 Modern Design
-- **Theme System**: Light and dark themes with system preference detection
-- **Dynamic Theming**: Real-time theme switching with persistent settings
-- **Glassmorphism UI**: Modern glass-effect design with backdrop blur
-- **Responsive**: Mobile-first design that works on all devices
-- **Animations**: Smooth transitions and micro-interactions
-
-### 🔧 Technical Excellence
-- **Next.js 15**: Latest App Router with Turbopack
-- **TypeScript**: Full type safety throughout the application
-- **Tailwind CSS**: Utility-first CSS framework with custom RTL support
-- **Component Library**: Reusable UI components with Radix UI
-
----
-
-## 🚀 Demo
-
-Visit the live demo at: `http://localhost:3000` (after installation)
-
-### Screenshots
-
-**English Interface**
 ```
-🏠 Home → 💬 Chat → 📝 QCM
+EduLLM-frontend/
+├── src/
+│   ├── app/                      # Next.js App Router
+│   │   ├── [locale]/            # Internationalized routes
+│   │   │   ├── page.tsx         # Home page
+│   │   │   ├── layout.tsx       # Localized layout
+│   │   │   ├── auth/            # Authentication pages
+│   │   │   ├── chat/            # AI Chat interface
+│   │   │   ├── qcm/             # Quiz generation
+│   │   │   └── settings/        # File management
+│   │   ├── api/                 # API routes
+│   │   │   ├── auth/            # NextAuth endpoints
+│   │   │   ├── chat/            # Chat proxy
+│   │   │   └── documents/       # File operations
+│   │   └── globals.css          # Global styles
+│   ├── components/              # React components
+│   │   ├── Header.tsx           # Navigation
+│   │   ├── auth/                # Authentication UI
+│   │   ├── ui/                  # Reusable UI components
+│   │   └── ThemeProvider.tsx    # Theme management
+│   ├── hooks/                   # Custom React hooks
+│   ├── i18n/                    # Internationalization config
+│   ├── lib/                     # Utilities and configurations
+│   ├── messages/                # Translation files
+│   └── middleware.ts            # Next.js middleware
+├── prisma/                      # Database schema
+├── public/                      # Static assets
+└── tailwind.config.js          # Styling configuration
 ```
 
-**Interface Française**
-```
-🏠 Accueil → 💬 Discussion → 📝 QCM
-```
-
-**واجهة عربية**
-```
-🏠 الرئيسية ← 💬 المحادثة ← 📝 الأسئلة
-```
-
----
-
-## 🛠️ Installation
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- **Node.js** 18.0 or higher
-- **npm** 9.0 or higher (or **yarn**/**pnpm**)
-- **Git** for version control
+- Node.js 18.0+
+- npm 9.0+ (or pnpm/yarn)
+- Git
 
-### Quick Start
+### Installation
 
-```bash
-# Clone the repository
-git clone https://github.com/mohamedmdi/EduLLM-frontend.git
-cd EduLLM-frontend
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/mohamedmdi/EduLLM-frontend.git
+   cd EduLLM-frontend
+   ```
 
-# Install dependencies
-npm install
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-# Set up the database
-npx prisma db push
+3. **Set up the database**
+   ```bash
+   npx prisma db push
+   ```
 
-# Start development server
-npm run dev
-```
+4. **Start development server**
+   ```bash
+   npm run dev
+   ```
 
-The application will be available at `http://localhost:3000`
+5. **Open your browser**
+   Navigate to `http://localhost:3000`
 
 ### Environment Setup
 
-#### Basic Setup (Guest Mode Only)
-No environment variables required for basic functionality with guest mode.
+#### Basic Usage (Guest Mode)
+No environment variables required for basic functionality.
 
-#### OAuth Setup (Recommended)
-For full authentication with Google and Microsoft:
-
+#### OAuth Authentication (Recommended)
 ```bash
 # Copy environment template
 cp .env.example .env
-
-# Edit .env with your OAuth credentials
-# See OAUTH_SETUP.md for detailed instructions
 ```
 
-**Required OAuth Environment Variables:**
+**Required Environment Variables:**
 ```env
-NEXTAUTH_SECRET=your-secret-key
+NEXTAUTH_SECRET=your-secret-key-here
 NEXTAUTH_URL=http://localhost:3000
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
@@ -148,90 +110,131 @@ AZURE_AD_CLIENT_SECRET=your-azure-ad-client-secret
 DATABASE_URL=file:./dev.db
 ```
 
-📖 **See [OAUTH_SETUP.md](./OAUTH_SETUP.md) for complete OAuth configuration guide**
+📖 **See [OAUTH_SETUP.md](./OAUTH_SETUP.md) for complete OAuth configuration**
 
----
+## 📚 API Integration
 
-## 🔧 Development
+### Backend Connection
+
+The frontend connects to the EduLLM backend API at `http://localhost:8000`:
+
+```typescript
+// API Routes Configuration
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+
+// Chat API endpoint
+POST /api/chat
+// File management
+GET /api/documents
+DELETE /api/documents
+// QCM generation
+POST /api/qcm
+```
 
 ### Available Scripts
 
 ```bash
-# Development with Turbopack (faster)
-npm run dev
+# Development
+npm run dev              # Start with Turbopack (faster)
+npm run dev:fast         # Experimental app directory mode
 
-# Production build
-npm run build
+# Production
+npm run build            # Create production build
+npm run build:analyze    # Build with bundle analyzer
+npm run start            # Start production server
 
-# Start production server
-npm run start
+# Database
+npm run db:push          # Apply schema changes
+npm run db:studio        # Browse database in browser
+npm run db:generate      # Regenerate Prisma client
+npm run db:migrate       # Run database migrations
 
-# Lint code
-npm run lint
-
-# Type checking
-npx tsc --noEmit
-
-# Database operations
-npx prisma db push        # Apply schema changes
-npx prisma studio         # View database in browser
-npx prisma generate       # Regenerate Prisma client
+# Code Quality
+npm run lint             # ESLint checking
+npm run auth:setup       # OAuth setup guide
 ```
 
-### Development Workflow
+## ⚙️ Configuration
 
-1. **Start the development server**:
-   ```bash
-   npm run dev
-   ```
+### Environment Variables
 
-2. **Test authentication** (requires OAuth setup):
-   - Visit `/en/auth/signin` to test login
-   - Try Google and Microsoft OAuth
-   - Test guest mode functionality
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `NEXTAUTH_SECRET` | Secret key for NextAuth.js | Yes (OAuth) |
+| `NEXTAUTH_URL` | Application URL | Yes (OAuth) |
+| `GOOGLE_CLIENT_ID` | Google OAuth client ID | No |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | No |
+| `AZURE_AD_CLIENT_ID` | Microsoft Azure AD client ID | No |
+| `AZURE_AD_CLIENT_SECRET` | Microsoft Azure AD client secret | No |
+| `DATABASE_URL` | Database connection string | Yes |
+| `NEXT_PUBLIC_BACKEND_URL` | Backend API URL | No |
 
-3. **Test in multiple languages**:
-   - English: `http://localhost:3000/en`
-   - French: `http://localhost:3000/fr`
-   - Arabic: `http://localhost:3000/ar`
+### Next.js Configuration
 
-4. **Build and test**:
-   ```bash
-   npm run build
-   npm run start
-   ```
-
-### Authentication Testing
-
-1. **Guest Mode**: Works immediately without setup
-2. **OAuth Mode**: Requires environment variables (see OAUTH_SETUP.md)
-3. **Database**: SQLite file created automatically at `./dev.db`
-
----
+```typescript
+// next.config.ts
+const nextConfig = {
+  experimental: {
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
+  },
+  webpack: (config) => {
+    config.resolve.alias.canvas = false;
+    return config;
+  },
+};
+```
 
 ## 🌍 Internationalization
 
 ### Supported Languages
 
-| Language | Code | Direction | Status |
-|----------|------|-----------|--------|
-| English  | `en` | LTR       | ✅ Complete |
-| Français | `fr` | LTR       | ✅ Complete |
-| العربية  | `ar` | RTL       | ✅ Complete |
+| Language | Code | Direction | Completion |
+|----------|------|-----------|------------|
+| English  | `en` | LTR       | ✅ 100% |
+| Français | `fr` | LTR       | ✅ 100% |
+| العربية  | `ar` | RTL       | ✅ 100% |
+
+### Translation System
+
+```typescript
+// Using translations in components
+import { useTranslations } from 'next-intl';
+
+function MyComponent() {
+  const t = useTranslations('namespace');
+  
+  return (
+    <h1>{t('title')}</h1>
+  );
+}
+```
+
+### RTL Support Features
+
+- **Automatic Layout Flip**: CSS logical properties for RTL
+- **Icon Mirroring**: Directional icons flip automatically
+- **Text Alignment**: Proper right-to-left text flow
+- **Form Controls**: RTL-aware input and button positioning
 
 ### Adding New Languages
 
 1. **Create translation file**:
    ```bash
-   # Add new language file
-   touch src/messages/es.json  # for Spanish
+   touch src/messages/es.json  # Spanish
    ```
 
 2. **Update routing configuration**:
    ```typescript
    // src/i18n/routing.ts
    export const routing = createNavigation({
-     locales: ['en', 'fr', 'ar', 'es'],  // Add 'es'
+     locales: ['en', 'fr', 'ar', 'es'],
      defaultLocale: 'en'
    });
    ```
@@ -240,258 +243,451 @@ npx prisma generate       # Regenerate Prisma client
    ```json
    {
      "nav": {
-       "signIn": "Iniciar Sesión",
-       "getStarted": "Comenzar"
+       "home": "Inicio",
+       "chat": "Chat",
+       "qcm": "Cuestionario"
      }
    }
-   ```
+   ```## 🎨 Design System
 
-### RTL Support
+### Theme Architecture
 
-The application automatically switches to RTL layout for Arabic:
-- Text alignment: right-to-left
-- Layout direction: reversed
-- Icons and buttons: mirrored positioning
-- Forms and inputs: proper RTL behavior
-
----
-
-## 📁 Project Structure
-
-```
-edullm-frontend/
-├── 📁 public/                     # Static assets
-├── 📁 prisma/                     # Database schema
-│   └── 📄 schema.prisma          # Prisma schema file
-├── 📁 src/                        # Source code
-│   ├── 📁 app/                    # Next.js App Router
-│   │   ├── 📁 [locale]/          # Localized routes
-│   │   │   ├── 📄 layout.tsx     # Localized layout
-│   │   │   ├── 📄 page.tsx       # Home page
-│   │   │   ├── 📁 auth/          # Authentication pages
-│   │   │   │   ├── 📁 signin/    # Sign in page
-│   │   │   │   ├── 📁 signup/    # Sign up page
-│   │   │   │   └── 📁 error/     # Auth error page
-│   │   │   ├── 📁 chat/          # Chat feature
-│   │   │   └── 📁 qcm/           # QCM feature
-│   │   ├── 📁 api/               # API routes
-│   │   │   └── 📁 auth/          # NextAuth API
-│   │   ├── 📄 globals.css        # Global styles
-│   │   └── 📄 layout.tsx         # Root layout
-│   ├── 📁 components/            # React components
-│   │   ├── 📄 Header.tsx         # Navigation header
-│   │   ├── 📄 SimpleLanguageSwitcher.tsx
-│   │   ├── 📁 auth/              # Auth components
-│   │   │   ├── 📄 SignInForm.tsx # OAuth sign-in form
-│   │   │   ├── 📄 SignUpForm.tsx # OAuth sign-up form
-│   │   │   ├── 📄 UserSession.tsx # User session display
-│   │   │   └── � AuthProvider.tsx # Session provider
-│   │   └── �📁 ui/                # UI components
-│   ├── 📁 hooks/                 # Custom React hooks
-│   ├── 📁 i18n/                  # Internationalization
-│   ├── 📁 lib/                   # Utility functions
-│   │   ├── 📄 auth.ts            # NextAuth configuration
-│   │   └── 📄 prisma.ts          # Prisma client
-│   ├── 📁 messages/              # Translation files
-│   └── 📄 middleware.ts          # Next.js middleware
-├── 📄 next.config.ts             # Next.js configuration
-├── 📄 tailwind.config.js         # Tailwind configuration
-└── 📄 package.json               # Dependencies
-```
-
----
-
-## 🎨 Design System
-
-### Theme System
-
-EduLLM supports both light and dark themes with system preference detection:
+EduLLM features a comprehensive theming system with light and dark modes:
 
 ```typescript
-// Theme options
-type Theme = 'light' | 'dark' | 'system';
-
-// Theme switching
-const { theme, actualTheme, setTheme, toggleTheme } = useTheme();
-```
-
-**Theme Features:**
-- **Auto Detection**: Follows system preference by default
-- **Persistent Storage**: Theme choice saved in localStorage
-- **Real-time Switching**: Instant theme changes without reload
-- **CSS Variables**: All colors use custom properties for seamless theming
-
-### Color Palette
-
-#### Light Theme
-```css
---background: oklch(0.995 0 0)      /* Pure white background */
---foreground: oklch(0.165 0 0)      /* Dark text */
---card: oklch(0.995 0 0)            /* Card background */
---border: oklch(0.912 0 0)          /* Border color */
---muted: oklch(0.96 0 0)            /* Muted backgrounds */
-```
-
-#### Dark Theme
-```css
---background: oklch(0.135 0 0)      /* Dark background */
---foreground: oklch(0.975 0 0)      /* Light text */
---card: oklch(0.195 0 0)            /* Card background */
---border: oklch(0.259 0 0)          /* Border color */
---muted: oklch(0.259 0 0)           /* Muted backgrounds */
-```
-
-#### Accent Colors (Both Themes)
-```css
-/* Primary Colors */
---emerald-400: #34d399
---teal-400: #2dd4bf
-
-/* Glass Effects */
---glass-bg: rgba(15, 23, 42, 0.3)
---glass-border: rgba(148, 163, 184, 0.1)
---backdrop-blur: 12px
-```
-
-### Typography
-
-- **Primary Font**: Geist Sans (Variable)
-- **Monospace**: Geist Mono (Variable)
-- **Arabic**: Cairo, Amiri, Scheherazade New
-
-### Components
-
-All components follow a consistent design pattern:
-- **Theme-aware styling**: Automatic color adaptation based on current theme
-- **CSS Custom Properties**: All colors use CSS variables for seamless theming
-- **Glass morphism backgrounds**: Semi-transparent overlays with backdrop blur
-- **Emerald-teal gradient accents**: Consistent brand colors across themes
-- **Rounded corners**: (xl: 12px, 2xl: 16px)
-- **Smooth transitions**: (300ms) for theme switching and interactions
-
-### Theme Usage
-
-```typescript
-// Using theme in components
-import { useTheme } from '@/components/ThemeProvider';
-
-function MyComponent() {
-  const { theme, actualTheme, setTheme, toggleTheme } = useTheme();
-  
-  return (
-    <div className="bg-background text-foreground border-border">
-      <button onClick={toggleTheme}>
-        Toggle Theme ({actualTheme})
-      </button>
-    </div>
-  );
+// Theme configuration
+interface ThemeConfig {
+  theme: 'light' | 'dark' | 'system';
+  actualTheme: 'light' | 'dark';
+  setTheme: (theme: Theme) => void;
+  toggleTheme: () => void;
 }
 ```
 
----
+### Color System
 
-## 🔌 Authentication & API Integration
+#### CSS Custom Properties
+```css
+/* Light Theme */
+:root {
+  --background: oklch(0.995 0 0);     /* Pure white */
+  --foreground: oklch(0.165 0 0);     /* Dark text */
+  --card: oklch(0.995 0 0);           /* Card backgrounds */
+  --border: oklch(0.912 0 0);         /* Borders */
+  --muted: oklch(0.96 0 0);           /* Muted elements */
+  --accent: oklch(0.76 0.12 166);     /* Emerald accent */
+}
 
-### Authentication System
+/* Dark Theme */
+[data-theme="dark"] {
+  --background: oklch(0.135 0 0);     /* Dark background */
+  --foreground: oklch(0.975 0 0);     /* Light text */
+  --card: oklch(0.195 0 0);           /* Card backgrounds */
+  --border: oklch(0.259 0 0);         /* Borders */
+  --muted: oklch(0.259 0 0);          /* Muted elements */
+  --accent: oklch(0.76 0.12 166);     /* Emerald accent */
+}
+```
 
-The application uses NextAuth.js with multiple provider support:
+#### Brand Colors
+- **Primary**: Emerald (#10b981) to Teal (#14b8a6) gradient
+- **Glass Effects**: Semi-transparent overlays with backdrop blur
+- **Status Colors**: Success (green), Warning (yellow), Error (red)
 
-#### OAuth Providers
-- **Google OAuth 2.0**: Full profile access with Google accounts
-- **Microsoft Azure AD**: Enterprise and personal Microsoft accounts  
-- **Guest Mode**: Local usage without account creation
+### Typography
 
-#### Session Management
+```css
+/* Font Stack */
+--font-geist-sans: 'Geist Sans', -apple-system, sans-serif;
+--font-geist-mono: 'Geist Mono', 'Consolas', monospace;
+
+/* Arabic Fonts */
+--font-arabic: 'Cairo', 'Amiri', 'Scheherazade New', serif;
+
+/* Font Sizes */
+--text-xs: 0.75rem;     /* 12px */
+--text-sm: 0.875rem;    /* 14px */
+--text-base: 1rem;      /* 16px */
+--text-lg: 1.125rem;    /* 18px */
+--text-xl: 1.25rem;     /* 20px */
+```
+
+### Component Styling
+
+#### Glass Morphism
+```css
+.glass-effect {
+  background: rgba(15, 23, 42, 0.3);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+}
+```
+
+#### Animations
+```css
+/* Theme transitions */
+.theme-transition {
+  transition: background-color 300ms ease-in-out,
+              border-color 300ms ease-in-out,
+              color 300ms ease-in-out;
+}
+
+/* Hover effects */
+.hover-scale {
+  transition: transform 200ms ease-in-out;
+}
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+```
+
+## 🔐 Authentication System
+
+### OAuth Providers
+
+```typescript
+// NextAuth configuration
+export const authOptions: NextAuthOptions = {
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+    AzureADProvider({
+      clientId: process.env.AZURE_AD_CLIENT_ID!,
+      clientSecret: process.env.AZURE_AD_CLIENT_SECRET!,
+      tenantId: process.env.AZURE_AD_TENANT_ID,
+    }),
+  ],
+  adapter: PrismaAdapter(prisma),
+  session: { strategy: "jwt" },
+};
+```
+
+### Session Management
+
 ```typescript
 // Session data structure
-interface Session {
+interface SessionData {
   user: {
     id: string;
     uniqueId: string;
     name?: string;
     email?: string;
     image?: string;
+    provider?: string;
+  }
+  expires: string;
+}
+```
+
+### Guest Mode Features
+
+- **Local Storage**: Guest sessions stored locally
+- **Unique IDs**: Auto-generated guest identifiers
+- **Full Functionality**: All features available without login
+- **Seamless Upgrade**: Easy transition to authenticated account
+
+## 📊 Data Management
+
+### Database Schema
+
+```prisma
+// prisma/schema.prisma
+model User {
+  id            String    @id @default(cuid())
+  uniqueId      String    @unique
+  name          String?
+  email         String?   @unique
+  image         String?
+  provider      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+```
+
+### File Handling
+
+```typescript
+// File upload and processing
+interface FileUpload {
+  file: File;
+  progress: number;
+  status: 'uploading' | 'processing' | 'complete' | 'error';
+  hash?: string;
+}
+
+// Supported formats
+const SUPPORTED_FORMATS = [
+  'application/pdf',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/msword',
+  'text/plain',
+];
+```
+
+## 🛠️ Development
+
+### Development Workflow
+
+1. **Setup Development Environment**:
+   ```bash
+   npm run dev              # Start development server
+   ```
+
+2. **Test Features**:
+   - **Authentication**: Visit `/en/auth/signin` for OAuth testing
+   - **Guest Mode**: Use application without authentication
+   - **Multilingual**: Test at `/en`, `/fr`, `/ar`
+   - **Theme Switching**: Toggle between light/dark modes
+
+3. **Database Management**:
+   ```bash
+   npm run db:studio        # Visual database browser
+   npm run db:push          # Apply schema changes
+   ```
+
+4. **Production Build**:
+   ```bash
+   npm run build            # Create optimized build
+   npm run start            # Test production locally
+   ```
+
+### Code Quality
+
+```bash
+# Linting and formatting
+npm run lint             # ESLint checking
+npx tsc --noEmit        # TypeScript validation
+
+# Bundle analysis
+npm run build:analyze    # Analyze build size
+```
+
+### Performance Optimization
+
+- **Turbopack**: Faster development builds
+- **Image Optimization**: Next.js automatic image optimization
+- **Code Splitting**: Automatic route-based splitting
+- **Lazy Loading**: Components load on demand
+- **Bundle Analysis**: Track build size and optimization
+
+## 🚨 Error Handling
+
+### Client-Side Error Boundaries
+
+```typescript
+// Error boundary for robust error handling
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error?: Error;
+}
+
+class ErrorBoundary extends React.Component<Props, ErrorBoundaryState> {
+  // Error handling implementation
+}
+```
+
+### API Error Handling
+
+```typescript
+// Centralized error handling for API calls
+async function apiCall(endpoint: string, options: RequestInit) {
+  try {
+    const response = await fetch(endpoint, options);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('API Error:', error);
+    throw error;
   }
 }
 ```
 
-#### Database Integration
-- **SQLite Database**: Local development database
-- **Prisma ORM**: Type-safe database access
-- **Automatic Migrations**: Schema updates handled automatically
-
-```bash
-# Database commands
-npx prisma db push        # Apply schema changes
-npx prisma studio         # Browse database
-npx prisma generate       # Update client
-```
-
-### Backend Connection
-
-The frontend connects to a FastAPI backend at `http://localhost:8000`:
+### Toast Notifications
 
 ```typescript
-// API Route: src/app/api/chat/route.ts
-const backendRes = await fetch("http://localhost:8000/ask", {
-  method: "POST",
-  body: formData,
+// User-friendly error messages
+import { toast } from 'react-hot-toast';
+
+// Success notification
+toast.success('File uploaded successfully!');
+
+// Error notification
+toast.error('Failed to upload file. Please try again.');
+
+// Loading state
+toast.loading('Uploading file...');
+```
+
+## 📈 Performance Metrics
+
+### Core Web Vitals
+
+- **LCP (Largest Contentful Paint)**: < 2.5s
+- **FID (First Input Delay)**: < 100ms
+- **CLS (Cumulative Layout Shift)**: < 0.1
+
+### Optimization Features
+
+- **Server-Side Rendering**: Fast initial page loads
+- **Static Generation**: Pre-rendered pages for optimal performance
+- **Image Optimization**: WebP format with responsive sizing
+- **Font Optimization**: Self-hosted fonts with preloading
+- **Bundle Splitting**: Efficient code loading
+
+## 🔒 Security
+
+### Security Features
+
+- **Content Security Policy**: XSS protection
+- **CSRF Protection**: NextAuth.js built-in protection
+- **Secure Headers**: Security headers configured
+- **Input Validation**: All user inputs sanitized
+- **Session Security**: Secure JWT tokens with expiration
+
+### Best Practices
+
+```typescript
+// Input sanitization example
+import DOMPurify from 'dompurify';
+
+function sanitizeInput(input: string): string {
+  return DOMPurify.sanitize(input);
+}
+
+// Environment variable validation
+const requiredEnvVars = [
+  'NEXTAUTH_SECRET',
+  'NEXTAUTH_URL',
+] as const;
+
+requiredEnvVars.forEach(envVar => {
+  if (!process.env[envVar]) {
+    throw new Error(`Missing required environment variable: ${envVar}`);
+  }
 });
 ```
 
-### Authentication Flow
+### Data Protection
 
-1. **User Login**: OAuth redirect to provider (Google/Microsoft)
-2. **Data Retrieval**: Profile data fetched automatically
-3. **Session Storage**: Secure JWT tokens with database persistence
-4. **Auto-Redirect**: Seamless return to application
-
----
-
-## 📖 Documentation & Setup Guides
-
-| Document | Description |
-|----------|-------------|
-| **[DOCUMENTATION_INDEX.md](./DOCUMENTATION_INDEX.md)** | **📚 Complete documentation overview and index** |
-| [THEME_SYSTEM.md](./THEME_SYSTEM.md) | **Complete theme system documentation** |
-| [OAUTH_SETUP.md](./OAUTH_SETUP.md) | Complete OAuth configuration guide |
-| [AUTHENTICATION_STATUS.md](./AUTHENTICATION_STATUS.md) | Current auth implementation status |
-| [DOCS_FR.md](./DOCS_FR.md) | Documentation complète en français |
-| [CONTRIBUTING.md](./CONTRIBUTING.md) | Contributing guidelines |
-
----
+- **User Data Isolation**: Each user's data is properly scoped
+- **Local Storage**: Sensitive data never stored in localStorage
+- **Cookie Security**: Secure, HttpOnly cookies for sessions
+- **OAuth Scopes**: Minimal required permissions requested
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
 ### Development Setup
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push to branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
+1. **Fork and Clone**:
+   ```bash
+   git clone https://github.com/yourusername/EduLLM-frontend.git
+   cd EduLLM-frontend
+   ```
 
-### Code Style
+2. **Create Feature Branch**:
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
 
-- Use TypeScript for all new code
-- Follow ESLint configuration
-- Use Prettier for formatting
-- Write meaningful commit messages
+3. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
 
----
+4. **Start Development**:
+   ```bash
+   npm run dev
+   ```
+
+### Code Standards
+
+- **TypeScript**: Strict type checking enabled
+- **ESLint**: Follow configured rules
+- **Prettier**: Consistent code formatting
+- **Conventional Commits**: Meaningful commit messages
+
+```bash
+# Example commit messages
+git commit -m "feat: add dark mode support"
+git commit -m "fix: resolve theme switching bug"
+git commit -m "docs: update API documentation"
+```
+
+### Pull Request Process
+
+1. **Code Quality**: Ensure tests pass and no lint errors
+2. **Documentation**: Update README if needed
+3. **Screenshots**: Include UI changes screenshots
+4. **Testing**: Test in multiple languages and themes
+5. **Review**: Request review from maintainers
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## 🆘 Support
+
+### Getting Help
+
+- **Issues**: [GitHub Issues](https://github.com/mohamedmdi/EduLLM-frontend/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/mohamedmdi/EduLLM-frontend/discussions)
+- **Documentation**: Comprehensive guides in the `/docs` folder
+
+### Common Issues
+
+#### OAuth Setup Problems
+```bash
+# Check environment variables
+npm run auth:setup
+```
+
+#### Database Issues
+```bash
+# Reset database
+rm prisma/dev.db
+npx prisma db push
+```
+
+#### Build Errors
+```bash
+# Clear Next.js cache
+rm -rf .next
+npm run build
+```
+
+## 🎓 About EduLLM
+
+EduLLM Frontend is the user interface for an AI-powered educational platform that transforms how students interact with educational content. Built with modern web technologies, it provides an intuitive, multilingual experience for document-based learning, AI-powered Q&A, and interactive quiz generation.
+
+### Key Innovations
+
+- **Multilingual AI**: Seamless switching between languages with preserved context
+- **Document Intelligence**: Upload and instantly query educational documents
+- **Adaptive UI**: Theme and language-aware interface design
+- **Real-time Collaboration**: Live AI interactions with streaming responses
+
 ---
 
-<div align="center">
-
-**Made with ❤️ by the EduLLM Team**
-
-[🐛 Report Bug](https://github.com/your-username/edullm-frontend/issues) • [✨ Request Feature](https://github.com/your-username/edullm-frontend/issues) • [📖 Documentation](https://docs.edullm.com)
-
-</div>
+**Built with ❤️ for education • Powered by Next.js and AI**
