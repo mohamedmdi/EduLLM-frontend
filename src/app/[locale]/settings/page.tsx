@@ -259,14 +259,15 @@ export default function SettingsPage() {
                             </span>
                           </div>
                         </div>
-                      </div>                      <div className="flex items-center gap-2">                        <AlertDialog>
+                      </div>                      <div className="flex items-center gap-2">
+                        <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button
                               variant="destructive"
                               size="sm"
                               disabled={deletingFiles.has(file.hash)}
                               title={deletingFiles.has(file.hash) ? "Deleting..." : "Delete file"}
-                              className="relative text-white bg-red-500 dark:bg-red-500 border-red-600 dark:border-red-600 hover:bg-red-600 dark:hover:bg-red-600 hover:border-red-700 dark:hover:border-red-700 hover:scale-110 transform transition-all duration-300 ease-in-out hover:shadow-xl hover:shadow-red-500/40 disabled:hover:scale-100 disabled:hover:shadow-none group overflow-hidden before:absolute before:inset-0 before:bg-white before:opacity-0 hover:before:opacity-10 before:transition-opacity before:duration-300"
+                              className="relative cursor-pointer text-white bg-red-500 dark:bg-red-500 border-red-600 dark:border-red-600 hover:bg-red-600 dark:hover:bg-red-600 hover:border-red-700 dark:hover:border-red-700 hover:scale-110 transform transition-all duration-300 ease-in-out hover:shadow-xl hover:shadow-red-500/40 disabled:hover:scale-100 disabled:hover:shadow-none disabled:cursor-not-allowed group overflow-hidden before:absolute before:inset-0 before:bg-white before:opacity-0 hover:before:opacity-10 before:transition-opacity before:duration-300"
                             >
                               <span className="relative z-10">
                                 {deletingFiles.has(file.hash) ? (
@@ -276,8 +277,8 @@ export default function SettingsPage() {
                                 )}
                               </span>
                             </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent className="bg-card border-border">                            <AlertDialogHeader>
+                          </AlertDialogTrigger>                          <AlertDialogContent className="bg-card border-border">
+                            <AlertDialogHeader>
                               <AlertDialogTitle className="text-foreground">
                                 {t("fileManager.files.delete.title") ||
                                   "Delete File"}
@@ -286,7 +287,8 @@ export default function SettingsPage() {
                                 {t("fileManager.files.delete.description") ||
                                   `Are you sure you want to delete "${file.file}"? This will permanently remove the file and all its embeddings from the system. This action cannot be undone.`}
                               </AlertDialogDescription>
-                            </AlertDialogHeader>                            <AlertDialogFooter>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
                               <AlertDialogCancel className="text-foreground bg-muted hover:bg-muted/80 border-border">
                                 {t("fileManager.files.delete.cancel") || "Cancel"}
                               </AlertDialogCancel>
@@ -297,7 +299,8 @@ export default function SettingsPage() {
                                 {t("fileManager.files.delete.confirm") || "Delete"}
                               </AlertDialogAction>
                             </AlertDialogFooter>
-                          </AlertDialogContent>                        </AlertDialog>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     </div>
                   ))}
