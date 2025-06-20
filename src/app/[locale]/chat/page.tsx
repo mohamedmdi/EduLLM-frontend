@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
@@ -112,39 +112,27 @@ export default function ChatPage() {
   );
 }
 
-function ChatPageContent() {
-  const {
+function ChatPageContent() {  const {
     messages,
     input,
     handleInputChange,
     handleSubmit,
     isLoading,
     isSubmitting,
-    sendInitialPrompt,
   } = useChat();
   const [files, setFiles] = useState<FileList | undefined>(undefined);
   const t = useTranslations();
   const locale = useLocale();
 
-  // Initialize prompt when component mounts
-  useEffect(() => {
-    if (messages.length === 0) {
-      const timer = setTimeout(() => {
-        sendInitialPrompt("Hello! I'm EduLLM, your educational AI assistant. How can I help you with your learning today?");
-      }, 500);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [messages.length, sendInitialPrompt]);
+
 
   const handleFilesChange = (newFiles: FileList | undefined) => {
     setFiles(newFiles);
-  };
-
-  const onSubmit = (e: React.FormEvent) => {
+  };  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleSubmit(e, {
       experimental_attachments: files,
+      locale: locale // Pass the current language to include hidden language instruction
     });
     setFiles(undefined);
   };

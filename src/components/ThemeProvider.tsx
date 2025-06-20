@@ -16,9 +16,17 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('system');
   const [actualTheme, setActualTheme] = useState<'light' | 'dark'>('light');
+  const [mounted, setMounted] = useState(false);
+
+  // Wait for mount to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Initialize theme from localStorage or system preference
   useEffect(() => {
+    if (!mounted) return;
+    
     const stored = localStorage.getItem('theme') as Theme;
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     
@@ -29,10 +37,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       setThemeState('system');
       setActualTheme(systemTheme);
     }
-  }, []);
+  }, [mounted]);
 
   // Listen for system theme changes
   useEffect(() => {
+    if (!mounted) return;
+    
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     
     const handleChange = (e: MediaQueryListEvent) => {
@@ -43,10 +53,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [theme]);
-
+  }, [theme, mounted]);
   // Apply theme to document
   useEffect(() => {
+    if (!mounted) return;
+    
     const root = document.documentElement;
     
     // Remove existing theme classes
@@ -57,9 +68,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     
     // Update data attribute for CSS selectors
     root.setAttribute('data-theme', actualTheme);
-  }, [actualTheme]);
+  }, [actualTheme, mounted]);
 
   const setTheme = (newTheme: Theme) => {
+    if (!mounted) return;
+    
     setThemeState(newTheme);
     localStorage.setItem('theme', newTheme);
     

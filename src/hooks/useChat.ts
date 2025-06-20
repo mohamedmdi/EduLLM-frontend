@@ -22,10 +22,22 @@ export function useChat() {
     setInput(e.target.value);
   };  const handleSubmit = async (
     e: React.FormEvent,
-    options?: { experimental_attachments?: FileList }
-  ) => {
-    e.preventDefault();
-    if (!input.trim() && !options?.experimental_attachments?.length) return;
+    options?: { experimental_attachments?: FileList; customText?: string; locale?: string }  ) => {    e.preventDefault();
+    const textToUse = options?.customText ?? input;
+    let textForBackend = textToUse;
+    
+    // Add language instruction for backend but keep it hidden from UI
+    if (options?.locale && !options?.customText) {
+      const languageInstructions = {
+        en: "Please respond in English.",
+        fr: "Veuillez répondre en français.",
+        ar: "يرجى الرد باللغة العربية."
+      };
+      const languageInstruction = languageInstructions[options.locale as keyof typeof languageInstructions] || languageInstructions.en;
+      textForBackend = `${textToUse}\n\n${languageInstruction}`;
+    }
+    
+    if (!textToUse.trim() && !options?.experimental_attachments?.length) return;
 
     // Get user ID for backend request - supports both authenticated and guest users
     let userId = getUserId();
@@ -38,12 +50,10 @@ export function useChat() {
         console.error("User authentication failed");
         return;
       }
-    }
-
-    const userMessage: Message = {
+    }    const userMessage: Message = {
       id: crypto.randomUUID(),
       role: "user",
-      content: input.trim(),
+      content: textToUse.trim(), // Display the original text without language instruction
       experimental_attachments: options?.experimental_attachments
         ? Array.from(options.experimental_attachments).map((file) => ({
             name: file.name,
@@ -53,13 +63,17 @@ export function useChat() {
         : undefined,
     };
     setMessages((prev) => [...prev, userMessage]);
-    setInput("");
+    // Only clear input if we're using the actual input, not custom text
+    if (!options?.customText) {
+      setInput("");
+    }
     setIsLoading(true);
-    setIsSubmitting(true);
-
-    try {
-      const formData = new FormData();      formData.append("query", userMessage.content);
+    setIsSubmitting(true);    try {      const formData = new FormData();      
+      formData.append("query", textForBackend); // Send text with language instruction to backend
       formData.append("userId", userId); // Include user ID
+      if (options?.locale) {
+        formData.append("locale", options.locale); // Include language preference
+      }
 
       if (options?.experimental_attachments) {
         Array.from(options.experimental_attachments).forEach((file) => {
@@ -71,6 +85,10 @@ export function useChat() {
         method: "POST",
         body: formData,
       });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
 
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
@@ -92,9 +110,7 @@ export function useChat() {
               content: aiResponse,
             },
           ]);
-        }
-
-        // Finalize the message
+        }        // Finalize the message
         setMessages((prev) => [
           ...prev.filter((m) => m.role !== "assistant" || m.id !== "streaming"),
           {
@@ -108,8 +124,18 @@ export function useChat() {
       console.error("Chat error:", err);
       setIsLoading(false);
       setIsSubmitting(false);
+      
+      // Add an error message to the chat
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: crypto.randomUUID(),
+          role: "assistant",
+          content: "Sorry, I'm having trouble connecting right now. Please try again in a moment.",
+        },
+      ]);
     }
-  };  // Function to send an initializing prompt - wrapped in useCallback to avoid dependency issues
+  };// Function to send an initializing prompt - wrapped in useCallback to avoid dependency issues
   const sendInitialPrompt = useCallback(async (prompt: string) => {
     let userId = getUserId();
     if (!userId) {
@@ -187,6 +213,13 @@ export function useChat() {
       setIsSubmitting(false);
     }
   }, []); // Empty dependency array since it doesn't depend on any props or state
+  // Function to clear all messages and reset the chat
+  const clearMessages = () => {
+    setMessages([]);
+    setInput("");
+    setIsLoading(false);
+    setIsSubmitting(false);
+  };
 
   return {
     messages,
@@ -196,5 +229,6 @@ export function useChat() {
     handleInputChange,
     handleSubmit,
     sendInitialPrompt, // export the new function
+    clearMessages, // export the clear function
   };
 }

@@ -1,9 +1,9 @@
-{
-  "nav": {
+{  "nav": {
     "signIn": "Sign In",
     "getStarted": "🚀 Get Started",
     "back": "Back",
     "settings": "Settings",
+    "fileManager": "File Manager",
     "logout": "Logout",
     "chat": "Chat",
     "qcm": "QCM Generator",
@@ -51,16 +51,30 @@
     "subtitle": "AI-Powered Exam Generator",
     "welcome": "Create Custom QCM Exams",
     "description": "Upload your study materials or provide topics to generate personalized multiple choice questions and exams with AI assistance.",
-    "placeholder": "Describe the exam you want to create or drag & drop files here...",
+    "placeholder": "Describe the exam you want to create or drag & drop files here...",    "uploadFiles": "Upload Your Study Materials",
+    "dropFiles": "Drop files here to get started",
     "dropFilesHere": "Drop files here",
-    "supportedFormats": "Supported formats:",
-    "prompts": {
-      "generate10": "Generate 10 multiple choice questions",
-      "fromDocument": "Create exam from uploaded document",
-      "quick5min": "Quick 5-minute quiz",
-      "advanced": "Advanced difficulty level",
-      "trueFalse": "True/False questions",
-      "mixed": "Mixed question types"
+    "dragDropDescription": "Drag and drop multiple files here or click to browse. Supports PDF, Word documents, and text files.",
+    "multipleFilesSupported": "Multiple files supported",
+    "clickToUse": "Click to use this prompt",
+    "processing": "Processing...",
+    "generateQCM": "Generate QCM",
+    "supportedFormats": "Supported formats:","prompts": {
+      "generate10": "Generate 10 multiple choice questions with 4 answer options each, including detailed explanations for correct answers",
+      "fromDocument": "Create a comprehensive exam with multiple choice questions based on the key concepts from the uploaded document",
+      "quick5min": "Generate a quick 5-minute quiz with 5 multiple choice questions that can be completed in 5 minutes",
+      "advanced": "Create challenging advanced-level questions that test deep understanding and critical thinking skills",
+      "trueFalse": "Generate 10 true/false questions with clear explanations for each correct answer",
+      "mixed": "Create a mixed exam with multiple choice, true/false, and short answer questions covering various difficulty levels",
+      "comprehensive": "Generate a comprehensive study test with 15-20 questions covering all major topics and concepts",
+      "exam": "Create a final exam preparation test with 25 challenging questions suitable for assessment purposes",
+      "custom": "Generate questions in a custom format - specify your preferred question types, difficulty level, and number of questions",
+      "beginner": "Create beginner-friendly questions with simple language and fundamental concepts for introductory learning",
+      "multipleChoice": "Generate multiple choice questions only with 4 answer options per question and clear explanations",
+      "practice": "Create practice test questions for skill reinforcement with immediate feedback and explanations",
+      "revision": "Generate revision quiz questions focusing on key concepts and important topics for review purposes",
+      "conceptual": "Create questions that test conceptual understanding rather than memorization, focusing on 'why' and 'how'",
+      "essay": "Generate short answer and essay questions that require detailed explanations and critical analysis"
     }
   },"SignIn": {
     "title": "Sign in to EduLLM",
@@ -111,9 +125,40 @@
     "user": "User",
     "signOut": "Sign Out",
     "signingOut": "Signing Out..."
-  },
-  "settings": {
+  },  "settings": {
     "title": "Settings",
+    "profile": {
+      "title": "Profile Information"
+    },
+    "files": {
+      "title": "Uploaded Files",
+      "empty": "No files uploaded yet",
+      "delete": {
+        "title": "Delete File",
+        "description": "Are you sure you want to delete this file? This will permanently remove the file and all its embeddings from the system. This action cannot be undone.",
+        "cancel": "Cancel",
+        "confirm": "Delete"
+      }
+    },
+    "account": {
+      "title": "Account Settings",
+      "description": "Manage your account preferences and profile information."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Configure your notification preferences."
+    },
+    "privacy": {
+      "title": "Privacy & Security",
+      "description": "Control your privacy settings and security preferences."
+    },
+    "appearance": {
+      "title": "Appearance",
+      "description": "Customize the look and feel of the application."
+    }
+  },
+  "fileManager": {
+    "title": "File Manager",
     "profile": {
       "title": "Profile Information"
     },

@@ -10,13 +10,13 @@ export function NavigationLoader() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Show loading when route changes
+    // Only show loading for actual navigation changes
     setIsLoading(true);
     
-    // Hide loading after a short delay to allow for compilation
+    // Reduce timer to be less intrusive
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 500);
+    }, 100);
 
     return () => clearTimeout(timer);
   }, [pathname]);

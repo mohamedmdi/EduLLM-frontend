@@ -107,9 +107,8 @@ export default function SettingsPage() {
           },
         }
       );
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || "Failed to delete file");
+      const data = await res.json();      if (!res.ok || !data.success) {
+        throw new Error(data.message ?? "Failed to delete file");
       }
 
       // Remove from local state
@@ -146,20 +145,18 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto px-6 py-8">
-        <div className="flex items-center gap-3 mb-8">
-          <SettingsIcon className="w-8 h-8 text-emerald-400" />
+      <div className="max-w-6xl mx-auto px-6 py-8">        <div className="flex items-center gap-3 mb-8">
+          <SettingsIcon className="w-8 h-8 text-emerald-500 dark:text-emerald-400" />
           <h1 className="text-3xl font-bold text-foreground">
-            {t("settings.title") || "Settings"}
+            {t("fileManager.title") || "File Manager"}
           </h1>
         </div>
 
         {/* User Profile Section */}
         <Card className="mb-8 bg-card border-border">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-foreground">
+          <CardHeader>            <CardTitle className="flex items-center gap-2 text-foreground">
               <User className="w-5 h-5" />
-              {t("settings.profile.title") || "Profile Information"}
+              {t("fileManager.profile.title") || "Profile Information"}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -193,10 +190,9 @@ export default function SettingsPage() {
 
         {/* Uploaded Files Section */}
         <Card className="bg-card border-border">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-foreground">
+          <CardHeader>            <CardTitle className="flex items-center gap-2 text-foreground">
               <HardDrive className="w-5 h-5" />
-              {t("settings.files.title") || "Uploaded Files"}
+              {t("fileManager.files.title") || "Uploaded Files"}
               {files.length > 0 && (
                 <Badge variant="secondary" className="ml-2">
                   {files.length}
@@ -204,34 +200,29 @@ export default function SettingsPage() {
               )}
             </CardTitle>
           </CardHeader>{" "}
-          <CardContent>
-            {loading && (
+          <CardContent>            {loading && (
               <div className="flex items-center justify-center py-8">
-                <Loader2 className="w-6 h-6 animate-spin text-emerald-400" />
-                <span className="ml-2 text-muted-foreground">
+                <Loader2 className="w-6 h-6 animate-spin text-emerald-500 dark:text-emerald-400" />
+                <span className="ml-2 text-foreground font-medium">
                   Loading files...
                 </span>
               </div>
-            )}
-
-            {!loading && files.length === 0 && (
+            )}            {!loading && files.length === 0 && (
               <div className="text-center py-8">
-                <Upload className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">
-                  {t("settings.files.empty") || "No files uploaded yet"}
-                </p>
-                <p className="text-sm text-muted-foreground mt-2">
+                <Upload className="w-12 h-12 text-muted-foreground/70 dark:text-muted-foreground mx-auto mb-4" />                <p className="text-muted-foreground">
+                  {t("fileManager.files.empty") || "No files uploaded yet"}
+                </p><p className="text-sm text-muted-foreground mt-2">
                   Upload files in the{" "}
                   <a
                     href={`/${locale}/chat`}
-                    className="text-emerald-400 hover:underline"
+                    className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline font-medium"
                   >
                     Chat
                   </a>{" "}
                   or{" "}
                   <a
                     href={`/${locale}/qcm`}
-                    className="text-emerald-400 hover:underline"
+                    className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline font-medium"
                   >
                     QCM
                   </a>{" "}
@@ -243,11 +234,10 @@ export default function SettingsPage() {
             {!loading && files.length > 0 && (
               <ScrollArea className="h-96">
                 <div className="space-y-4">
-                  {files.map((file) => (
-                    <div
+                  {files.map((file) => (                    <div
                       key={file.hash}
-                      className="flex items-center justify-between p-4 border border-border rounded-lg bg-muted/50"
-                    >                      <div className="flex items-center gap-3">
+                      className="flex items-center justify-between p-4 border border-border rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
+                    ><div className="flex items-center gap-3">
                         <div className="text-2xl">
                           {getFileIcon(file.file.split(".").pop() ?? "file")}
                         </div>
@@ -263,42 +253,38 @@ export default function SettingsPage() {
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button
+                      <div className="flex items-center gap-2">                        <AlertDialog>
+                          <AlertDialogTrigger asChild>                            <Button
                               variant="destructive"
                               size="sm"
                               disabled={deletingFiles.has(file.hash)}
-                              className="text-white"
+                              title={deletingFiles.has(file.hash) ? "Deleting..." : "Delete file"}
+                              className="relative text-white bg-red-500 dark:bg-red-500 border-red-600 dark:border-red-600 hover:bg-red-600 dark:hover:bg-red-600 hover:border-red-700 dark:hover:border-red-700 hover:scale-110 transform transition-all duration-300 ease-in-out hover:shadow-xl hover:shadow-red-500/40 disabled:hover:scale-100 disabled:hover:shadow-none group overflow-hidden before:absolute before:inset-0 before:bg-white before:opacity-0 hover:before:opacity-10 before:transition-opacity before:duration-300"
                             >
                               {deletingFiles.has(file.hash) ? (
-                                <Loader2 className="w-4 h-4 animate-spin" />
+                                <Loader2 className="w-4 h-4 animate-spin relative z-10" />
                               ) : (
-                                <Trash2 className="w-4 h-4" />
+                                <Trash2 className="w-4 h-4 relative z-10 group-hover:animate-pulse group-hover:drop-shadow-sm" />
                               )}
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent className="bg-card border-border">
-                            <AlertDialogHeader>
-                              <AlertDialogTitle className="text-foreground">
-                                {t("settings.files.delete.title") ||
+                            <AlertDialogHeader>                              <AlertDialogTitle className="text-foreground">
+                                {t("fileManager.files.delete.title") ||
                                   "Delete File"}
                               </AlertDialogTitle>
                               <AlertDialogDescription className="text-muted-foreground">
-                                {t("settings.files.delete.description") ||
+                                {t("fileManager.files.delete.description") ||
                                   `Are you sure you want to delete "${file.file}"? This will permanently remove the file and all its embeddings from the system. This action cannot be undone.`}
                               </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel className="text-foreground">
-                                {t("settings.files.delete.cancel") || "Cancel"}
+                            </AlertDialogHeader>                            <AlertDialogFooter>                              <AlertDialogCancel className="text-foreground bg-muted hover:bg-muted/80 border-border">
+                                {t("fileManager.files.delete.cancel") || "Cancel"}
                               </AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={() => handleDeleteFile(file.hash)}
-                                className="bg-red-500 hover:bg-red-600 text-white"
+                                className="bg-red-500 hover:bg-red-600 text-white border-red-500 hover:border-red-600"
                               >
-                                {t("settings.files.delete.confirm") || "Delete"}
+                                {t("fileManager.files.delete.confirm") || "Delete"}
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>

@@ -10,39 +10,21 @@ interface PageTransitionProps {
 
 export default function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname();
-
   const pageVariants = {
     initial: {
       opacity: 0,
-      y: 20,
-      scale: 0.98,
     },
     animate: {
       opacity: 1,
-      y: 0,
-      scale: 1,      transition: {
-        duration: 0.4,
-        staggerChildren: 0.1,
+      transition: {
+        duration: 0.2,
+        ease: "easeOut" as const,
       },
     },
     exit: {
       opacity: 0,
-      y: -20,
-      scale: 0.98,      transition: {
-        duration: 0.3,
-      },
-    },
-  };
-  const childVariants = {
-    initial: {
-      opacity: 0,
-      y: 10,
-    },
-    animate: {
-      opacity: 1,
-      y: 0,
       transition: {
-        duration: 0.3,
+        duration: 0.1,
       },
     },
   };
@@ -53,13 +35,11 @@ export default function PageTransition({ children }: PageTransitionProps) {
         key={pathname}
         variants={pageVariants}
         initial="initial"
-        animate="enter"
+        animate="animate"
         exit="exit"
         className="min-h-screen"
       >
-        <motion.div variants={childVariants}>
-          {children}
-        </motion.div>
+        {children}
       </motion.div>
     </AnimatePresence>
   );
@@ -121,12 +101,12 @@ export function AnimatedButton({
   className = "",
   isLoading = false,
   ...props
-}: { 
-  readonly children: ReactNode; 
-  readonly className?: string;
-  readonly isLoading?: boolean;
-  readonly [key: string]: unknown;
-}) {
+}: Readonly<{ 
+  children: ReactNode; 
+  className?: string;
+  isLoading?: boolean;
+  [key: string]: unknown;
+}>) {
   return (
     <motion.button
       whileHover={{ scale: 1.05 }}

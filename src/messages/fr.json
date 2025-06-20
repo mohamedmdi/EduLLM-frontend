@@ -1,9 +1,9 @@
-{
-  "nav": {
+{  "nav": {
     "signIn": "Se connecter",
     "getStarted": "🚀 Commencer",
     "back": "Retour",
     "settings": "Paramètres",
+    "fileManager": "Gestionnaire de fichiers",
     "logout": "Déconnexion",
     "chat": "Chat",
     "qcm": "Générateur QCM",
@@ -52,15 +52,30 @@
     "welcome": "Créer des examens QCM personnalisés",
     "description": "Téléchargez vos supports d'étude ou fournissez des sujets pour générer des questions à choix multiples personnalisées et des examens avec l'assistance de l'IA.",
     "placeholder": "Décrivez l'examen que vous voulez créer ou glissez-déposez des fichiers ici...",
+    "uploadFiles": "Téléchargez vos supports d'étude",
+    "dropFiles": "Déposez les fichiers ici pour commencer",
     "dropFilesHere": "Déposez les fichiers ici",
-    "supportedFormats": "Formats supportés :",
-    "prompts": {
-      "generate10": "Générer 10 questions à choix multiples",
-      "fromDocument": "Créer un examen à partir du document téléchargé",
-      "quick5min": "Quiz rapide de 5 minutes",
-      "advanced": "Niveau de difficulté avancé",
-      "trueFalse": "Questions vrai/faux",
-      "mixed": "Types de questions mixtes"
+    "dragDropDescription": "Glissez-déposez plusieurs fichiers ici ou cliquez pour parcourir. Supporte les PDF, documents Word et fichiers texte.",
+    "multipleFilesSupported": "Plusieurs fichiers supportés",
+    "clickToUse": "Cliquez pour utiliser cette suggestion",
+    "processing": "Traitement en cours...",
+    "generateQCM": "Générer le QCM",
+    "supportedFormats": "Formats supportés :",    "prompts": {
+      "generate10": "Générer 10 questions à choix multiples avec 4 options de réponse chacune, incluant des explications détaillées pour les bonnes réponses",
+      "fromDocument": "Créer un examen complet avec des questions à choix multiples basées sur les concepts clés du document téléchargé",
+      "quick5min": "Générer un quiz rapide de 5 minutes avec 5 questions à choix multiples qui peut être complété en 5 minutes",
+      "advanced": "Créer des questions avancées difficiles qui testent la compréhension approfondie et les compétences de pensée critique",
+      "trueFalse": "Générer 10 questions vrai/faux avec des explications claires pour chaque bonne réponse",
+      "mixed": "Créer un examen mixte avec des questions à choix multiples, vrai/faux et à réponse courte couvrant différents niveaux de difficulté",
+      "comprehensive": "Générer un test d'étude complet avec 15-20 questions couvrant tous les sujets et concepts majeurs",
+      "exam": "Créer un test de préparation à l'examen final avec 25 questions difficiles adaptées à l'évaluation",
+      "custom": "Générer des questions dans un format personnalisé - spécifiez vos types de questions préférés, niveau de difficulté et nombre de questions",
+      "beginner": "Créer des questions adaptées aux débutants avec un langage simple et des concepts fondamentaux pour l'apprentissage introductif",
+      "multipleChoice": "Générer uniquement des questions à choix multiples avec 4 options de réponse par question et des explications claires",
+      "practice": "Créer des questions d'entraînement pour le renforcement des compétences avec des commentaires immédiats et des explications",
+      "revision": "Générer des questions de révision se concentrant sur les concepts clés et les sujets importants à des fins de révision",
+      "conceptual": "Créer des questions qui testent la compréhension conceptuelle plutôt que la mémorisation, en se concentrant sur le 'pourquoi' et le 'comment'",
+      "essay": "Générer des questions à réponse courte et de dissertation qui nécessitent des explications détaillées et une analyse critique"
     }
   },"SignIn": {
     "title": "Se connecter à EduLLM",
@@ -111,9 +126,40 @@
     "user": "Utilisateur",
     "signOut": "Se déconnecter",
     "signingOut": "Déconnexion..."
-  },
-  "settings": {
+  },  "settings": {
     "title": "Paramètres",
+    "profile": {
+      "title": "Informations du Profil"
+    },
+    "files": {
+      "title": "Fichiers Téléchargés",
+      "empty": "Aucun fichier téléchargé",
+      "delete": {
+        "title": "Supprimer le Fichier",
+        "description": "Êtes-vous sûr de vouloir supprimer ce fichier ? Cette action supprimera définitivement le fichier et tous ses embeddings du système. Cette action ne peut pas être annulée.",
+        "cancel": "Annuler",
+        "confirm": "Supprimer"
+      }
+    },
+    "account": {
+      "title": "Paramètres du Compte",
+      "description": "Gérez vos préférences de compte et informations de profil."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Configurez vos préférences de notification."
+    },
+    "privacy": {
+      "title": "Confidentialité et Sécurité",
+      "description": "Contrôlez vos paramètres de confidentialité et préférences de sécurité."
+    },
+    "appearance": {
+      "title": "Apparence",
+      "description": "Personnalisez l'apparence de l'application."
+    }
+  },
+  "fileManager": {
+    "title": "Gestionnaire de fichiers",
     "profile": {
       "title": "Informations du Profil"
     },

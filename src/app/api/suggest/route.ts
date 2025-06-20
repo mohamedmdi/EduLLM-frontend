@@ -17,8 +17,8 @@ export async function GET(req: NextRequest) {
       );
     }
     const data = await apiRes.json();
-    return NextResponse.json({ data }, { status: 200 });
-  } catch (e) {
+    return NextResponse.json({ data }, { status: 200 });  } catch (error) {
+    console.error("Suggest API error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

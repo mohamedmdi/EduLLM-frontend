@@ -67,30 +67,27 @@ export default function Header() {
                   asChild
                   variant="ghost"
                   className="transition-colors border cursor-pointer text-muted-foreground hover:text-foreground "
-                ></Button>
-                <Link href={`/${locale}/chat`}>
-                  <Button className="px-6 py-2 text-white rounded-full cursor-pointer bg-transparent border border-emerald-500 hover:bg-emerald-500 transition-colors">
+                ></Button>                <Link href={`/${locale}/chat`}>
+                  <Button className="px-6 py-2 text-emerald-600 dark:text-white rounded-full cursor-pointer bg-transparent border border-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors">
                     {t("nav.getStarted")}
                   </Button>
                 </Link>
               </>
-            )}
-
-            {/* Show Chat and QCM buttons for authenticated users (not on home page) */}
+            )}            {/* Show Chat and QCM buttons for authenticated users (not on home page) */}
             {auth && !isHomePage && (
               <>
                 <Link href={`/${locale}/chat`}>
-                  <Button className="px-4 py-2 text-white rounded-full cursor-pointer bg-transparent border border-emerald-500 hover:bg-emerald-500 transition-colors">
+                  <Button className="px-4 py-2 text-emerald-600 dark:text-white rounded-full cursor-pointer bg-transparent border border-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors">
                     {t("nav.chat") || "Chat"}
                   </Button>
                 </Link>
                 <Link href={`/${locale}/qcm`}>
-                  <Button className="px-4 py-2 text-white rounded-full cursor-pointer bg-transparent border border-blue-500 hover:bg-blue-500 transition-colors">
+                  <Button className="px-4 py-2 text-blue-600 dark:text-white rounded-full cursor-pointer bg-transparent border border-blue-500 hover:bg-blue-500 hover:text-white transition-colors">
                     {t("nav.qcm") || "QCM"}
                   </Button>
                 </Link>
                 <Link href={`/${locale}/suggest`}>
-                  <Button className="px-4 py-2 text-white rounded-full cursor-pointer bg-transparent border border-purple-500 hover:bg-purple-500 transition-colors">
+                  <Button className="px-4 py-2 text-purple-600 dark:text-white rounded-full cursor-pointer bg-transparent border border-purple-500 hover:bg-purple-500 hover:text-white transition-colors">
                     {t("nav.suggest") || "Suggestions"}
                   </Button>
                 </Link>
@@ -107,13 +104,12 @@ export default function Header() {
                   {renderAvatar()}
                 </button>
                 {menuOpen && (
-                  <div className={`absolute z-50 w-40 mt-2 border shadow-lg bg-card border-border rounded-xl${isRTL ? ' left-0' : ' right-0'}`}>
-                    <Link
+                  <div className={`absolute z-50 w-40 mt-2 border shadow-lg bg-card border-border rounded-xl${isRTL ? ' left-0' : ' right-0'}`}>                    <Link
                       href={`/${locale}/settings`}
                       className="block px-4 py-2 text-sm text-foreground hover:bg-muted rounded-t-xl"
                       onClick={() => setMenuOpen(false)}
                     >
-                      {t("nav.settings") || "Settings"}
+                      {t("nav.fileManager") || "File Manager"}
                     </Link>
                     <button
                       className={`block w-full px-4 py-2 text-sm text-red-400 cursor-pointer hover:bg-muted rounded-b-xl${isRTL ? ' text-right' : ' text-left'}`}
